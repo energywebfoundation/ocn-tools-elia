@@ -2,3 +2,5 @@ language: node-js
 node_js:
     lts/*
 
+before-install:
+    - cp src/config/config.local.ts src/config/config.ts
