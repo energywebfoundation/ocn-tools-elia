@@ -15,13 +15,16 @@
 */
 
 import { IConnector } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations"
-import { ITariff } from "@shareandcharge/ocn-bridge/src/models/ocpi/tariffs"
+import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs"
 import { tariffs } from "../../data/tariffs"
+import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
 
 export class TariffsSender {
 
-    public async getList(): Promise<ITariff[]> {
-        return tariffs
+    public async getList(): Promise<IPaginationResponse<ITariff[]>> {
+        return {
+            data: tariffs
+        }
     }
 
     public async getObjectById(id: string | IConnector): Promise<ITariff | undefined> {

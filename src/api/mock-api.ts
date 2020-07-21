@@ -20,11 +20,16 @@ import { Commands } from "./commands/commands";
 import { Locations } from "./locations/locations";
 import { Sessions } from "./sessions/session";
 import { Tariffs } from "./tariffs/tariffs";
+import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service";
 
 export class MockAPI implements IPluggableAPI {
     public locations = new Locations()
     public tariffs = new Tariffs()
-    public commands = new Commands(this.locations, this.tariffs)
+    public commands
     public sessions = new Sessions()
     public cdrs = new Cdrs()
+
+    constructor(pushService: PushService) {
+        this.commands = new Commands(this.locations, this.tariffs, pushService)
+    }
 }

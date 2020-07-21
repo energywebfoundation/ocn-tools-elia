@@ -16,11 +16,14 @@
 
 import { IConnector, IEvse, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations";
 import { locations } from "../../data/locations";
+import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
 
 export class LocationsSender {
 
-    public async getList(): Promise<ILocation[]> {
-        return locations
+    public async getList(): Promise<IPaginationResponse<ILocation[]>> {
+        return {
+            data: locations
+        }
     }
 
     public async getObject(id: string): Promise<ILocation | undefined> {

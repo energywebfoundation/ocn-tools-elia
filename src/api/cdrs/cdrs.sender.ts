@@ -16,11 +16,14 @@
 
 import { IChargeDetailRecord } from "@shareandcharge/ocn-bridge/dist/models/ocpi/cdrs";
 import { cdrs } from "../../data/cdrs"
+import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
 
 export class CdrsSender {
 
-    public async getList(): Promise<IChargeDetailRecord[]> {
-        return cdrs
+    public async getList(): Promise<IPaginationResponse<IChargeDetailRecord[]>> {
+        return {
+            data: cdrs
+        }
     }
 
 }

@@ -16,7 +16,7 @@
 
 import { CommandResponseType, CommandResultType, IAsyncCommand, ICommandResult } from "@shareandcharge/ocn-bridge/dist/models/ocpi/commands";
 import { IReserveNow, IStartSession } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
-import { sendCdrFunc, sendSessionFunc } from "@shareandcharge/ocn-bridge/dist/services/push.service";
+import { PushService, IOcpiParty } from "@shareandcharge/ocn-bridge/dist/services/push.service";
 import { isDeepStrictEqual } from "util";
 import uuid from "uuid";
 import { MockMonitor } from "../../models/mock-monitor";
@@ -50,7 +50,7 @@ export class CommandsReceiver {
     private reservations: IReserveNow[] = []
     private sessions: { [key: string]: MockMonitor } = {}
 
-    constructor(private locations: Locations, private tariffs: Tariffs) {}
+    constructor(private locations: Locations, private tariffs: Tariffs, private pushService: PushService) {}
 
     public async cancelReservation(id: string): Promise<IAsyncCommand> {
         const index = this.reservations.findIndex((res) => res.reservation_id === id)
@@ -114,7 +114,7 @@ export class CommandsReceiver {
         return accepted
     }
 
-    public async startSession(request: IStartSession, sendSession: sendSessionFunc, sendCdr: sendCdrFunc): Promise<IAsyncCommand> {
+    public async startSession(request: IStartSession, recipient: IOcpiParty): Promise<IAsyncCommand> {
 
         // check evse exists first
         const evse = await this.locations.sender.getEvse(request.location_id, request.evse_uid!)
@@ -139,7 +139,14 @@ export class CommandsReceiver {
         const tariff = await this.tariffs.sender.getObjectByConnector(connector)
 
         const sessionID = uuid.v4()
-        this.sessions[sessionID] = new MockMonitor(sessionID, request, location!, connector, sendSession, sendCdr, tariff)
+        this.sessions[sessionID] = new MockMonitor(
+            sessionID, 
+            request,
+            this.pushService,
+            recipient, 
+            location!, 
+            connector, 
+            tariff)
 
         if (reservationIndex >= 0) {
             this.reservations.splice(reservationIndex, 1)

@@ -16,11 +16,14 @@
 
 import { ISession } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
 import { sessions } from "../../data/sessions"
+import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
 
 export class SessionsSender {
 
-    public async getList(): Promise<ISession[]> {
-        return sessions
+    public async getList(): Promise<IPaginationResponse<ISession[]>> {
+        return {
+            data: sessions
+        }
     }
 
 }

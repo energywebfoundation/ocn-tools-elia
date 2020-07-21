@@ -20,6 +20,7 @@ import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
 import { Database } from "./database"
+import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
 
 yargs
     .command("mock", "Start a mock OCPI party server", (context) => {
@@ -46,8 +47,6 @@ yargs
             console.log("Need one of options \"cpo\", \"msp\"")
             process.exit(1)
         }
-
-        const mockAPI = new MockAPI()
         const registry = new DefaultRegistry(config.ocn.stage)
 
         if (args.cpo) {
@@ -55,6 +54,11 @@ yargs
             console.log("Starting CPO server...")
 
             const database = new Database("cpo.db")
+            const pushService = new PushService(database, {
+                country_code: config.cpo.roles[0].country_code,
+                party_id: config.cpo.roles[0].party_id
+            })
+            const mockAPI = new MockAPI(pushService)
 
             const cpoServer = await startBridge({
                 port: config.cpo.port,
@@ -84,6 +88,11 @@ yargs
             console.log("Starting MSP server...")
 
             const database = new Database("msp.db")
+            const pushService = new PushService(database, {
+                country_code: config.msp.roles[0].country_code,
+                party_id: config.msp.roles[0].party_id
+            })
+            const mockAPI = new MockAPI(pushService)
 
             const mspServer = await startBridge({
                 port: config.msp.port,

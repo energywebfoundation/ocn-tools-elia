@@ -17,10 +17,10 @@
 import { IConnector, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations"
 import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs"
 import { IStartSession } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
-import { sendCdrFunc, sendSessionFunc } from "@shareandcharge/ocn-bridge/dist/services/push.service"
 import { sessionStatus } from "@shareandcharge/ocn-bridge/src/models/ocpi/session"
 import { Cdr } from "./cdr"
 import { Session } from "./session"
+import { IOcpiParty, PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
 
 export class MockMonitor {
 
@@ -30,8 +30,9 @@ export class MockMonitor {
     private kwh: number
     private start: Date
 
-    constructor(private id: string, private request: IStartSession, private location: ILocation, private connector: IConnector, 
-                private sendSession: sendSessionFunc, private sendCdr: sendCdrFunc, private tariff?: ITariff) {
+    constructor(private id: string, private request: IStartSession, private pushService: PushService,
+                private recipient: IOcpiParty, private location: ILocation, private connector: IConnector, 
+                private tariff?: ITariff) {
 
         // init mocked session details
         this.kwh = 0
@@ -61,7 +62,7 @@ export class MockMonitor {
 
     public async updateSession(status: sessionStatus): Promise<void> {
         const session = new Session(this.id, this.start, this.kwh, status, this.request)
-        await this.sendSession(session)
+        await this.pushService.sendSession(this.recipient, session)
     }
 
     public async stop(): Promise<void> {
@@ -70,7 +71,7 @@ export class MockMonitor {
             clearInterval(this.sessionUpdateScheduler)
             setTimeout(() => this.updateSession("COMPLETED"), 1000)
             const cdr = new Cdr(this.id, this.start, this.kwh, this.request, this.location, this.connector, this.tariff)
-            setTimeout(() => this.sendCdr(cdr), 1500)
+            setTimeout(() => this.pushService.sendCdr(this.recipient, cdr), 1500)
         }
     }
 

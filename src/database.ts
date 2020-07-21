@@ -22,7 +22,9 @@ export class Database implements IPluggableDB {
     private db: sqlite3.Database
 
     constructor(name: string) {
+        console.log("creating db", name)
         this.db = sqlite3.default(name)
+        console.log("created db", name)
         this.db.prepare("CREATE TABLE IF NOT EXISTS auth (id INTEGER UNIQUE, token_b TEXT, token_c TEXT)").run()
         this.db.prepare("CREATE TABLE IF NOT EXISTS endpoints (identifier TEXT, role TEXT, url TEXT)").run()
 
