@@ -9,7 +9,7 @@
     "start": "ts-node src/index.ts",
     "start-cpo": "ts-node src/index.ts mock --cpo",
     "start-msp": "ts-node src/index.ts mock --msp",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require ts-node/register 'test/**/*.spec.ts'"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,14 @@
   },
   "devDependencies": {
     "@types/better-sqlite3": "^5.4.0",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^8.0.0",
+    "@types/node-fetch": "^2.5.7",
     "@types/uuid": "^3.4.5",
     "@types/yargs": "^13.0.3",
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1",
+    "node-fetch": "^2.6.0",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
     "typescript": "^3.6.4"
