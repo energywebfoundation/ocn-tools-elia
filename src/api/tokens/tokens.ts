@@ -13,21 +13,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
+import { TokensSender } from "./tokens.sender";
 
-import { IRole } from "@shareandcharge/ocn-bridge/dist/models/ocpi/credentials";
-
-export const extractCPO = (roles: IRole[]): IRole => {
-    const cpo = roles.find((role) => role.role === "CPO")
-    if (!cpo) {
-        throw Error("No CPO role provided in \"config.cpo.roles\"")
-    }
-    return cpo
-}
-
-export const extractMSP = (roles: IRole[]): IRole => {
-    const msp = roles.find((role) => role.role === "EMSP")
-    if (!msp) {
-        throw Error("No MSP role provided in \"config.msp.roles\"")
-    }
-    return msp
+export class Tokens {
+    public sender = new TokensSender()
 }

@@ -16,11 +16,11 @@
 
 import { DefaultRegistry, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
 import { ModuleImplementation } from "@shareandcharge/ocn-bridge/dist/models/bridgeConfigurationOptions"
+import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
 import { Database } from "./database"
-import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
 
 yargs
     .command("mock", "Start a mock OCPI party server", (context) => {

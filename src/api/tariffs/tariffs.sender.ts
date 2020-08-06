@@ -16,8 +16,8 @@
 
 import { IConnector } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations"
 import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs"
-import { tariffs } from "../../data/tariffs"
 import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
+import { tariffs } from "../../data/tariffs"
 
 export class TariffsSender {
 

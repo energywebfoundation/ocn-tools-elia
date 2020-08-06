@@ -142,6 +142,7 @@ for (i = 1; i <= 10; i++) {
                 last_updated: "2019-10-14T12:02:45.006Z"
             }
         ],
+        time_zone: "Europe/Berlin",
         energy_mix: eneryMix,
         last_updated: "2019-10-14T12:02:45.006Z"
     })

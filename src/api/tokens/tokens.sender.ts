@@ -14,20 +14,20 @@
     limitations under the License.
 */
 
-import { IRole } from "@shareandcharge/ocn-bridge/dist/models/ocpi/credentials";
+import { IToken, IUnauthorizedToken } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tokens"
+import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
+import { tokens } from "../../data/tokens"
 
-export const extractCPO = (roles: IRole[]): IRole => {
-    const cpo = roles.find((role) => role.role === "CPO")
-    if (!cpo) {
-        throw Error("No CPO role provided in \"config.cpo.roles\"")
-    }
-    return cpo
-}
+export class TokensSender {
 
-export const extractMSP = (roles: IRole[]): IRole => {
-    const msp = roles.find((role) => role.role === "EMSP")
-    if (!msp) {
-        throw Error("No MSP role provided in \"config.msp.roles\"")
+    public async getList(): Promise<IPaginationResponse<IToken[]>> {
+        return {
+            data: tokens
+        }
     }
-    return msp
+
+    public async authorize(): Promise<IUnauthorizedToken> {
+        return { unknownToken: true }
+    }
+
 }

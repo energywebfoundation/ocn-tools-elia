@@ -15,12 +15,13 @@
 */
 
 import { IPluggableAPI } from "@shareandcharge/ocn-bridge";
+import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service";
 import { Cdrs } from "./cdrs/cdrs";
 import { Commands } from "./commands/commands";
 import { Locations } from "./locations/locations";
 import { Sessions } from "./sessions/session";
 import { Tariffs } from "./tariffs/tariffs";
-import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service";
+import { Tokens } from "./tokens/tokens";
 
 export class MockAPI implements IPluggableAPI {
     public locations = new Locations()
@@ -28,6 +29,7 @@ export class MockAPI implements IPluggableAPI {
     public commands
     public sessions = new Sessions()
     public cdrs = new Cdrs()
+    public tokens = new Tokens()
 
     constructor(pushService: PushService) {
         this.commands = new Commands(this.locations, this.tariffs, pushService)
