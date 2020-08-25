@@ -40,7 +40,6 @@ export class Session implements ISession {
     public last_updated: string
 
     constructor(id: string, start: Date, kwh: number, status: sessionStatus, request: IStartSession, connector: IConnector) {
-        console.log("sending session for request:", request)
         const cpo = extractCPO(config.cpo.roles)
         this.country_code = cpo.country_code
         this.party_id = cpo.party_id
