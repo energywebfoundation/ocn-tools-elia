@@ -40,8 +40,8 @@ to register, they can be discarded on future runs.
 These variables are:
 
 - `OCN_TOKEN_A` - the OCPI credentials TOKEN_A which allows the party to connect to an OCN node
-- `OCN_IDENTITY` - the private key used to sign the OCN registry listing
-- `OCN_SPENDER` - [optional] the private key which will pay the transaction fee for adding the party to the OCN registry (same as `SIGNER_KEY` if not provided)
+- `OCN_IDENTITY` - the private key used to manage the OCN registry listing and sign messages
+- `OCN_SPENDER` - [optional] the private key which will pay the transaction fee for adding the party to the OCN registry (same as `OCN_IDENTITY` if not provided)
 
 #### Token A
 

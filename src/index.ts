@@ -46,7 +46,7 @@ yargs
             console.log("Need one of options \"cpo\", \"msp\"")
             process.exit(1)
         }
-        const registry = new DefaultRegistry(config.ocn.stage, process.env.OCN_IDENTITY)
+        const registry = new DefaultRegistry(config.ocn.stage, process.env.OCN_IDENTITY, process.env.OCN_SPENDER)
         const monitorFactory = new MockMonitorFactory()
         const api = new MockAPI(monitorFactory)
 
