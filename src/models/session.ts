@@ -14,9 +14,7 @@
     limitations under the License.
 */
 
-import { authMethod } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
-import { ICdrToken, ISession, sessionStatus } from "@shareandcharge/ocn-bridge/src/models/ocpi/session";
-import { IStartSession } from "@shareandcharge/ocn-bridge/src/models/pluggableAPI";
+import { authMethod, ICdrToken, IConnector, ISession, IStartSession, sessionStatus } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 
@@ -41,7 +39,8 @@ export class Session implements ISession {
     public status: sessionStatus
     public last_updated: string
 
-    constructor(id: string, start: Date, kwh: number, status: sessionStatus, request: IStartSession) {
+    constructor(id: string, start: Date, kwh: number, status: sessionStatus, request: IStartSession, connector: IConnector) {
+        console.log("sending session for request:", request)
         const cpo = extractCPO(config.cpo.roles)
         this.country_code = cpo.country_code
         this.party_id = cpo.party_id
@@ -56,7 +55,7 @@ export class Session implements ISession {
         }
         this.location_id = request.location_id
         this.evse_uid = request.evse_uid || ""
-        this.connector_id = ""
+        this.connector_id = connector.id
         this.status = status
         this.last_updated = new Date().toISOString()
     }

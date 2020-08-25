@@ -13,17 +13,17 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
+import { MockMonitorFactory } from "../../models/mock-monitor-factory";
 import { Locations } from "../locations/locations";
 import { Tariffs } from "../tariffs/tariffs";
 import { CommandsReceiver } from "./commands.receiver";
 import { CommandsSender } from "./commands.sender";
-import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service";
 
 export class Commands {
     public sender = new CommandsSender()
     public receiver: CommandsReceiver
 
-    constructor(locations: Locations, tariffs: Tariffs, pushService: PushService) {
-        this.receiver = new CommandsReceiver(locations, tariffs, pushService)
+    constructor(locations: Locations, tariffs: Tariffs, monitorFactory: MockMonitorFactory) {
+        this.receiver = new CommandsReceiver(locations, tariffs, monitorFactory)
     }
 }

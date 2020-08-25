@@ -14,12 +14,11 @@
     limitations under the License.
 */
 
-import { CommandResponseType, CommandResultType, IAsyncCommand, ICommandResult } from "@shareandcharge/ocn-bridge/dist/models/ocpi/commands";
-import { IReserveNow, IStartSession } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
-import { PushService, IOcpiParty } from "@shareandcharge/ocn-bridge/dist/services/push.service";
+import { CommandResponseType, CommandResultType, IAsyncCommand, ICommandResult, IOcpiParty, IReserveNow, IStartSession } from "@shareandcharge/ocn-bridge";
 import { isDeepStrictEqual } from "util";
 import uuid from "uuid";
 import { MockMonitor } from "../../models/mock-monitor";
+import { MockMonitorFactory } from "../../models/mock-monitor-factory";
 import { Locations } from "../locations/locations";
 import { Tariffs } from "../tariffs/tariffs";
 
@@ -50,7 +49,7 @@ export class CommandsReceiver {
     private reservations: IReserveNow[] = []
     private sessions: { [key: string]: MockMonitor } = {}
 
-    constructor(private locations: Locations, private tariffs: Tariffs, private pushService: PushService) {}
+    constructor(private locations: Locations, private tariffs: Tariffs, private monitorFactory: MockMonitorFactory) {}
 
     public async cancelReservation(id: string): Promise<IAsyncCommand> {
         const index = this.reservations.findIndex((res) => res.reservation_id === id)
@@ -139,10 +138,9 @@ export class CommandsReceiver {
         const tariff = await this.tariffs.sender.getObjectByConnector(connector)
 
         const sessionID = uuid.v4()
-        this.sessions[sessionID] = new MockMonitor(
+        this.sessions[sessionID] = this.monitorFactory.create(
             sessionID, 
             request,
-            this.pushService,
             recipient, 
             location!, 
             connector, 

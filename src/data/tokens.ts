@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IToken } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tokens";
+import { IToken } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractMSP } from "../tools/tools";
 
@@ -25,7 +25,7 @@ export const tokens: IToken[] = [
         country_code: msp.country_code,
         party_id: msp.party_id,
         uid: "00020304",
-        type: "RFID",
+        type: "APP_USER",
         contract_id: `${msp.country_code}-${msp.party_id}-XY00020304`,
         issuer: msp.business_details.name,
         whitelist: "NEVER",

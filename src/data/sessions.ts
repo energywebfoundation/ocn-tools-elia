@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { ISession } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
+import { ISession } from "@shareandcharge/ocn-bridge";
 
 export const sessions: ISession[] = [{
     country_code: "CH",

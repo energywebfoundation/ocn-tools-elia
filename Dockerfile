@@ -1,14 +1,14 @@
 FROM node:lts-alpine
 
-RUN apk add git python make g++
+RUN apk add git python make g++ sqlite
 
-COPY . /tools
-WORKDIR /tools
+WORKDIR /ocn-tools
+COPY . .
 
-RUN npm clean-install
-RUN ls node_modules
-RUN ls node_modules/@shareandcharge
+# needed to allow ocn-bridge dependency installation
+RUN npm config set unsafe-perm true 
+
+RUN npm install
 RUN npm run build
-
 
 ENTRYPOINT [ "node", "dist/index.js" ]

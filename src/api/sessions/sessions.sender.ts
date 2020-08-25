@@ -14,9 +14,8 @@
     limitations under the License.
 */
 
-import { ISession } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
-import { sessions } from "../../data/sessions"
-import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
+import { IPaginationResponse, ISession } from "@shareandcharge/ocn-bridge";
+import { sessions } from "../../data/sessions";
 
 export class SessionsSender {
 

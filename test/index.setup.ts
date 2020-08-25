@@ -1,9 +1,7 @@
-import { DatabaseMock } from "./mock/database.mock"
-import { IRole } from "@shareandcharge/ocn-bridge/dist/models/ocpi/credentials"
+import { DefaultRegistry, IBridgeConfigurationOptions, IRole, ModuleImplementation } from "@shareandcharge/ocn-bridge"
 import { MockAPI } from "../src/api/mock-api"
-import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
-import { IBridgeConfigurationOptions, DefaultRegistry } from "@shareandcharge/ocn-bridge"
-import { ModuleImplementation } from "@shareandcharge/ocn-bridge/dist/models/bridgeConfigurationOptions"
+import { MockMonitorFactory } from "../src/models/mock-monitor-factory"
+import { DatabaseMock } from "./mock/database.mock"
 
 const registry = new DefaultRegistry("local")
 
@@ -28,8 +26,10 @@ const msp: IRole = {
     }
 }
 
-const cpoMockAPI = new MockAPI(new PushService(cpoDb, cpo))
-const mspMockAPI = new MockAPI(new PushService(mspDb, msp))
+export const monitorFactory = new MockMonitorFactory()
+
+const cpoMockAPI = new MockAPI(monitorFactory)
+const mspMockAPI = new MockAPI(monitorFactory)
 
 export const cpoConfig: IBridgeConfigurationOptions = {
     port: 3001,

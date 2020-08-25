@@ -14,8 +14,7 @@
     limitations under the License.
 */
 
-import { IToken, IUnauthorizedToken } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tokens"
-import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
+import { IPaginationResponse, IToken, IUnauthorizedToken } from "@shareandcharge/ocn-bridge"
 import { tokens } from "../../data/tokens"
 
 export class TokensSender {

@@ -13,9 +13,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-import * as sqlite3 from "better-sqlite3"
-import { IPluggableDB } from "@shareandcharge/ocn-bridge";
-import { IVersionDetail } from "@shareandcharge/ocn-bridge/dist/models/ocpi/versions";
+import { IPluggableDB, IVersionDetail } from "@shareandcharge/ocn-bridge";
+import * as sqlite3 from "better-sqlite3";
 
 export class Database implements IPluggableDB {
 

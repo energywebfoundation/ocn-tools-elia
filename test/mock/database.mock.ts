@@ -1,6 +1,4 @@
-import { IPluggableDB } from "@shareandcharge/ocn-bridge";
-import { IEndpoint } from "@shareandcharge/ocn-bridge/dist/models/ocpi/common";
-import { IVersionDetail } from "@shareandcharge/ocn-bridge/dist/models/ocpi/versions";
+import { IEndpoint, IPluggableDB, IVersionDetail } from "@shareandcharge/ocn-bridge";
 
 export class DatabaseMock implements IPluggableDB {
 

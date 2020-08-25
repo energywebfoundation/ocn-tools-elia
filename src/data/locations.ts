@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IEnergyMix, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations";
+import { IEnergyMix, ILocation } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 

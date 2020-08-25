@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IChargeDetailRecord } from "@shareandcharge/ocn-bridge/dist/models/ocpi/cdrs";
+import { IChargeDetailRecord } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 

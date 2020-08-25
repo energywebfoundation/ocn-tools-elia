@@ -14,13 +14,12 @@
     limitations under the License.
 */
 
-import { DefaultRegistry, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
-import { ModuleImplementation } from "@shareandcharge/ocn-bridge/dist/models/bridgeConfigurationOptions"
-import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
+import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
 import { Database } from "./database"
+import { MockMonitorFactory } from "./models/mock-monitor-factory"
 
 yargs
     .command("mock", "Start a mock OCPI party server", (context) => {
@@ -47,20 +46,17 @@ yargs
             console.log("Need one of options \"cpo\", \"msp\"")
             process.exit(1)
         }
-        const registry = new DefaultRegistry(config.ocn.stage)
+        const registry = new DefaultRegistry(config.ocn.stage, process.env.OCN_IDENTITY)
+        const monitorFactory = new MockMonitorFactory()
+        const api = new MockAPI(monitorFactory)
 
         if (args.cpo) {
 
             console.log("Starting CPO server...")
 
             const database = new Database("cpo.db")
-            const pushService = new PushService(database, {
-                country_code: config.cpo.roles[0].country_code,
-                party_id: config.cpo.roles[0].party_id
-            })
-            const mockAPI = new MockAPI(pushService)
 
-            const cpoServer = await startBridge({
+            const cpoBridge = await startBridge({
                 port: config.cpo.port,
                 publicBridgeURL: config.cpo.publicIP,
                 ocnNodeURL: config.ocn.node,
@@ -68,11 +64,16 @@ yargs
                 modules: {
                     implementation: ModuleImplementation.CPO
                 },
-                pluggableAPI: mockAPI,
+                pluggableAPI: api,
                 pluggableDB: database,
                 pluggableRegistry: registry,
-                logger: true
+                logger: true,
+                signatures: true,
+                signer: process.env.OCN_IDENTITY,
+                tokenA: process.env.OCN_TOKEN_A
             })
+
+            monitorFactory.setRequestService(cpoBridge.requests)
 
             console.log("CPO server listening for OCPI requests")
             
@@ -81,18 +82,13 @@ yargs
 
             if (args.registerOnly) {
                 console.log("Shutting down CPO server...")
-                await stopBridge(cpoServer)
+                await stopBridge(cpoBridge)
             }
         } else if (args.msp) {
 
             console.log("Starting MSP server...")
 
             const database = new Database("msp.db")
-            const pushService = new PushService(database, {
-                country_code: config.msp.roles[0].country_code,
-                party_id: config.msp.roles[0].party_id
-            })
-            const mockAPI = new MockAPI(pushService)
 
             const mspServer = await startBridge({
                 port: config.msp.port,
@@ -102,11 +98,16 @@ yargs
                 modules: {
                     implementation: ModuleImplementation.MSP
                 },
-                pluggableAPI: mockAPI,
+                pluggableAPI: api,
                 pluggableDB: database,
                 pluggableRegistry: registry,
-                logger: true
+                logger: true,
+                signatures: true,
+                signer: process.env.OCN_IDENTITY,
+                tokenA: process.env.OCN_TOKEN_A
             })
+
+            monitorFactory.setRequestService(mspServer.requests)
 
             console.log("MSP server listening for OCPI requests")
 

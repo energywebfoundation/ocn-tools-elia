@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs";
+import { ITariff } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 

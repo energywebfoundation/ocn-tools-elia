@@ -14,9 +14,7 @@
     limitations under the License.
 */
 
-import { IConnector } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations"
-import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs"
-import { IPaginationResponse } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
+import { IConnector, IPaginationResponse, ITariff } from "@shareandcharge/ocn-bridge"
 import { tariffs } from "../../data/tariffs"
 
 export class TariffsSender {

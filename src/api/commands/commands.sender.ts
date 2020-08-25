@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { ICommandResult } from "@shareandcharge/ocn-bridge/dist/models/ocpi/commands";
+import { ICommandResult } from "@shareandcharge/ocn-bridge";
 
 export class CommandsSender {
     public asyncResult(command: string, uid: string, result: ICommandResult): void {

@@ -14,11 +14,7 @@
     limitations under the License.
 */
 
-import { ICdrLocation, IChargeDetailRecord } from "@shareandcharge/ocn-bridge/dist/models/ocpi/cdrs";
-import { IConnector, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations";
-import { authMethod, ICdrToken, IChargingPeriod, IPrice } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
-import { IPriceComponent, ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs";
-import { IStartSession } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
+import { authMethod, ICdrLocation, ICdrToken, IChargeDetailRecord, IChargingPeriod, IConnector, ILocation, IPrice, IPriceComponent, IStartSession, ITariff } from "@shareandcharge/ocn-bridge";
 import * as uuid from "uuid";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";

@@ -1,26 +1,6 @@
-/*
-    Copyright 2019-2020 eMobilify GmbH
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
-
-import { IConnector, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations"
-import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs"
-import { IStartSession } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI"
-import { sessionStatus } from "@shareandcharge/ocn-bridge/src/models/ocpi/session"
+import { IConnector, ILocation, IOcpiParty, IStartSession, ITariff, RequestService, sessionStatus } from "@shareandcharge/ocn-bridge"
 import { Cdr } from "./cdr"
 import { Session } from "./session"
-import { IOcpiParty, PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service"
 
 export class MockMonitor {
 
@@ -30,9 +10,9 @@ export class MockMonitor {
     private kwh: number
     private start: Date
 
-    constructor(private id: string, private request: IStartSession, private pushService: PushService,
-                private recipient: IOcpiParty, private location: ILocation, private connector: IConnector, 
-                private tariff?: ITariff) {
+    constructor(private id: string, private request: IStartSession, private recipient: IOcpiParty, 
+                private location: ILocation, private connector: IConnector,
+                private requestService: RequestService, private tariff?: ITariff) {
 
         // init mocked session details
         this.kwh = 0
@@ -61,8 +41,8 @@ export class MockMonitor {
     }
 
     public async updateSession(status: sessionStatus): Promise<void> {
-        const session = new Session(this.id, this.start, this.kwh, status, this.request)
-        await this.pushService.sendSession(this.recipient, session)
+        const session = new Session(this.id, this.start, this.kwh, status, this.request, this.connector)
+        await this.requestService.sendSession(this.recipient, session)
     }
 
     public async stop(): Promise<void> {
@@ -71,7 +51,7 @@ export class MockMonitor {
             clearInterval(this.sessionUpdateScheduler)
             setTimeout(() => this.updateSession("COMPLETED"), 1000)
             const cdr = new Cdr(this.id, this.start, this.kwh, this.request, this.location, this.connector, this.tariff)
-            setTimeout(() => this.pushService.sendCdr(this.recipient, cdr), 1500)
+            setTimeout(() => this.requestService.sendCdr(this.recipient, cdr), 1500)
         }
     }
 

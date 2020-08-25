@@ -15,7 +15,7 @@
 */
 
 import { IPluggableAPI } from "@shareandcharge/ocn-bridge";
-import { PushService } from "@shareandcharge/ocn-bridge/dist/services/push.service";
+import { MockMonitorFactory } from "../models/mock-monitor-factory";
 import { Cdrs } from "./cdrs/cdrs";
 import { Commands } from "./commands/commands";
 import { Locations } from "./locations/locations";
@@ -31,7 +31,7 @@ export class MockAPI implements IPluggableAPI {
     public cdrs = new Cdrs()
     public tokens = new Tokens()
 
-    constructor(pushService: PushService) {
-        this.commands = new Commands(this.locations, this.tariffs, pushService)
+    constructor(monitorFactory: MockMonitorFactory) {
+        this.commands = new Commands(this.locations, this.tariffs, monitorFactory)
     }
 }
