@@ -39,9 +39,9 @@ to register, they can be discarded on future runs.
 
 These variables are:
 
-- `TOKEN_A` - the OCPI credentials TOKEN_A which allows the party to connect to an OCN node
-- `SIGNER_KEY` - the private key used to sign the OCN registry listing
-- `SPENDER_KEY` - [optional] the private key which will pay the transaction fee for adding the party to the OCN registry (same as `SIGNER_KEY` if not provided)
+- `OCN_TOKEN_A` - the OCPI credentials TOKEN_A which allows the party to connect to an OCN node
+- `OCN_IDENTITY` - the private key used to sign the OCN registry listing
+- `OCN_SPENDER` - [optional] the private key which will pay the transaction fee for adding the party to the OCN registry (same as `SIGNER_KEY` if not provided)
 
 #### Token A
 
@@ -70,7 +70,7 @@ on the Energy Web Chain's Volta test network, you could instead fund your privat
 Once setup, a mock MSP or CPO can be started as follows:
 
 ```
-TOKEN_A=ec005952-8c33-4bc0-8032-e07fdc420931 SIGNER_KEY=0x659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63 npm run start-msp
+OCN_TOKEN_A=ec005952-8c33-4bc0-8032-e07fdc420931 OCN_IDENTITY=0x659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63 npm run start-msp
 ```
 
 Likewise the `npm` script `start-cpo` can be used to start and register the CPO server.
@@ -87,7 +87,7 @@ MSP server listening for OCPI requests
 If you only want to register the party, without a long-running server process, you may use the `--register-only` flag:
 
 ```
-TOKEN_A=ec005952-8c33-4bc0-8032-e07fdc420931 SIGNER_KEY=0x659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63 npm run start-msp -- --register-only
+OCN_TOKEN_A=ec005952-8c33-4bc0-8032-e07fdc420931 OCN_IDENTITY=0x659cbb0e2411a44db63778987b1e22153c086a95eb6b18bdf89de078917abc63 npm run start-msp -- --register-only
 ```
 
 The server will then exit after registration is complete.
@@ -321,4 +321,18 @@ Or it can be installed globally:
 ```
 npm i -g typescript ts-node
 ts-node src --help
+```
+
+# Docker
+
+## Building
+
+```
+docker build . -t ocn-tools
+```
+
+## Running
+
+```
+docker run -p 3000:3000 --pid=host -it -e "OCN_TOKEN_A=<YOUR_TOKEN>" -e "OCN_IDENTITY=<YOUR_KEY>" ocn-tools mock --cpo
 ```
