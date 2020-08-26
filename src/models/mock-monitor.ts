@@ -42,7 +42,7 @@ export class MockMonitor {
 
     public async updateSession(status: sessionStatus): Promise<void> {
         const session = new Session(this.id, this.start, this.kwh, status, this.request, this.connector)
-        await this.requestService.sendSession(this.recipient, session)
+        await this.requestService.sendSession(this.recipient, session.serialize())
     }
 
     public async stop(): Promise<void> {
@@ -51,7 +51,7 @@ export class MockMonitor {
             clearInterval(this.sessionUpdateScheduler)
             setTimeout(() => this.updateSession("COMPLETED"), 1000)
             const cdr = new Cdr(this.id, this.start, this.kwh, this.request, this.location, this.connector, this.tariff)
-            setTimeout(() => this.requestService.sendCdr(this.recipient, cdr), 1500)
+            setTimeout(() => this.requestService.sendCdr(this.recipient, cdr.serialize()), 1500)
         }
     }
 

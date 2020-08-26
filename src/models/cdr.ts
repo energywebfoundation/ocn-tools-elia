@@ -39,7 +39,7 @@ export class Cdr implements IChargeDetailRecord {
     public total_cost: IPrice
     // public total_fixed_cost?: IPrice
     public total_energy: number
-    public total_energy_cost?: IPrice
+    // public total_energy_cost?: IPrice
     public total_time: number
     // public total_time_cost?: IPrice
     // public total_parking_time?: number
@@ -63,8 +63,8 @@ export class Cdr implements IChargeDetailRecord {
         this.end_date_time = new Date().toISOString()
         this.cdr_token = {
             uid: request.token.uid,
+            type: request.token.type,
             contract_id: request.token.contract_id,
-            type: request.token.type
         }
         this.cdr_location = {
             id: request.location_id,
@@ -95,6 +95,27 @@ export class Cdr implements IChargeDetailRecord {
         this.total_cost = this.calculateTotalCost(tariff)
         this.last_updated = this.end_date_time
 
+    }
+
+    public serialize(): IChargeDetailRecord {
+        return {
+            country_code: this.country_code,
+            party_id: this.party_id,
+            id: this.id,
+            start_date_time: this.start_date_time,
+            end_date_time: this.end_date_time,
+            session_id: this.session_id,
+            cdr_token: this.cdr_token,
+            auth_method: this.auth_method,
+            cdr_location: this.cdr_location,
+            currency: this.currency,
+            tariffs: this.tariffs,
+            charging_periods: this.charging_periods,
+            total_cost: this.total_cost,
+            total_energy: this.total_energy,
+            total_time: this.total_time,
+            last_updated: this.last_updated
+        }
     }
 
     private calculateTotalTime(start: Date): number {

@@ -27,7 +27,7 @@ for (i = 1; i <= 10; i++) {
     const cpo = extractCPO(config.cpo.roles)
 
     let tariffID: string
-    let eneryMix: IEnergyMix
+    let energyMix: IEnergyMix
    
     switch (true) {
         case (i < 5):
@@ -40,14 +40,14 @@ for (i = 1; i <= 10; i++) {
             tariffID = "3"
     }
 
-    eneryMix = {
+    energyMix = {
         is_green_energy: true,
         supplier_name: "Utility 2",
         energy_product_name: "Product green"
     }
 
     if (i < 5) {
-        eneryMix = {
+        energyMix = {
             is_green_energy: false,
             energy_sources: [ 
                 { 
@@ -69,7 +69,7 @@ for (i = 1; i <= 10; i++) {
             environ_impact: [
                 { 
                     category: "NUCLEAR_WASTE", 
-                    amount: 0.0006
+                    amount: 0.006
                 },
                 {  
                     category: "CARBON_DIOXIDE", 
@@ -85,8 +85,8 @@ for (i = 1; i <= 10; i++) {
         country_code: cpo.country_code,
         party_id: cpo.party_id,
         id: `Loc${i}`,
-        name: `Station ${i}`,
         publish: true,
+        name: `Station ${i}`,
         address: `Test-Street ${i}`,
         city: "Zug",
         postal_code: "6300",
@@ -143,7 +143,7 @@ for (i = 1; i <= 10; i++) {
             }
         ],
         time_zone: "Europe/Berlin",
-        energy_mix: eneryMix,
+        energy_mix: energyMix,
         last_updated: "2019-10-14T12:02:45.006Z"
     })
 }

@@ -49,14 +49,32 @@ export class Session implements ISession {
         this.kwh = Math.round(kwh * 1e4) / 1e4
         this.cdr_token = {
             uid: request.token.uid,
+            type: request.token.type,
             contract_id: request.token.contract_id,
-            type: request.token.type
         }
         this.location_id = request.location_id
         this.evse_uid = request.evse_uid || ""
         this.connector_id = connector.id
         this.status = status
         this.last_updated = new Date().toISOString()
+    }
+
+    public serialize(): ISession {
+        return {
+            country_code: this.country_code,
+            party_id: this.party_id,
+            id: this.id,
+            start_date_time: this.start_date_time,
+            kwh: this.kwh,
+            cdr_token: this.cdr_token,
+            auth_method: this.auth_method,
+            location_id: this.location_id,
+            evse_uid: this.evse_uid,
+            connector_id: this.connector_id,
+            currency: this.currency,
+            status: this.status,
+            last_updated: this.last_updated
+        }
     }
 
 }
