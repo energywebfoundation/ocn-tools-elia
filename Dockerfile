@@ -11,4 +11,6 @@ RUN npm config set unsafe-perm true
 RUN npm install
 RUN npm run build
 
+RUN chmod +x ./wait-for-node.sh
+
 ENTRYPOINT [ "node", "dist/index.js" ]
