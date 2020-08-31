@@ -27,4 +27,4 @@ COPY --from=builder --chown=node /ocn-tools/wait-for-node.sh ./
 
 RUN chmod +x ./wait-for-node.sh
 
-ENTRYPOINT [ "node", "dist/index.js" ]
+CMD [ "node", "dist/index.js" ]

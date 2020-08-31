@@ -5,5 +5,5 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:8080/hea
     sleep 5
 done
 
-echo 'done'
+printf 'node is up\n'
 node dist/index.js mock $1
