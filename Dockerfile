@@ -15,6 +15,8 @@ RUN npm prune --production
 # production image
 FROM node:lts-alpine
 
+RUN apk add curl
+
 USER node
 RUN mkdir -p /home/node/app
 WORKDIR /home/node/app
