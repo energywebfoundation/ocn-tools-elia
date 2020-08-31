@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 until $(curl --output /dev/null --silent --head --fail http://localhost:8080/health); do
     printf 'waiting for node up\n'
