@@ -17,7 +17,7 @@ import * as uuid from "uuid"
 
 export const config = {
     ocn: {
-        node: "http://172.16.238.20:8080",
+        node: process.env.OCN_NODE_URL || "http://172.16.238.20:8080", // todo: replace other hardcoded values with env vars
         stage: "local"
     },
     cpo: {
