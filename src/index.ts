@@ -21,6 +21,16 @@ import { config } from "./config/config"
 import { Database } from "./database"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
 
+const setAgreements = async (services: string[], registry: DefaultRegistry) => {
+    for (const service of services) {
+        try {
+            await registry.permissions.createAgreement(service)
+        } catch (err) {
+            console.log(`service ${service} agreement failed: ${err.message}`)
+        }
+    }
+}
+
 yargs
     .command("mock", "Start a mock OCPI party server", (context) => {
         context
@@ -75,6 +85,9 @@ yargs
 
             monitorFactory.setRequestService(cpoBridge.requests)
 
+            // set agreements from config
+            await setAgreements(config.cpo.services || [], registry);
+
             console.log("CPO server listening for OCPI requests")
             
             const token = await database.getTokenC()
@@ -108,6 +121,9 @@ yargs
             })
 
             monitorFactory.setRequestService(mspServer.requests)
+            
+            // set agreements from config
+            await setAgreements(config.msp.services || [], registry);
 
             console.log("MSP server listening for OCPI requests")
 

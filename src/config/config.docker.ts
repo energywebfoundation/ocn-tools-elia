@@ -25,28 +25,30 @@ export const config = {
         publicIP: "http://172.16.238.40:3000",
         roles: [
             {
-                party_id: "CPO",
-                country_code: "CH",
+                party_id: "EVC",
+                country_code: "DE",
                 role: "CPO",
                 business_details: {
                     name: `Test CPO ${uuid.v4()}`
                 }
             }
-        ]
+        ],
+        services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"]
     },
     msp: {
         port: 3001,
         publicIP: "http://172.16.238.30:3001",
         roles: [
             {
-                party_id: "MSP",
-                country_code: "CH",
+                party_id: "EVM",
+                country_code: "DE",
                 role: "EMSP",
                 business_details: {
                     name: `Test MSP ${uuid.v4()}`
                 }
             }
-        ]
+        ],
+        services: []
     }
 
 }
