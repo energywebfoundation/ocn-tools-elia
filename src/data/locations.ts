@@ -14,13 +14,16 @@
     limitations under the License.
 */
 
-import { IEnergyMix, ILocation } from "@shareandcharge/ocn-bridge";
+import { evseStatus, IEnergyMix, ILocation } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 
 export const locations: ILocation[] = []
 
 let i: number
+
+const statusOptions = ["AVAILABLE", "CHARGING"] as evseStatus[]
+const guessAvailability = (): evseStatus => statusOptions[Math.round(Math.random())]
 
 for (i = 1; i <= 10; i++) {
 
@@ -92,8 +95,8 @@ for (i = 1; i <= 10; i++) {
         postal_code: "6300",
         country: "CHE",
         coordinates: {
-            latitude: `47.1${78 + i}`,
-            longitude: "8.518",
+            latitude: `${(52.50 + (Math.random() / 50)).toFixed(3)}`,
+            longitude: `${(13.38 + (Math.random() / 50)).toFixed(3)}`,
         },
         operator: {
             name: cpo.business_details.name
@@ -112,7 +115,7 @@ for (i = 1; i <= 10; i++) {
             {
                 uid: `CH-CPO-S${i}E100001`,
                 evse_id: `CH-CPO-S${i}E100001`,
-                status: "AVAILABLE",
+                status: guessAvailability(),
                 connectors: [{
                     id: `S${i}E1Con1`,
                     standard: "IEC_62196_T2",
@@ -128,7 +131,7 @@ for (i = 1; i <= 10; i++) {
             {
                 uid: `CH-CPO-S${i}E100002`,
                 evse_id: `CH-CPO-S${i}E100002`,
-                status: "AVAILABLE",
+                status: guessAvailability(),
                 connectors: [{
                     id: `S${i}E1Con2`,
                     standard: "IEC_62196_T2",
