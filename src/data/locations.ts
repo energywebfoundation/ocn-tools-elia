@@ -91,9 +91,9 @@ for (i = 1; i <= 10; i++) {
         publish: true,
         name: `Station ${i}`,
         address: `Test-Street ${i}`,
-        city: "Zug",
-        postal_code: "6300",
-        country: "CHE",
+        city: "Berlin",
+        postal_code: "10115",
+        country: "DEU",
         coordinates: {
             latitude: `${(52.50 + (Math.random() / 50)).toFixed(3)}`,
             longitude: `${(13.38 + (Math.random() / 50)).toFixed(3)}`,
