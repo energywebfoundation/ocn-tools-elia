@@ -20,12 +20,10 @@ import { extractCPO } from "../tools/tools";
 
 export const locations: ILocation[] = []
 
-let i: number
-
 const statusOptions = ["AVAILABLE", "CHARGING"] as evseStatus[]
 const guessAvailability = (): evseStatus => statusOptions[Math.round(Math.random())]
 
-for (i = 1; i <= 10; i++) {
+for (let i = 1; i <= 250; i++) {
 
     const cpo = extractCPO(config.cpo.roles)
 
@@ -49,7 +47,7 @@ for (i = 1; i <= 10; i++) {
         energy_product_name: "Product green"
     }
 
-    if (i < 5) {
+    if (i % 5 == 0) {
         energyMix = {
             is_green_energy: false,
             energy_sources: [ 
