@@ -22,11 +22,81 @@ export const locations: ILocation[] = []
 
 const statusOptions = ["AVAILABLE", "CHARGING"] as evseStatus[]
 const guessAvailability = (): evseStatus => statusOptions[Math.round(Math.random())]
+const cpo = extractCPO(config.cpo.roles)
 
-for (let i = 1; i <= 250; i++) {
+// https://openchargemap.org/site/poi/details/38434
+const berlinChargePoint1 = createLocation(
+    1,
+    'Friedrich-List-Ufer',
+    'Friedrich-List-Ufer',
+    'Berlin',
+    'DEU',
+    '10557',
+    52.525956,
+    13.370633,
+    400,
+    16
+)
+locations.push(berlinChargePoint1)
 
-    const cpo = extractCPO(config.cpo.roles)
+// https://openchargemap.org/site/poi/details/38446
+const berlinChargePoint2 = createLocation(
+    2,
+    'Scharnhorststrasse 34-37',
+    'Scharnhorststrasse 34-37',
+    'Berlin',
+    'DEU',
+    '10115',
+    52.529722,
+    13.373889,
+    400,
+    32
+)
+locations.push(berlinChargePoint2)
 
+// https://openchargemap.org/site/poi/details/7655
+const belgiumChargePoint1 = createLocation(
+    3,
+    'Interparking Sablon-Poelaert',
+    'Place Poelaert',
+    'Brussels',
+    'BEL',
+    '1000',
+    50.8373217,
+    4.35258410,
+    400,
+    16
+)
+locations.push(belgiumChargePoint1)
+
+// https://openchargemap.org/site/poi/details/7654
+const belgiumChargePoint2 = createLocation(
+    4,
+    'Interparking Grand Place',
+    'rue Marche aux Herbes 104',
+    'Brussels',
+    'BEL',
+    '1000',
+    50.8466448,
+    4.35543150,
+    400,
+    32
+)
+locations.push(belgiumChargePoint2)
+
+//for (let i = 1; i <= 250; i++) {
+function createLocation(
+    i: number,
+    name: string,
+    address: string,
+    city: string, 
+    country: string,
+    postalCode: string,
+    latitude: number,
+    longitude: number,
+    voltage: number,
+    amperage: number
+): ILocation {
     let tariffID: string
     let energyMix: IEnergyMix
    
@@ -82,19 +152,19 @@ for (let i = 1; i <= 250; i++) {
         }
     }
     
-    locations.push({
+    return {
         country_code: cpo.country_code,
         party_id: cpo.party_id,
         id: `Loc${i}`,
         publish: true,
-        name: `Station ${i}`,
-        address: `Test-Street ${i}`,
-        city: "Berlin",
-        postal_code: "10115",
-        country: "DEU",
+        name: `Station ${name}`,
+        address: `${address}`,
+        city: `${city}`,
+        postal_code: `${postalCode}`,
+        country: `${country}`, 
         coordinates: {
-            latitude: `${(52.50 + (Math.random() / 50)).toFixed(3)}`,
-            longitude: `${(13.38 + (Math.random() / 50)).toFixed(3)}`,
+            latitude: `${(latitude + (Math.random() / 50)).toFixed(3)}`,
+            longitude: `${(longitude + (Math.random() / 50)).toFixed(3)}`,
         },
         operator: {
             name: cpo.business_details.name
@@ -119,8 +189,8 @@ for (let i = 1; i <= 250; i++) {
                     standard: "IEC_62196_T2",
                     format: "SOCKET",
                     power_type: "AC_3_PHASE",
-                    max_voltage: 220,
-                    max_amperage: 16,
+                    max_voltage: voltage,
+                    max_amperage: amperage,
                     tariff_ids: [tariffID],
                     last_updated: "2019-10-14T12:02:45.006Z"
                 }],
@@ -135,8 +205,8 @@ for (let i = 1; i <= 250; i++) {
                     standard: "IEC_62196_T2",
                     format: "SOCKET",
                     power_type: "AC_3_PHASE",
-                    max_voltage: 220,
-                    max_amperage: 16,
+                    max_voltage: voltage,
+                    max_amperage: amperage,
                     tariff_ids: [tariffID],
                     last_updated: "2019-10-14T12:02:45.006Z"
                 }],
@@ -146,5 +216,5 @@ for (let i = 1; i <= 250; i++) {
         time_zone: "Europe/Berlin",
         energy_mix: energyMix,
         last_updated: "2019-10-14T12:02:45.006Z"
-    })
+    }
 }
