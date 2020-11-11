@@ -42,7 +42,7 @@ for(let i = 1; i <= 200; i++) {
             default:
                 return 'WDB'
         }
-    })
+    })()
 
     tokens.push({
         country_code: msp.country_code,
