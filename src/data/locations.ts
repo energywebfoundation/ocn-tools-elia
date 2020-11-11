@@ -163,8 +163,10 @@ function createLocation(
         postal_code: `${postalCode}`,
         country: `${country}`, 
         coordinates: {
-            latitude: `${(latitude + (Math.random() / 50)).toFixed(3)}`,
-            longitude: `${(longitude + (Math.random() / 50)).toFixed(3)}`,
+            // latitude: `${(latitude + (Math.random() / 50)).toFixed(3)}`,
+            // longitude: `${(longitude + (Math.random() / 50)).toFixed(3)}`,
+            latitude: `${latitude}`,
+            longitude: `${longitude}`,
         },
         operator: {
             name: cpo.business_details.name
