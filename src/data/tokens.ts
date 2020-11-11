@@ -17,41 +17,42 @@
 import { IToken } from "@shareandcharge/ocn-bridge";
 import { config } from "../config/config";
 import { extractMSP } from "../tools/tools";
+import { MersenneTwister19937, integer, bool } from "random-js";
 
 const msp = extractMSP(config.msp.roles)
 
-export const tokens: IToken[] = [
-    {
+const mt = MersenneTwister19937.seed(1)
+
+export const tokens: IToken[] = []
+
+for(let i = 1; i <= 200; i++) {
+    const max = 99999999;
+    const randomInt = integer(0, max)(mt)
+    const uid = ('0000000' + randomInt).slice(-8) //Ensure that uid is 8 digits
+
+    // Sample VIN prefixes for Mercedes-Benz
+    // https://www.lastvin.com/de/
+    const manufacturerID = (() => {
+        switch(randomInt % 3) {
+            case 0:
+                return 'VSA'
+            case 1:
+                return 'WDD'
+            case 2:
+            default:
+                return 'WDB'
+        }
+    })
+
+    tokens.push({
         country_code: msp.country_code,
         party_id: msp.party_id,
-        uid: "00020304",
-        type: "APP_USER",
-        contract_id: `${msp.country_code}-${msp.party_id}-XY00020304`,
+        uid: uid,
+        type: bool()(mt) ? "APP_USER": "RFID",
+        contract_id: `${msp.country_code}-${msp.party_id}-${manufacturerID}${uid}`,
         issuer: msp.business_details.name,
         whitelist: "NEVER",
         valid: true,
-        last_updated: new Date().toISOString()
-    },
-    {
-        country_code: msp.country_code,
-        party_id: msp.party_id,
-        uid: "12131415",
-        type: "APP_USER",
-        contract_id: `${msp.country_code}-${msp.party_id}-XY12131415`,
-        issuer: msp.business_details.name,
-        whitelist: "NEVER",
-        valid: true,
-        last_updated: new Date().toISOString()
-    },
-    {
-        country_code: msp.country_code,
-        party_id: msp.party_id,
-        uid: "2122232425",
-        type: "RFID",
-        contract_id: `${msp.country_code}-${msp.party_id}-XY2122232425`,
-        issuer: msp.business_details.name,
-        whitelist: "NEVER",
-        valid: true,
-        last_updated: new Date().toISOString()
-    }
-]
+        last_updated: new Date().toISOString() 
+    })
+}

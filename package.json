@@ -21,6 +21,7 @@
   "dependencies": {
     "@shareandcharge/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2",
     "better-sqlite3": "^5.4.3",
+    "random-js": "^2.1.0",
     "uuid": "^3.3.3",
     "yargs": "^14.2.0"
   },
