@@ -14,12 +14,17 @@
     limitations under the License.
 */
 
+import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
+import { locations } from "./data/locations"
+import { tokens } from "./data/tokens"
 import { Database } from "./database"
+import { DIDFactory } from "./models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
+import { IDIDCache } from "./types"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
     for (const service of services) {
@@ -29,6 +34,34 @@ const setAgreements = async (services: string[], registry: DefaultRegistry) => {
             console.log(`service ${service} agreement failed: ${err.message}`)
         }
     }
+}
+
+const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
+    if (!process.env.OCN_IDENTITY) {
+        console.log("OCN_IDENTITY not set. Cannot create asset DIDs.")
+        return
+    }
+    const key = new Keys({ privateKey: process.env.OCN_IDENTITY })
+    const factory = new DIDFactory(key, db)
+    if (operatorType === "msp") {
+        for (const token of tokens) {
+            try {
+                await factory.createVehicleDID(token)
+            } catch (err) {
+                console.log(`Failed to create DID for vehicle(${token.uid}): ${err.message}`)
+            }
+        }
+    }
+    if (operatorType === "cpo") {
+        for (const location of locations) {
+            try {
+                await factory.createChargePointDIDs(location)
+            } catch (err) {
+                console.log(`Failed to create DIDs for location(${location.id}): ${err.message}`)
+            }
+        }
+    }
+
 }
 
 yargs
@@ -86,12 +119,16 @@ yargs
             monitorFactory.setRequestService(cpoBridge.requests)
 
             // set agreements from config
-            await setAgreements(config.cpo.services || [], registry);
+            await setAgreements(config.cpo.services || [], registry)
 
             console.log("CPO server listening for OCPI requests")
             
             const token = await database.getTokenC()
             console.log(`To send requests as the CPO, use Authorization Token ${token}`)
+
+            if (config.cpo.createAssetDIDs) {
+                createAssetDIDs("cpo", database)
+            }
 
             if (args.registerOnly) {
                 console.log("Shutting down CPO server...")
@@ -123,12 +160,16 @@ yargs
             monitorFactory.setRequestService(mspServer.requests)
             
             // set agreements from config
-            await setAgreements(config.msp.services || [], registry);
+            await setAgreements(config.msp.services || [], registry)
 
             console.log("MSP server listening for OCPI requests")
 
             const token = await database.getTokenC()
             console.log(`To send requests as the MSP, use Authorization Token ${token}`)
+
+            if (config.msp.createAssetDIDs) {
+                createAssetDIDs("msp", database)
+            }
 
             if (args.registerOnly) {
                 console.log("Shutting down MSP server...")

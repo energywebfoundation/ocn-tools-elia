@@ -8,7 +8,8 @@ import { Database } from "../../src/database"
 import { DIDFactory } from "../../src/models/dids/did-factory"
 import { IDIDCache } from "../../src/types"
 
-const timeout = 10 * 1000
+// tests require volta transactions (set high to be on safer side)
+const timeout = 30 * 1000
 
 describe("DID Creation", () => {
 

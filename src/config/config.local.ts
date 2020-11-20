@@ -32,7 +32,9 @@ export const config = {
                     name: `Test CPO ${uuid.v4()}`
                 }
             }
-        ]
+        ],
+        services: [],
+        createAssetDIDs: false
     },
     msp: {
         port: 3001,
@@ -46,7 +48,8 @@ export const config = {
                     name: `Test MSP ${uuid.v4()}`
                 }
             }
-        ]
+        ],
+        services: [],
+        createAssetDIDs: false
     }
-
 }

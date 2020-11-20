@@ -52,7 +52,6 @@ export class DID {
      */
     private async init(): Promise<void> {
         const existent = this.db.getAssetIdentity(this.assetID)
-        console.log(this.assetID, 'exists?', existent)
         if (existent) {
             await this.getDocument(existent)
         } else {
