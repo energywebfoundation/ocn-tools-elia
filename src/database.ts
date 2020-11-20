@@ -13,19 +13,19 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-import { IPluggableDB, IVersionDetail } from "@shareandcharge/ocn-bridge";
-import * as sqlite3 from "better-sqlite3";
+import { IVersionDetail } from "@shareandcharge/ocn-bridge"
+import * as sqlite3 from "better-sqlite3"
+import { IAssetIdentity, IDIDCache } from "./types"
 
-export class Database implements IPluggableDB {
+export class Database implements IDIDCache {
 
     private db: sqlite3.Database
 
     constructor(name: string) {
-        console.log("creating db", name)
         this.db = sqlite3.default(name)
-        console.log("created db", name)
         this.db.prepare("CREATE TABLE IF NOT EXISTS auth (id INTEGER UNIQUE, token_b TEXT, token_c TEXT)").run()
         this.db.prepare("CREATE TABLE IF NOT EXISTS endpoints (identifier TEXT, role TEXT, url TEXT)").run()
+        this.db.prepare("CREATE TABLE IF NOT EXISTS dids (id INTEGER PRIMARY KEY, uid TEXT, did TEXT, private_key TEXT)").run()
 
         const exists = this.db.prepare("SELECT id FROM auth").pluck().get()
         if (!exists) {
@@ -74,6 +74,24 @@ export class Database implements IPluggableDB {
     public async getEndpoint(identifier: string, role: string): Promise<string> {
         const url = this.db.prepare("SELECT url FROM endpoints WHERE identifier = ? AND role = ?").pluck().get(identifier, role)
         return url || ""
+    }
+
+    public getAssetIdentity(id: string): IAssetIdentity | undefined {
+        const asset = this.db.prepare("SELECT * FROM dids WHERE uid = ?").get(id)
+        if (!asset) {
+            return
+        }
+        return {
+            uid: asset.uid,
+            did: asset.did,
+            privateKey: asset.private_key
+        }
+    }
+
+    public setAssetIdentity(asset: IAssetIdentity): void {
+        this.db
+            .prepare("INSERT INTO dids (uid, did, private_key) VALUES (?,?,?)")
+            .run(asset.uid, asset.did, asset.privateKey)
     }
 
 }

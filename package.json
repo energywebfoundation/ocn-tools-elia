@@ -19,6 +19,12 @@
   "license": "Apache-2.0",
   "homepage": "https://bitbucket.org/shareandcharge/ocn-tools#readme",
   "dependencies": {
+    "@ew-did-registry/did": "0.0.1-alpha.694.1",
+    "@ew-did-registry/did-document": "0.0.1-alpha.694.1",
+    "@ew-did-registry/did-ethr-resolver": "0.0.1-alpha.694.1",
+    "@ew-did-registry/did-ipfs-store": "0.0.1-alpha.694.1",
+    "@ew-did-registry/did-resolver-interface": "0.0.1-alpha.694.1",
+    "@ew-did-registry/keys": "0.0.1-alpha.694.1",
     "@shareandcharge/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2",
     "better-sqlite3": "^5.4.3",
     "random-js": "^2.1.0",
@@ -35,8 +41,8 @@
     "chai": "^4.2.0",
     "mocha": "^8.1.1",
     "node-fetch": "^2.6.0",
-    "ts-node": "^8.4.1",
+    "ts-node": "^8.10.2",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.9.7"
   }
 }
