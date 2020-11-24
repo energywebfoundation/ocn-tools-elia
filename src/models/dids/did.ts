@@ -1,11 +1,10 @@
-import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers"
+import { JsonRpcProvider } from "@ethersproject/providers"
 import { Wallet } from "@ethersproject/wallet"
 import { Methods } from "@ew-did-registry/did"
 import { DIDDocumentFull, IDIDDocumentFull } from "@ew-did-registry/did-document"
 import { abi1056, address1056, Operator } from "@ew-did-registry/did-ethr-resolver"
 import { IResolverSettings, ProviderTypes } from "@ew-did-registry/did-resolver-interface"
 import { Keys } from "@ew-did-registry/keys"
-import BigNumber from "bignumber.js"
 import { IAssetIdentity, IDIDCache } from "../../types"
 
 export class DID {
