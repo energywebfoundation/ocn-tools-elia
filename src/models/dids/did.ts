@@ -1,9 +1,11 @@
+import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers"
+import { Wallet } from "@ethersproject/wallet"
 import { Methods } from "@ew-did-registry/did"
 import { DIDDocumentFull, IDIDDocumentFull } from "@ew-did-registry/did-document"
 import { abi1056, address1056, Operator } from "@ew-did-registry/did-ethr-resolver"
 import { IResolverSettings, ProviderTypes } from "@ew-did-registry/did-resolver-interface"
 import { Keys } from "@ew-did-registry/keys"
-import { Wallet } from "ethers"
+import BigNumber from "bignumber.js"
 import { IAssetIdentity, IDIDCache } from "../../types"
 
 export class DID {
@@ -15,8 +17,8 @@ export class DID {
      * @param operatorKey key of asset operator ('controller' of DID)
      * @param db interface with get/set identity cache methods
      */
-    public static async init(assetID: string, operatorKey: Keys, db: IDIDCache): Promise<DID> {
-        const did = new DID(assetID, operatorKey, db)
+    public static async init(assetID: string, operatorKeys: Keys, db: IDIDCache): Promise<DID> {
+        const did = new DID(assetID, operatorKeys, db)
         await did.init()
         return did
     }
@@ -42,7 +44,7 @@ export class DID {
 
     constructor(
         private assetID: string,
-        private operatorKey: Keys,
+        private operatorKeys: Keys,
         private db: IDIDCache
     ) {}
 
@@ -65,9 +67,9 @@ export class DID {
      * @param asset get DID using asset identity details stored in cache
      */
     private async getDocument(asset: IAssetIdentity): Promise<void> {
-        const wallet = new Wallet(asset.privateKey)
-        this.did = `did:${Methods.Erc1056}:${wallet.address}`
-        const operator = new Operator(this.operatorKey, this.resolverSettings)
+        const keys = new Keys({ privateKey: asset.privateKey })
+        this.did = `did:${Methods.Erc1056}:${keys.getAddress()}`
+        const operator = new Operator(keys, this.resolverSettings)
         this.document = new DIDDocumentFull(this.did, operator)
     }
 
@@ -75,16 +77,33 @@ export class DID {
      * Creates a DID for asset using MSP/CPO as operator
      */
     private async createDocument(): Promise<void> {
-        const wallet = Wallet.createRandom()
-        this.did = `did:${Methods.Erc1056}:${wallet.address}`
-        const operator = new Operator(this.operatorKey, this.resolverSettings)
+        const keys = new Keys(Keys.generateKeyPair())
+        this.did = `did:${Methods.Erc1056}:${keys.getAddress()}`
+        const operator = new Operator(keys, this.resolverSettings)
         this.document = new DIDDocumentFull(this.did, operator)
+        await this.mint(keys.getAddress())
         await this.document.create()
+        // cache identity
         this.db.setAssetIdentity({
             uid: this.assetID,
             did: this.did,
-            privateKey: wallet.privateKey
+            privateKey: keys.privateKey
         })
+    }
+
+    /**
+     * Fund asset wallet with minimal EWT to operate DID and document
+     * @param assetAddress wallet address of asset
+     */
+    private async mint(assetAddress: string): Promise<void> {
+        const provider = new JsonRpcProvider(this.resolverSettings.provider?.uriOrInfo)
+        const wallet = new Wallet(this.operatorKeys.privateKey, provider)
+        const tx = await wallet.sendTransaction({
+            to: assetAddress,
+            value: 0.001 * 1e18,
+            gasPrice: 1
+        })
+        await tx.wait()
     }
 
 }

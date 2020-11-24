@@ -9,7 +9,7 @@ import { DIDFactory } from "../../src/models/dids/did-factory"
 import { IDIDCache } from "../../src/types"
 
 // tests require volta transactions (set high to be on safer side)
-const timeout = 30 * 1000
+const timeout = 60 * 1000
 
 describe("DID Creation", () => {
 
@@ -39,14 +39,12 @@ describe("DID Creation", () => {
         const asset = await assetIdentityFactory.createVehicleDID(vehicle)
         assert.isString(asset.did)
         assert.equal(asset.did, asset.document?.did)
-        assert.notEqual(asset.did, operatorKey.getAddress())
 
         // test asset DID is resolved once created
         const resolved = await assetIdentityFactory.createVehicleDID(vehicle)
         assert.isString(resolved.did)
         assert.equal(resolved.did, resolved.document?.did)
         assert.equal(asset.did, resolved.did)
-        assert.notEqual(resolved.did, operatorKey.getAddress())
     }).timeout(timeout)
 
     it("should create charge point DIDs", async () => {
@@ -57,7 +55,6 @@ describe("DID Creation", () => {
         for (const asset of assets) {
             assert.isString(asset.did)
             assert.equal(asset.did, asset.document?.did)
-            assert.notEqual(asset.did, operatorKey.getAddress())
         }
 
         // test assets are resolved once created
@@ -66,7 +63,6 @@ describe("DID Creation", () => {
             assert.isString(resolved.did)
             assert.equal(resolved.did, resolved.document?.did)
             assert.equal(assets[i].did, resolved.did)
-            assert.notEqual(resolved.did, operatorKey.getAddress())
         }
 
     }).timeout(timeout)
