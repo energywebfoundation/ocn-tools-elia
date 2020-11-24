@@ -83,7 +83,7 @@ export class DID {
         await this.mint(keys.getAddress())
         await this.document.create()
         // log asset DID creation
-        console.log(`Created DID for ${this.assetID}: ${this.did}`)
+        console.log(`Created identity for ${this.assetID}: ${this.did}`)
         // cache identity
         this.db.setAssetIdentity({
             uid: this.assetID,
@@ -108,7 +108,9 @@ export class DID {
         await tx.wait()
         // log remaining balance
         const balance = await wallet.getBalance()
-        console.log(`Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balance.toNumber()}`)
+        // get approx. balance for log (ethers bignumber hates big numbers)
+        const balanceInEther = (parseInt(balance.toString(), 10) / 1e18).toFixed(3)
+        console.log(`Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balanceInEther}`)
     }
 
 }
