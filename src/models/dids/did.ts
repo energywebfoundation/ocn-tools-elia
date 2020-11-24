@@ -82,6 +82,8 @@ export class DID {
         this.document = new DIDDocumentFull(this.did, operator)
         await this.mint(keys.getAddress())
         await this.document.create()
+        // log asset DID creation
+        console.log(`Created DID for ${this.assetID}: ${this.did}`)
         // cache identity
         this.db.setAssetIdentity({
             uid: this.assetID,
@@ -97,12 +99,16 @@ export class DID {
     private async mint(assetAddress: string): Promise<void> {
         const provider = new JsonRpcProvider(this.resolverSettings.provider?.uriOrInfo)
         const wallet = new Wallet(this.operatorKeys.privateKey, provider)
+        const valueInEther = 0.001
         const tx = await wallet.sendTransaction({
             to: assetAddress,
-            value: 0.001 * 1e18,
+            value: valueInEther * 1e18, // convert to wei
             gasPrice: 1
         })
         await tx.wait()
+        // log remaining balance
+        const balance = await wallet.getBalance()
+        console.log(`Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balance.toNumber()}`)
     }
 
 }
