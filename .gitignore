@@ -6,3 +6,5 @@ src/config/config.ts
 
 deploy_rsa*
 !deploy_rsa.enc
+
+.vscode/

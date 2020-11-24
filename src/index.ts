@@ -16,6 +16,7 @@
 
 import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
+import { connect } from 'nats'
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
@@ -64,6 +65,17 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
 
 }
 
+const initVehiclePrequalificationListener = async () => {
+    const NATS_EXCHANGE_TOPIC = 'prequalification.exchange';
+    const natsConnection = connect(`nats://${config.iam.natsServerUrl}`)
+    if (natsConnection) {
+        natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async data => {
+            const json = JSON.parse(data)
+            console.log(`received prequalification trigger for: ${JSON.stringify(json)}`);
+        });
+    }
+}
+
 yargs
     .command("mock", "Start a mock OCPI party server", (context) => {
         context
@@ -84,7 +96,7 @@ yargs
             })
             .help()
     }, async (args) => {
-        
+
         if (!args.cpo && !args.msp) {
             console.log("Need one of options \"cpo\", \"msp\"")
             process.exit(1)
@@ -122,13 +134,14 @@ yargs
             await setAgreements(config.cpo.services || [], registry)
 
             console.log("CPO server listening for OCPI requests")
-            
+
             const token = await database.getTokenC()
             console.log(`To send requests as the CPO, use Authorization Token ${token}`)
 
             if (config.cpo.createAssetDIDs) {
                 createAssetDIDs("cpo", database)
             }
+
 
             if (args.registerOnly) {
                 console.log("Shutting down CPO server...")
@@ -158,7 +171,7 @@ yargs
             })
 
             monitorFactory.setRequestService(mspServer.requests)
-            
+
             // set agreements from config
             await setAgreements(config.msp.services || [], registry)
 
@@ -170,6 +183,8 @@ yargs
             if (config.msp.createAssetDIDs) {
                 createAssetDIDs("msp", database)
             }
+
+            await initVehiclePrequalificationListener();
 
             if (args.registerOnly) {
                 console.log("Shutting down MSP server...")
