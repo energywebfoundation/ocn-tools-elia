@@ -62,6 +62,6 @@ export const config: IOcnToolsConfig = {
         cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
         rpcUrl: "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
-        natsServerUrl: "nats://13.52.78.249:9222"
+        natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249:4222"
     }
 }
