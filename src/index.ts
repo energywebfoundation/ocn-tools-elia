@@ -136,7 +136,6 @@ yargs
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
                 tokenA: process.env.OCN_TOKEN_A,
-                dryRun: true
             })
 
             monitorFactory.setRequestService(cpoBridge.requests)
@@ -178,7 +177,6 @@ yargs
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
                 tokenA: process.env.OCN_TOKEN_A,
-                dryRun: true
             })
 
             monitorFactory.setRequestService(mspServer.requests)

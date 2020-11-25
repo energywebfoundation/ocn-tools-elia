@@ -35,7 +35,9 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"],
-        createAssetDIDs: process.env.CPO_CREATE_DIDS === "true" || true
+        createAssetDIDs: process.env.CPO_CREATE_DIDS 
+            ? process.env.CPO_CREATE_DIDS === "true"
+            : true,
     },
     msp: {
         port: parseInt(process.env.MSP_PORT || "3001", 10),
@@ -51,7 +53,9 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
-        createAssetDIDs: process.env.MSP_CREATE_DIDS === "true" || true,
+        createAssetDIDs: process.env.MSP_CREATE_DIDS 
+            ? process.env.MSP_CREATE_DIDS === "true"
+            : true,
         assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10)
     },
     iam: {
