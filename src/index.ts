@@ -33,14 +33,14 @@ const setAgreements = async (services: string[], registry: DefaultRegistry) => {
         try {
             await registry.permissions.createAgreement(service)
         } catch (err) {
-            console.log(`service ${service} agreement failed: ${err.message}`)
+            console.log(`[OCN] service ${service} agreement failed: ${err.message}`)
         }
     }
 }
 
 const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
     if (!process.env.OCN_IDENTITY) {
-        console.log("OCN_IDENTITY not set. Cannot create asset DIDs.")
+        console.log("[DID] OCN_IDENTITY not set. Cannot create asset DIDs.")
         return
     }
     const key = new Keys({ privateKey: process.env.OCN_IDENTITY })
@@ -50,7 +50,7 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
             try {
                 await factory.createVehicleDID(token)
             } catch (err) {
-                console.log(`Failed to create DID for vehicle(${token.uid}): ${err.message}`)
+                console.log(`[DID] Failed to create DID for vehicle(${token.uid}): ${err.message}`)
             }
         }
     }
@@ -59,7 +59,7 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
             try {
                 await factory.createChargePointDIDs(location)
             } catch (err) {
-                console.log(`Failed to create DIDs for location(${location.id}): ${err.message}`)
+                console.log(`[DID] Failed to create DIDs for location(${location.id}): ${err.message}`)
             }
         }
     }
@@ -67,12 +67,18 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
 }
 
 const initVehiclePrequalificationListener = async () => {
+    if (!config.iam) {
+        console.log("[NATS] IAM not configured. Events will not be receieved.")
+        return
+    }
     const NATS_EXCHANGE_TOPIC = "prequalification.exchange"
-    const natsConnection = connect(`nats://${config.iam.natsServerUrl}`)
+    console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}`)
+    const natsConnection = connect(config.iam.natsServerUrl)
+    console.log("[NATS] Listening for asset claim requests")
     if (natsConnection) {
         natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
             const json = JSON.parse(data)
-            console.log(`received prequalification trigger for: ${JSON.stringify(json)}`)
+            console.log(`[NATS] Received prequalification trigger for: ${JSON.stringify(json)}`)
             const vehicleUID: string = json.uid
             const vehicle = new Vehicle(vehicleUID)
             await vehicle.requestPrequalification()
@@ -111,7 +117,7 @@ yargs
 
         if (args.cpo) {
 
-            console.log("Starting CPO server...")
+            console.log("[CORE] Starting CPO server...")
 
             const database = new Database("cpo.db")
 
@@ -129,7 +135,8 @@ yargs
                 logger: true,
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
-                tokenA: process.env.OCN_TOKEN_A
+                tokenA: process.env.OCN_TOKEN_A,
+                dryRun: true
             })
 
             monitorFactory.setRequestService(cpoBridge.requests)
@@ -137,22 +144,22 @@ yargs
             // set agreements from config
             await setAgreements(config.cpo.services || [], registry)
 
-            console.log("CPO server listening for OCPI requests")
+            console.log("[CORE] CPO server listening for OCPI requests")
 
             const token = await database.getTokenC()
-            console.log(`To send requests as the CPO, use Authorization Token ${token}`)
+            console.log(`[CORE] To send requests as the CPO, use Authorization Token ${token}`)
 
             if (config.cpo.createAssetDIDs) {
                 createAssetDIDs("cpo", database)
             }
 
             if (args.registerOnly) {
-                console.log("Shutting down CPO server...")
+                console.log("[CORE] Shutting down CPO server...")
                 await stopBridge(cpoBridge)
             }
         } else if (args.msp) {
 
-            console.log("Starting MSP server...")
+            console.log("[CORE] Starting MSP server...")
 
             const database = new Database("msp.db")
 
@@ -170,7 +177,8 @@ yargs
                 logger: true,
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
-                tokenA: process.env.OCN_TOKEN_A
+                tokenA: process.env.OCN_TOKEN_A,
+                dryRun: true
             })
 
             monitorFactory.setRequestService(mspServer.requests)
@@ -178,10 +186,10 @@ yargs
             // set agreements from config
             await setAgreements(config.msp.services || [], registry)
 
-            console.log("MSP server listening for OCPI requests")
+            console.log("[CORE] MSP server listening for OCPI requests")
 
             const token = await database.getTokenC()
-            console.log(`To send requests as the MSP, use Authorization Token ${token}`)
+            console.log(`[CORE] To send requests as the MSP, use Authorization Token ${token}`)
 
             if (config.msp.createAssetDIDs) {
                 createAssetDIDs("msp", database)
@@ -189,7 +197,7 @@ yargs
             }
 
             if (args.registerOnly) {
-                console.log("Shutting down MSP server...")
+                console.log("[CORE] Shutting down MSP server...")
                 await stopBridge(mspServer)
             }
         }

@@ -18,7 +18,7 @@ import { ICommandResult } from "@shareandcharge/ocn-bridge";
 
 export class CommandsSender {
     public asyncResult(command: string, uid: string, result: ICommandResult): void {
-        setTimeout(() => console.log(`async command result [${command} ${uid}]: ${result.result}`), 50)
+        setTimeout(() => console.log(`[OCN] Async command result [${command} ${uid}]: ${result.result}`), 50)
         return
     }
 }

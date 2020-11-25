@@ -18,11 +18,11 @@ import { IOcnToolsConfig } from "../types"
 
 export const config: IOcnToolsConfig = {
     ocn: {
-        node: process.env.OCN_NODE_URL || "http://172.16.238.20:8080", // todo: replace other hardcoded values with env vars
+        node: process.env.OCN_NODE_URL || "http://172.16.238.20:8080",
         stage: process.env.OCN_STAGE || "local"
     },
     cpo: {
-        port: parseInt(process.env.CPO_PORT || "0", 10) || 3000,
+        port: parseInt(process.env.CPO_PORT || "3000", 10),
         publicIP: process.env.CPO_PUBLIC_IP || "http://172.16.238.40:3000",
         roles: [
             {
@@ -38,7 +38,7 @@ export const config: IOcnToolsConfig = {
         createAssetDIDs: process.env.CPO_CREATE_DIDS === "true" || true
     },
     msp: {
-        port: parseInt(process.env.MSP_PORT || "0", 10) || 3001,
+        port: parseInt(process.env.MSP_PORT || "3001", 10),
         publicIP: process.env.MSP_PUBLIC_IP || "http://172.16.238.30:3001",
         roles: [
             {
@@ -52,12 +52,12 @@ export const config: IOcnToolsConfig = {
         ],
         services: [],
         createAssetDIDs: process.env.MSP_CREATE_DIDS === "true" || true,
-        assetCount: parseInt(process.env.MSP_ASSET_COUNT || "0", 10) ||  10
+        assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10)
     },
     iam: {
         cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
         rpcUrl: "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
-        natsServerUrl: "http://13.52.78.249:9222"
+        natsServerUrl: "nats://13.52.78.249:9222"
     }
 }

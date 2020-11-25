@@ -14,8 +14,9 @@
     limitations under the License.
 */
 import * as uuid from "uuid"
+import { IOcnToolsConfig } from "../types"
 
-export const config = {
+export const config: IOcnToolsConfig = {
     ocn: {
         node: "http://node.ocn.org",
         stage: "local"
@@ -57,6 +58,6 @@ export const config = {
         cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
         rpcUrl: "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
-        natsServerUrl: "http://13.52.78.249:9222"
+        natsServerUrl: "nats://13.52.78.249:9222"
     }
 }

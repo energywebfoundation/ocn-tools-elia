@@ -19,7 +19,7 @@ import { ISession } from "@shareandcharge/ocn-bridge";
 export class SessionsReceiver {
 
     public async update(session: ISession): Promise<void> {
-        setTimeout(() => console.log(`Session ${session.id} ${session.status} - ${session.kwh} kWh`), 50)
+        setTimeout(() => console.log(`[OCN] Session ${session.id} ${session.status} - ${session.kwh} kWh`), 50)
         return
     }
 
