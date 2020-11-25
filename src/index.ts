@@ -25,6 +25,7 @@ import { tokens } from "./data/tokens"
 import { Database } from "./database"
 import { DIDFactory } from "./models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
+import { Vehicle } from "./models/vehicle"
 import { IDIDCache } from "./types"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
@@ -72,6 +73,9 @@ const initVehiclePrequalificationListener = async () => {
         natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async data => {
             const json = JSON.parse(data)
             console.log(`received prequalification trigger for: ${JSON.stringify(json)}`);
+            const vehicleUID: string = json.uid;
+            const vehicle = new Vehicle(vehicleUID);
+            await vehicle.requestPrequalification();
         });
     }
 }
@@ -141,7 +145,6 @@ yargs
             if (config.cpo.createAssetDIDs) {
                 createAssetDIDs("cpo", database)
             }
-
 
             if (args.registerOnly) {
                 console.log("Shutting down CPO server...")
