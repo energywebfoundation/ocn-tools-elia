@@ -14,44 +14,45 @@
     limitations under the License.
 */
 import * as uuid from "uuid"
+import { IOcnToolsConfig } from "../types"
 
-export const config = {
+export const config: IOcnToolsConfig = {
     ocn: {
         node: process.env.OCN_NODE_URL || "http://172.16.238.20:8080", // todo: replace other hardcoded values with env vars
-        stage: "local"
+        stage: process.env.OCN_STAGE || "local"
     },
     cpo: {
-        port: 3000,
-        publicIP: "http://172.16.238.40:3000",
+        port: parseInt(process.env.CPO_PORT || "0", 10) || 3000,
+        publicIP: process.env.CPO_PUBLIC_IP || "http://172.16.238.40:3000",
         roles: [
             {
-                party_id: "EVC",
-                country_code: "DE",
+                party_id: process.env.CPO_PARTY_ID || "EVC",
+                country_code: process.env.CPO_COUNTRY_CODE || "DE",
                 role: "CPO",
                 business_details: {
-                    name: `Test CPO ${uuid.v4()}`
+                    name: process.env.CPO_NAME || `Test CPO ${uuid.v4()}`
                 }
             }
         ],
         services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"],
-        createAssetDIDs: true
+        createAssetDIDs: process.env.CPO_CREATE_DIDS === "true" || true
     },
     msp: {
-        port: 3001,
-        publicIP: "http://172.16.238.30:3001",
+        port: parseInt(process.env.MSP_PORT || "0", 10) || 3001,
+        publicIP: process.env.MSP_PUBLIC_IP || "http://172.16.238.30:3001",
         roles: [
             {
-                party_id: "EVM",
-                country_code: "DE",
+                party_id: process.env.MSP_PARTY_ID || "EVM",
+                country_code: process.env.MSP_COUNTRY_CODE || "DE",
                 role: "EMSP",
                 business_details: {
-                    name: `Test MSP ${uuid.v4()}`
+                    name: process.env.MSP_NAME || `Test MSP ${uuid.v4()}`
                 }
             }
         ],
         services: [],
-        createAssetDIDs: true,
-        assetCount: 10
+        createAssetDIDs: process.env.MSP_CREATE_DIDS === "true" || true,
+        assetCount: parseInt(process.env.MSP_ASSET_COUNT || "0", 10) ||  10
     },
     iam: {
         cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
