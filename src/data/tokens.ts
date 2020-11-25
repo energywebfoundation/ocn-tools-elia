@@ -14,10 +14,10 @@
     limitations under the License.
 */
 
-import { IToken } from "@shareandcharge/ocn-bridge";
-import { config } from "../config/config";
-import { extractMSP } from "../tools/tools";
-import { MersenneTwister19937, integer, bool } from "random-js";
+import { IToken } from "@shareandcharge/ocn-bridge"
+import { bool, integer, MersenneTwister19937 } from "random-js"
+import { config } from "../config/config"
+import { extractMSP } from "../tools/tools"
 
 const msp = extractMSP(config.msp.roles)
 
@@ -25,30 +25,30 @@ const mt = MersenneTwister19937.seed(1)
 
 export const tokens: IToken[] = []
 
-for(let i = 1; i <= 200; i++) {
-    const max = 99999999;
+for (let i = 1; i <= config.msp.assetCount; i++) {
+    const max = 99999999
     const randomInt = integer(0, max)(mt)
-    const uid = ('0000000' + randomInt).slice(-8) //Ensure that uid is 8 digits
+    const uid = ("0000000" + randomInt).slice(-8) // Ensure that uid is 8 digits
 
     // Sample VIN prefixes for Mercedes-Benz
     // https://www.lastvin.com/de/
     const manufacturerID = (() => {
-        switch(randomInt % 3) {
+        switch (randomInt % 3) {
             case 0:
-                return 'VSA'
+                return "VSA"
             case 1:
-                return 'WDD'
+                return "WDD"
             case 2:
             default:
-                return 'WDB'
+                return "WDB"
         }
     })
 
     tokens.push({
         country_code: msp.country_code,
         party_id: msp.party_id,
-        uid: uid,
-        type: bool()(mt) ? "APP_USER": "RFID",
+        uid,
+        type: bool()(mt) ? "APP_USER" : "RFID",
         contract_id: `${msp.country_code}-${msp.party_id}-${manufacturerID}${uid}`,
         issuer: msp.business_details.name,
         whitelist: "NEVER",

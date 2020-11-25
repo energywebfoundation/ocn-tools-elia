@@ -16,7 +16,7 @@
 
 import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
-import { connect } from 'nats'
+import { connect } from "nats"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
@@ -67,16 +67,16 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
 }
 
 const initVehiclePrequalificationListener = async () => {
-    const NATS_EXCHANGE_TOPIC = 'prequalification.exchange';
+    const NATS_EXCHANGE_TOPIC = "prequalification.exchange"
     const natsConnection = connect(`nats://${config.iam.natsServerUrl}`)
     if (natsConnection) {
-        natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async data => {
+        natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
             const json = JSON.parse(data)
-            console.log(`received prequalification trigger for: ${JSON.stringify(json)}`);
-            const vehicleUID: string = json.uid;
-            const vehicle = new Vehicle(vehicleUID);
-            await vehicle.requestPrequalification();
-        });
+            console.log(`received prequalification trigger for: ${JSON.stringify(json)}`)
+            const vehicleUID: string = json.uid
+            const vehicle = new Vehicle(vehicleUID)
+            await vehicle.requestPrequalification()
+        })
     }
 }
 
@@ -185,9 +185,8 @@ yargs
 
             if (config.msp.createAssetDIDs) {
                 createAssetDIDs("msp", database)
+                await initVehiclePrequalificationListener()
             }
-
-            await initVehiclePrequalificationListener();
 
             if (args.registerOnly) {
                 console.log("Shutting down MSP server...")
