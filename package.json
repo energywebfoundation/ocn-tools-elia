@@ -29,6 +29,8 @@
     "@ew-did-registry/keys": "0.0.1-alpha.694.1",
     "@shareandcharge/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2",
     "better-sqlite3": "^5.4.3",
+    "iam-client-lib": "file:iam-client-lib-1.0.3.tgz",
+    "nats": "^1.4.12",
     "random-js": "^2.1.0",
     "uuid": "^3.3.3",
     "yargs": "^14.2.0"

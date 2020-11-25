@@ -50,7 +50,13 @@ export const config = {
             }
         ],
         services: [],
-        createAssetDIDs: false
+        createAssetDIDs: false,
+        assetCount: 200
+    },
+    iam: {
+        cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
+        rpcUrl: "https://volta-internal-archive.energyweb.org",
+        chainId: 73799,
+        natsServerUrl: "http://13.52.78.249:9222"
     }
-
 }
