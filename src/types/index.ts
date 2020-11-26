@@ -27,11 +27,13 @@ export interface IOcnToolsConfig {
     },
     cpo: IMockServerConfig
     msp: IMockMSPServerConfig
-    iam?: {
+    iam: {
         cacheServerUrl: string
         rpcUrl: string
         chainId: number
         natsServerUrl: string
+        natsProtocolPort: string
+        webSocketsProtocolPort: string
     }
 }
 

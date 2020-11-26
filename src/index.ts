@@ -72,7 +72,7 @@ const initVehiclePrequalificationListener = async () => {
         return
     }
     const NATS_EXCHANGE_TOPIC = "prequalification.exchange"
-    console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}`)
+    console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}:${config.iam.natsProtocolPort}`)
     const natsConnection = connect(config.iam.natsServerUrl)
     console.log("[NATS] Listening for asset claim requests")
     if (natsConnection) {
@@ -176,7 +176,7 @@ yargs
                 logger: true,
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
-                tokenA: process.env.OCN_TOKEN_A,
+                tokenA: process.env.OCN_TOKEN_A
             })
 
             monitorFactory.setRequestService(mspServer.requests)
