@@ -62,6 +62,8 @@ export const config: IOcnToolsConfig = {
         cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
         rpcUrl: "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
-        natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249:4222"
+        natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249",
+        natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
+        webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
     }
 }

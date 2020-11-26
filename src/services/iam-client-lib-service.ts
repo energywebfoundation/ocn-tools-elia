@@ -13,7 +13,7 @@ export class iamClientLibService {
         // Because iam-client-lib is running on the server, the private key is passed in directly
         new IAM({
             privateKey: privateKey,
-            natsServerUrl: config.iam.natsServerUrl,
+            natsServerUrl: config.iam.natsServerUrl + ':' + config.iam.webSocketsProtocolPort,
             rpcUrl: config.iam.rpcUrl,
             chainId: config.iam.chainId,
             cacheClient

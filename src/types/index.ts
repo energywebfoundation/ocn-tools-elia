@@ -32,6 +32,8 @@ export interface IOcnToolsConfig {
         rpcUrl: string
         chainId: number
         natsServerUrl: string
+        natsProtocolPort: string
+        webSocketsProtocolPort: string
     }
 }
 

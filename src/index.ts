@@ -72,7 +72,7 @@ const initVehiclePrequalificationListener = async () => {
         return
     }
     const NATS_EXCHANGE_TOPIC = "prequalification.exchange"
-    console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}`)
+    console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}:${config.iam.natsProtocolPort}`)
     const natsConnection = connect(config.iam.natsServerUrl)
     console.log("[NATS] Listening for asset claim requests")
     if (natsConnection) {
