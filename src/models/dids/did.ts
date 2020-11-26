@@ -6,6 +6,7 @@ import { abi1056, address1056, Operator } from "@ew-did-registry/did-ethr-resolv
 import { IResolverSettings, ProviderTypes } from "@ew-did-registry/did-resolver-interface"
 import { Keys } from "@ew-did-registry/keys"
 import { IAssetIdentity, IDIDCache } from "../../types"
+import { EvRegistry } from "../contracts/ev-registry"
 
 export class DID {
  
@@ -80,11 +81,13 @@ export class DID {
         this.did = `did:${Methods.Erc1056}:${keys.getAddress()}`
         const operator = new Operator(keys, this.resolverSettings)
         this.document = new DIDDocumentFull(this.did, operator)
+        // send tokens to address so they can create/update their document
         await this.mint(keys.getAddress())
         await this.document.create()
         // log asset DID creation
         console.log(`[DID] Created identity for ${this.assetID}: ${this.did}`)
         // cache identity
+        await this.saveInEvRegistry(this.assetID, keys)
         this.db.setAssetIdentity({
             uid: this.assetID,
             did: this.did,
@@ -111,6 +114,22 @@ export class DID {
         // get approx. balance for log (ethers bignumber hates big numbers)
         const balanceInEther = (parseInt(balance.toString(), 10) / 1e18).toFixed(3)
         console.log(`[DID] Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balanceInEther}`)
+    }
+
+    /**
+     * Store device entry in EV Registry smart contract (allows participation in ev dashboard application)
+     * @param uid device UID used to identify it on OCN
+     * @param keys device keys created for DID
+     */
+    private async saveInEvRegistry(uid: string, keys: Keys): Promise<void> {
+        const registry = new EvRegistry(this.operatorKeys, keys)
+        const user = this.operatorKeys.getAddress()
+        await registry.addDevice(uid, user)
+        console.log(`[EV REGISTRY] Saved asset ${this.did}`)
+        setTimeout(async () => {
+            console.log("Testing retry add device to EV Registry")
+            await registry.addDevice(uid, user)
+        }, 20 * 1000)
     }
 
 }

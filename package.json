@@ -19,6 +19,8 @@
   "license": "Apache-2.0",
   "homepage": "https://bitbucket.org/shareandcharge/ocn-tools#readme",
   "dependencies": {
+    "@ethersproject/contracts": "^5.0.8",
+    "@ethersproject/keccak256": "^5.0.6",
     "@ethersproject/providers": "^5.0.16",
     "@ethersproject/wallet": "^5.0.8",
     "@ew-did-registry/did": "0.0.1-alpha.694.1",

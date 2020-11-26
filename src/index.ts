@@ -13,7 +13,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-
 import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
 import { connect } from "nats"
@@ -23,6 +22,7 @@ import { config } from "./config/config"
 import { locations } from "./data/locations"
 import { tokens } from "./data/tokens"
 import { Database } from "./database"
+import { EvRegistry } from "./models/contracts/ev-registry"
 import { DIDFactory } from "./models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
 import { Vehicle } from "./models/vehicle"
@@ -44,6 +44,16 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
         return
     }
     const key = new Keys({ privateKey: process.env.OCN_IDENTITY })
+    
+    // add user to ev registry (needs to be done before devices are added)
+    const evRegistry = new EvRegistry(key)
+    await evRegistry.addUser()
+
+    setTimeout(async () => {
+        console.log("Testing retry add user to EV Registry")
+        await evRegistry.addUser()
+    }, 20 * 1000)
+    
     const factory = new DIDFactory(key, db)
     if (operatorType === "msp") {
         for (const token of tokens) {
