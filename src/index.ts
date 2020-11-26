@@ -176,7 +176,7 @@ yargs
                 logger: true,
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
-                tokenA: process.env.OCN_TOKEN_A,
+                tokenA: process.env.OCN_TOKEN_A
             })
 
             monitorFactory.setRequestService(mspServer.requests)
