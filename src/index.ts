@@ -48,11 +48,6 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
     // add user to ev registry (needs to be done before devices are added)
     const evRegistry = new EvRegistry(key)
     await evRegistry.addUser()
-
-    setTimeout(async () => {
-        console.log("Testing retry add user to EV Registry")
-        await evRegistry.addUser()
-    }, 20 * 1000)
     
     const factory = new DIDFactory(key, db)
     if (operatorType === "msp") {

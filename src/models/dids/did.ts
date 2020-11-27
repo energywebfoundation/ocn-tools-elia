@@ -78,16 +78,17 @@ export class DID {
      */
     private async createDocument(): Promise<void> {
         const keys = new Keys(Keys.generateKeyPair())
-        this.did = `did:${Methods.Erc1056}:${keys.getAddress()}`
+        const address = keys.getAddress()
+        this.did = `did:${Methods.Erc1056}:${address}`
         const operator = new Operator(keys, this.resolverSettings)
         this.document = new DIDDocumentFull(this.did, operator)
         // send tokens to address so they can create/update their document
-        await this.mint(keys.getAddress())
+        await this.mint(address)
         await this.document.create()
         // log asset DID creation
         console.log(`[DID] Created identity for ${this.assetID}: ${this.did}`)
         // cache identity
-        await this.saveInEvRegistry(this.assetID, keys)
+        await this.saveInEvRegistry(address, this.assetID)
         this.db.setAssetIdentity({
             uid: this.assetID,
             did: this.did,
@@ -121,15 +122,10 @@ export class DID {
      * @param uid device UID used to identify it on OCN
      * @param keys device keys created for DID
      */
-    private async saveInEvRegistry(uid: string, keys: Keys): Promise<void> {
-        const registry = new EvRegistry(this.operatorKeys, keys)
-        const user = this.operatorKeys.getAddress()
-        await registry.addDevice(uid, user)
+    private async saveInEvRegistry(address: string, uid: string): Promise<void> {
+        const registry = new EvRegistry(this.operatorKeys)
+        await registry.addDevice(address, uid)
         console.log(`[EV REGISTRY] Saved asset ${this.did}`)
-        setTimeout(async () => {
-            console.log("Testing retry add device to EV Registry")
-            await registry.addDevice(uid, user)
-        }, 20 * 1000)
     }
 
 }
