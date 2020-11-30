@@ -17,8 +17,8 @@ export class DID {
      * @param operatorKey key of asset operator ('controller' of DID)
      * @param db interface with get/set identity cache methods
      */
-    public static async init(assetID: string, operatorKeys: Keys, db: IDIDCache): Promise<DID> {
-        const did = new DID(assetID, operatorKeys, db)
+    public static async init(assetID: string, operatorKeys: Keys, db: IDIDCache, skipRegistry?: boolean): Promise<DID> {
+        const did = new DID(assetID, operatorKeys, db, skipRegistry)
         await did.init()
         return did
     }
@@ -45,7 +45,8 @@ export class DID {
     constructor(
         private assetID: string,
         private operatorKeys: Keys,
-        private db: IDIDCache
+        private db: IDIDCache,
+        private skipRegistry?: boolean
     ) {}
 
     /**
@@ -88,7 +89,9 @@ export class DID {
         // log asset DID creation
         console.log(`[DID] Created identity for ${this.assetID}: ${this.did}`)
         // cache identity
-        await this.saveInEvRegistry(address, this.assetID)
+        if (!this.skipRegistry) {
+            await this.saveInEvRegistry(address, this.assetID)
+        }
         this.db.setAssetIdentity({
             uid: this.assetID,
             did: this.did,
