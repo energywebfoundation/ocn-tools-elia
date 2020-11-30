@@ -35,6 +35,7 @@ export interface IOcnToolsConfig {
         natsProtocolPort: string
         webSocketsProtocolPort: string
     }
+    prequalificationIssuerDID: string
 }
 
 export interface IAssetIdentity {
