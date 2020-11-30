@@ -79,9 +79,9 @@ const initVehiclePrequalificationListener = async () => {
         natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
             const json = JSON.parse(data)
             console.log(`[NATS] Received prequalification trigger for: ${JSON.stringify(json)}`)
-            //const vehicleUID: string = json.uid
-            //const vehicle = new Vehicle(vehicleUID)
-            //await vehicle.requestPrequalification()
+            const vehicleUID: string = json.uid
+            const vehicle = new Vehicle(vehicleUID)
+            await vehicle.requestPrequalification()
         })
     }
 }
