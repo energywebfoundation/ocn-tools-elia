@@ -19,7 +19,7 @@ import { IOcnToolsConfig } from "../types"
 export const config: IOcnToolsConfig = {
     ocn: {
         node: "http://node.ocn.org",
-        stage: "local"
+        stage: "volta"
     },
     cpo: {
         port: 3000,
@@ -61,5 +61,9 @@ export const config: IOcnToolsConfig = {
         natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249",
         natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
         webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
+    },
+    evRegistry: {
+        address: "0x8d80504617eB17816b91610Fb2a0274Dc70f193f",
+        provider: "https://volta-internal-archive.energyweb.org"
     }
 }

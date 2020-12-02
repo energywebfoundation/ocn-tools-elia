@@ -13,7 +13,7 @@ export class DIDFactory {
      * @param operatorKey key used to 'control' the DID (asset operator)
      * @param db local DID cache for tracking which assets have DIDs
      */
-    constructor(private operatorKey: Keys, private db: IDIDCache) {}
+    constructor(private operatorKey: Keys, private db: IDIDCache, private skipRegistry?: boolean) {}
 
     /**
      * Create (or resolve) a vehicle's DID
@@ -21,7 +21,7 @@ export class DIDFactory {
      * @param token an MSP token representing a vehicle
      */
     public async createVehicleDID(token: IToken): Promise<DID> {
-        return DID.init(token.uid, this.operatorKey, this.db)
+        return DID.init(token.uid, this.operatorKey, this.db, this.skipRegistry)
     }
 
     /**
@@ -37,7 +37,7 @@ export class DIDFactory {
         const dids: DID[] = []
         for (const evse of evses) {
             if (evse.evse_id) {
-                const did = await DID.init(evse.evse_id, this.operatorKey, this.db)
+                const did = await DID.init(evse.evse_id, this.operatorKey, this.db, this.skipRegistry)
                 dids.push(did)
             }
         }

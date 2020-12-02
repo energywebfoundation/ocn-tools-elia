@@ -6,6 +6,7 @@ import { abi1056, address1056, Operator } from "@ew-did-registry/did-ethr-resolv
 import { IResolverSettings, ProviderTypes } from "@ew-did-registry/did-resolver-interface"
 import { Keys } from "@ew-did-registry/keys"
 import { IAssetIdentity, IDIDCache } from "../../types"
+import { EvRegistry } from "../contracts/ev-registry"
 
 export class DID {
  
@@ -16,8 +17,8 @@ export class DID {
      * @param operatorKey key of asset operator ('controller' of DID)
      * @param db interface with get/set identity cache methods
      */
-    public static async init(assetID: string, operatorKeys: Keys, db: IDIDCache): Promise<DID> {
-        const did = new DID(assetID, operatorKeys, db)
+    public static async init(assetID: string, operatorKeys: Keys, db: IDIDCache, skipRegistry?: boolean): Promise<DID> {
+        const did = new DID(assetID, operatorKeys, db, skipRegistry)
         await did.init()
         return did
     }
@@ -44,7 +45,8 @@ export class DID {
     constructor(
         private assetID: string,
         private operatorKeys: Keys,
-        private db: IDIDCache
+        private db: IDIDCache,
+        private skipRegistry?: boolean
     ) {}
 
     /**
@@ -77,14 +79,19 @@ export class DID {
      */
     private async createDocument(): Promise<void> {
         const keys = new Keys(Keys.generateKeyPair())
-        this.did = `did:${Methods.Erc1056}:${keys.getAddress()}`
+        const address = keys.getAddress()
+        this.did = `did:${Methods.Erc1056}:${address}`
         const operator = new Operator(keys, this.resolverSettings)
         this.document = new DIDDocumentFull(this.did, operator)
-        await this.mint(keys.getAddress())
+        // send tokens to address so they can create/update their document
+        await this.mint(address)
         await this.document.create()
         // log asset DID creation
         console.log(`[DID] Created identity for ${this.assetID}: ${this.did}`)
         // cache identity
+        if (!this.skipRegistry) {
+            await this.saveInEvRegistry(address, this.assetID)
+        }
         this.db.setAssetIdentity({
             uid: this.assetID,
             did: this.did,
@@ -111,6 +118,17 @@ export class DID {
         // get approx. balance for log (ethers bignumber hates big numbers)
         const balanceInEther = (parseInt(balance.toString(), 10) / 1e18).toFixed(3)
         console.log(`[DID] Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balanceInEther}`)
+    }
+
+    /**
+     * Store device entry in EV Registry smart contract (allows participation in ev dashboard application)
+     * @param uid device UID used to identify it on OCN
+     * @param keys device keys created for DID
+     */
+    private async saveInEvRegistry(address: string, uid: string): Promise<void> {
+        const registry = new EvRegistry(this.operatorKeys)
+        await registry.addDevice(address, uid)
+        console.log(`[EV REGISTRY] Saved asset ${this.did}`)
     }
 
 }

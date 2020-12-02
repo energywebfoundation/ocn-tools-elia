@@ -61,5 +61,9 @@ export const config: IOcnToolsConfig = {
         natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249",
         natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
         webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
+    },
+    evRegistry: {
+        address: "0x9fbda871d559710256a2502a2517b794b482db40",
+        provider: "http://localhost:8544"
     }
 }

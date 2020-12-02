@@ -6,6 +6,9 @@ export class iamClientLibService {
 
     constructor(privateKey: string) {
         console.log(privateKey)
+        if (!config.iam) {
+            throw Error("No IAM configured. Unable to connect to IAM Cache Client.")
+        }
         const cacheClient = new CacheServerClient({
             url: config.iam.cacheServerUrl
         });
