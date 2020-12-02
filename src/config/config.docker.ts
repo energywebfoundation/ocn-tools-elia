@@ -59,12 +59,15 @@ export const config: IOcnToolsConfig = {
         assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10)
     },
     iam: {
-        cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
-        rpcUrl: "https://volta-internal-archive.energyweb.org",
+        cacheServerUrl: process.env.CACHE_SERVER_URL ?? "https://volta-iam-cacheserver.energyweb.org/",
+        rpcUrl: process.env.EWC_RPC_URL ?? "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
         natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249",
         natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
         webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
     },
-    prequalificationIssuerDID: "did:ethr:0x322Bd528CEFb73ed1baec2aC38697ECECAe41710"
+    prequalification: {
+        prequalificationIssuerDID: process.env.PREQUALIFICATION_ISSUER_DID ?? "did:ethr:0x322Bd528CEFb73ed1baec2aC38697ECECAe41710",
+        prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc"
+    }
 }
