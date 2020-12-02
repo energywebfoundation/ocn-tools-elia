@@ -28,7 +28,7 @@ export const tokens: IToken[] = []
 for (let i = 1; i <= config.msp.assetCount; i++) {
     const max = 99999999
     const randomInt = integer(0, max)(mt)
-    const uid = ("0000000" + randomInt).slice(-8) // Ensure that uid is 8 digits
+    const uid = ("111111" + randomInt).slice(-8) // Ensure that uid is 8 digits
 
     // Sample VIN prefixes for Mercedes-Benz
     // https://www.lastvin.com/de/

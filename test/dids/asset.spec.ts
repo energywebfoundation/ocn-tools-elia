@@ -24,7 +24,7 @@ describe("DID Creation", () => {
 
     before(() => {
         db = new Database("test.db")
-        assetIdentityFactory = new DIDFactory(operatorKey, db)
+        assetIdentityFactory = new DIDFactory(operatorKey, db, true)
     })
 
     after(() => {

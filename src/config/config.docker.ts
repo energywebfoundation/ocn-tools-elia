@@ -69,5 +69,9 @@ export const config: IOcnToolsConfig = {
     prequalification: {
         prequalificationIssuerDID: process.env.PREQUALIFICATION_ISSUER_DID ?? "did:ethr:0x322Bd528CEFb73ed1baec2aC38697ECECAe41710",
         prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc"
+    },
+    evRegistry: {
+        address: process.env.EV_REGISTRY_ADDRESS || "0x9fbda871d559710256a2502a2517b794b482db40",
+        provider: process.env.EV_REGISTRY_PROVIDER || "http://172.16.238.10:8544"
     }
 }

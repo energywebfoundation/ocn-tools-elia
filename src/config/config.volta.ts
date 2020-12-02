@@ -19,7 +19,7 @@ import { IOcnToolsConfig } from "../types"
 export const config: IOcnToolsConfig = {
     ocn: {
         node: "http://node.ocn.org",
-        stage: "local"
+        stage: "volta"
     },
     cpo: {
         port: 3000,
@@ -65,5 +65,9 @@ export const config: IOcnToolsConfig = {
     prequalification: {
         prequalificationIssuerDID: "did:ethr:0x322Bd528CEFb73ed1baec2aC38697ECECAe41710",
         prequalifcationRole: "prequalified.roles.flexmarket.apps.elia.iam.ewc"
+    },
+    evRegistry: {
+        address: "0x8d80504617eB17816b91610Fb2a0274Dc70f193f",
+        provider: "https://volta-internal-archive.energyweb.org"
     }
 }

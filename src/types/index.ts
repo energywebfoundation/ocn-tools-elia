@@ -27,7 +27,7 @@ export interface IOcnToolsConfig {
     },
     cpo: IMockServerConfig
     msp: IMockMSPServerConfig
-    iam: {
+    iam?: {
         cacheServerUrl: string
         rpcUrl: string
         chainId: number
@@ -38,6 +38,10 @@ export interface IOcnToolsConfig {
     prequalification: {
         prequalificationIssuerDID: string
         prequalifcationRole: string
+    },
+    evRegistry?: {
+        address: string
+        provider: string
     }
 }
 

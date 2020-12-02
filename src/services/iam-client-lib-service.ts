@@ -3,6 +3,9 @@ import { IAM, CacheServerClient } from 'iam-client-lib';
 
 export class IamClientLibFactory {
     public static create(privateKey: string) {
+        if (!config.iam) {
+            throw Error("No IAM configured. Unable to connect to IAM Cache Client.")
+        }
         const cacheClient = new CacheServerClient({
             url: config.iam.cacheServerUrl
         });
