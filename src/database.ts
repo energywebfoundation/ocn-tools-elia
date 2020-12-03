@@ -88,6 +88,18 @@ export class Database implements IDIDCache {
         }
     }
 
+    public getAssetIdentityByDID(did: string): IAssetIdentity | undefined {
+        const asset = this.db.prepare("SELECT * FROM dids WHERE did = ?").get(did)
+        if (!asset) {
+            return
+        }
+        return {
+            uid: asset.uid,
+            did: asset.did,
+            privateKey: asset.private_key
+        }
+    }
+
     public setAssetIdentity(asset: IAssetIdentity): void {
         this.db
             .prepare("INSERT INTO dids (uid, did, private_key) VALUES (?,?,?)")

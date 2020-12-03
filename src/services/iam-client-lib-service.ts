@@ -1,11 +1,8 @@
 import { config } from "../config/config"
-import { CacheServerClient, IAM } from 'iam-client-lib';
+import { IAM, CacheServerClient } from 'iam-client-lib';
 
-export class iamClientLibService {
-    readonly iam;
-
-    constructor(privateKey: string) {
-        console.log(privateKey)
+export class IamClientLibFactory {
+    public static create(privateKey: string) {
         if (!config.iam) {
             throw Error("No IAM configured. Unable to connect to IAM Cache Client.")
         }
@@ -14,7 +11,7 @@ export class iamClientLibService {
         });
 
         // Because iam-client-lib is running on the server, the private key is passed in directly
-        new IAM({
+        return new IAM({
             privateKey: privateKey,
             natsServerUrl: config.iam.natsServerUrl + ':' + config.iam.webSocketsProtocolPort,
             rpcUrl: config.iam.rpcUrl,

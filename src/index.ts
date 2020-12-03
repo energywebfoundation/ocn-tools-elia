@@ -15,6 +15,7 @@
 */
 import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
+import { NATS_EXCHANGE_TOPIC } from "iam-client-lib"
 import { connect } from "nats"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
@@ -25,7 +26,7 @@ import { Database } from "./database"
 import { EvRegistry } from "./models/contracts/ev-registry"
 import { DIDFactory } from "./models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
-import { Vehicle } from "./models/vehicle"
+import { Asset } from "./models/asset"
 import { IDIDCache } from "./types"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
@@ -76,18 +77,64 @@ const initVehiclePrequalificationListener = async () => {
         console.log("[NATS] IAM not configured. Events will not be receieved.")
         return
     }
-    const NATS_EXCHANGE_TOPIC = "prequalification.exchange"
     console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}:${config.iam.natsProtocolPort}`)
     const natsConnection = connect(config.iam.natsServerUrl)
-    console.log("[NATS] Listening for asset claim requests")
-    if (natsConnection) {
-        natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
-            const json = JSON.parse(data)
-            console.log(`[NATS] Received prequalification trigger for: ${JSON.stringify(json)}`)
-            const vehicleUID: string = json.uid
-            const vehicle = new Vehicle(vehicleUID)
-            await vehicle.requestPrequalification()
-        })
+    if (!natsConnection) {
+        console.error("[NATS] Unabled to create NATS connection")
+        return
+    }
+
+    // Listen for prequalification requests
+    const PREQUALIFICATION_REQUEST_TOPIC = "prequalification.exchange"
+    natsConnection.subscribe(`*.${PREQUALIFICATION_REQUEST_TOPIC}`, async (data) => {
+        const json = JSON.parse(data)
+        console.log(`[NATS] Received prequalification REQUEST for: ${JSON.stringify(json)}`)
+        const assetDID: string = json.did
+        const mspDB = new Database("msp.db")
+        const assetID = mspDB.getAssetIdentityByDID(assetDID)
+        console.log(`[NATS] Retrieved assetID for vehicle: ${assetDID}`)
+        if (!assetID) {
+            console.log(`[NATS] No stored assetID for vehicle: ${assetDID}`)
+            return
+        }
+        const asset = new Asset(assetID)
+        console.log(`[NATS] Requesting prequalification for asset: ${assetDID}`)
+        await asset.requestPrequalification()
+    });
+
+    // Listen for issued prequalification claims
+    natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
+        const message = JSON.parse(data) as IMessage
+        console.log(`[NATS] Received message on claims exchange.`)
+        if (!message.issuedToken) {
+            console.log(`[NATS] Received message does not contained an issued token`)
+            return;
+        }
+        console.log(`[NATS] Received ISSUED CLAIM: ${JSON.stringify(message)}`)
+        const assetDID: string = message.requester
+        const mspDB = new Database("msp.db")
+        const assetID = mspDB.getAssetIdentityByDID(assetDID)
+        console.log(`[NATS] Retrieved assetID for asset: ${assetDID}`)
+        if (!assetID) {
+            console.log(`[NATS] No stored assetID for asset: ${assetDID}`)
+            return
+        }
+        const asset = new Asset(assetID)
+        console.log(`[NATS] Publishing claim for asset: ${assetDID}`)
+        await asset.publishPublicClaim(message.issuedToken)
+    });
+
+    console.log("[NATS] Listening for asset claim requests and issued claims")
+
+    // IMessage is taken from iam-client-lib
+    // (it should probably be published as a shared interface)
+    interface IMessage {
+        id: string;
+        token: string;
+        issuedToken?: string;
+        requester: string;
+        claimIssuer: string[];
+        acceptedBy?: string;
     }
 }
 

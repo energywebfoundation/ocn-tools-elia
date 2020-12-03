@@ -35,6 +35,10 @@ export interface IOcnToolsConfig {
         natsProtocolPort: string
         webSocketsProtocolPort: string
     },
+    prequalification: {
+        prequalificationIssuerDID: string
+        prequalifcationRole: string
+    },
     evRegistry?: {
         address: string
         provider: string
