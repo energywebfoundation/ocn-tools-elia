@@ -89,27 +89,28 @@ const initVehiclePrequalificationListener = async () => {
     natsConnection.subscribe(`*.${PREQUALIFICATION_REQUEST_TOPIC}`, async (data) => {
         const json = JSON.parse(data)
         console.log(`[NATS] Received prequalification REQUEST for: ${JSON.stringify(json)}`)
-        const assetUID: string = json.uid
+        const assetDID: string = json.did
         const mspDB = new Database("msp.db")
-        const assetID = mspDB.getAssetIdentity(assetUID)
-        console.log(`[NATS] Retrieved assetID for vehicle: ${assetUID}`)
+        const assetID = mspDB.getAssetIdentityByDID(assetDID)
+        console.log(`[NATS] Retrieved assetID for vehicle: ${assetDID}`)
         if (!assetID) {
-            console.log(`[NATS] No stored assetID for vehicle: ${assetUID}`)
+            console.log(`[NATS] No stored assetID for vehicle: ${assetDID}`)
             return
         }
         const asset = new Asset(assetID)
-        console.log(`[NATS] Requesting prequalification for asset: ${assetUID}`)
+        console.log(`[NATS] Requesting prequalification for asset: ${assetDID}`)
         await asset.requestPrequalification()
     });
 
     // Listen for issued prequalification claims
     natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
         const message = JSON.parse(data) as IMessage
-        console.log(`[NATS] Received prequalification ISSUED CLAIM for: ${JSON.stringify(message)}`)
+        console.log(`[NATS] Received message on claims exchange.`)
         if (!message.issuedToken) {
             console.log(`[NATS] Received message does not contained an issued token`)
             return;
         }
+        console.log(`[NATS] Received ISSUED CLAIM: ${JSON.stringify(message)}`)
         const assetDID: string = message.requester
         const mspDB = new Database("msp.db")
         const assetID = mspDB.getAssetIdentityByDID(assetDID)
