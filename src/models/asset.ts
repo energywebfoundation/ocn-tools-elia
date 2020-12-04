@@ -40,13 +40,19 @@ export class Asset {
             await this.iamClient.initializeConnection();
         }
 
-        // TODO: Can we request that it be issued by someone with a particular role, not a specific DID?
+        console.log(`${this.logPrefix}, retrieving DIDs with role: ${config.prequalification.prequalificationIssuerRole}`)
+        const tsoDids = await this.iamClient.getRoleDIDs({ namespace: config.prequalification.prequalificationIssuerRole })
+        if (tsoDids?.length < 1) {
+            console.log(`${this.logPrefix}, no DIDs with issuer role found and so no claim request can be created`)
+            return
+        }
+
         console.log(`${this.logPrefix} is creating claim request`, {
-            issuer: config.prequalification.prequalificationIssuerDID,
+            issuer: tsoDids,
             claim: JSON.stringify(claimData)
         });
         await this.iamClient.createClaimRequest({
-            issuer: [config.prequalification.prequalificationIssuerDID],
+            issuer: tsoDids,
             claim: claimData
         });
 

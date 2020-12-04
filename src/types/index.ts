@@ -36,7 +36,7 @@ export interface IOcnToolsConfig {
         webSocketsProtocolPort: string
     },
     prequalification: {
-        prequalificationIssuerDID: string
+        prequalificationIssuerRole: string
         prequalifcationRole: string
     },
     evRegistry?: {

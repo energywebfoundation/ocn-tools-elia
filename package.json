@@ -32,7 +32,7 @@
     "@shareandcharge/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2",
     "better-sqlite3": "^5.4.3",
     "ethers": "^4.0.48",
-    "iam-client-lib": "file:iam-client-lib-1.0.3.tgz",
+    "iam-client-lib": "file:iam-client-lib-1.0.4.tgz",
     "nats": "^1.4.12",
     "random-js": "^2.1.0",
     "tslib": "^2.0.3",
