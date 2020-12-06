@@ -67,7 +67,7 @@ export const config: IOcnToolsConfig = {
         webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
     },
     prequalification: {
-        prequalificationIssuerRole: process.env.PREQUALIFICATION_ISSUER_DID ?? "tso.roles.evdashboard.apps.elia.iam.ewc",
+        prequalificationIssuerRole: process.env.PREQUALIFICATION_ISSUER_ROLE ?? "tso.roles.evdashboard.apps.elia.iam.ewc",
         prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc"
     },
     evRegistry: {
