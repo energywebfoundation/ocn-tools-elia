@@ -26,7 +26,7 @@ export class CdrsReceiver {
 
     public async create(cdr: IChargeDetailRecord): Promise<void> {
         this.cdrs.push(cdr)
-        setTimeout(() => console.log(`CDR ${cdr.id}: ${cdr.total_cost.excl_vat} ${cdr.currency}`), 50)
+        setTimeout(() => console.log(`[OCN] CDR ${cdr.id}: ${cdr.total_cost.excl_vat} ${cdr.currency}`), 50)
         return
     }
 

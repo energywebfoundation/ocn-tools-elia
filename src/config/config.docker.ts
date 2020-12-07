@@ -14,41 +14,64 @@
     limitations under the License.
 */
 import * as uuid from "uuid"
+import { IOcnToolsConfig } from "../types"
 
-export const config = {
+export const config: IOcnToolsConfig = {
     ocn: {
-        node: process.env.OCN_NODE_URL || "http://172.16.238.20:8080", // todo: replace other hardcoded values with env vars
-        stage: "local"
+        node: process.env.OCN_NODE_URL || "http://172.16.238.20:8080",
+        stage: process.env.OCN_STAGE || "local"
     },
     cpo: {
-        port: 3000,
-        publicIP: "http://172.16.238.40:3000",
+        port: parseInt(process.env.CPO_PORT || "3000", 10),
+        publicIP: process.env.CPO_PUBLIC_IP || "http://172.16.238.40:3000",
         roles: [
             {
-                party_id: "EVC",
-                country_code: "DE",
+                party_id: process.env.CPO_PARTY_ID || "EVC",
+                country_code: process.env.CPO_COUNTRY_CODE || "DE",
                 role: "CPO",
                 business_details: {
-                    name: `Test CPO ${uuid.v4()}`
+                    name: process.env.CPO_NAME || `Test CPO ${uuid.v4()}`
                 }
             }
         ],
-        services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"]
+        services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"],
+        createAssetDIDs: process.env.CPO_CREATE_DIDS 
+            ? process.env.CPO_CREATE_DIDS === "true"
+            : true,
     },
     msp: {
-        port: 3001,
-        publicIP: "http://172.16.238.30:3001",
+        port: parseInt(process.env.MSP_PORT || "3001", 10),
+        publicIP: process.env.MSP_PUBLIC_IP || "http://172.16.238.30:3001",
         roles: [
             {
-                party_id: "EVM",
-                country_code: "DE",
+                party_id: process.env.MSP_PARTY_ID || "EVM",
+                country_code: process.env.MSP_COUNTRY_CODE || "DE",
                 role: "EMSP",
                 business_details: {
-                    name: `Test MSP ${uuid.v4()}`
+                    name: process.env.MSP_NAME || `Test MSP ${uuid.v4()}`
                 }
             }
         ],
-        services: []
+        services: [],
+        createAssetDIDs: process.env.MSP_CREATE_DIDS 
+            ? process.env.MSP_CREATE_DIDS === "true"
+            : true,
+        assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10)
+    },
+    iam: {
+        cacheServerUrl: process.env.CACHE_SERVER_URL ?? "https://volta-iam-cacheserver.energyweb.org/",
+        rpcUrl: process.env.EWC_RPC_URL ?? "https://volta-internal-archive.energyweb.org",
+        chainId: 73799,
+        natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249",
+        natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
+        webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
+    },
+    prequalification: {
+        prequalificationIssuerRole: process.env.PREQUALIFICATION_ISSUER_ROLE ?? "tso.roles.evdashboard.apps.elia.iam.ewc",
+        prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc"
+    },
+    evRegistry: {
+        address: process.env.EV_REGISTRY_ADDRESS || "0x9fbda871d559710256a2502a2517b794b482db40",
+        provider: process.env.EV_REGISTRY_PROVIDER || "http://172.16.238.10:8544"
     }
-
 }
