@@ -110,7 +110,6 @@ export class DID {
         const tx = await wallet.sendTransaction({
             to: assetAddress,
             value: valueInEther * 1e18, // convert to wei
-            gasPrice: 1
         })
         await tx.wait()
         // log remaining balance
