@@ -9,7 +9,7 @@ import { IAssetIdentity, IDIDCache } from "../../types"
 import { EvRegistry } from "../contracts/ev-registry"
 
 export class DID {
- 
+
     /**
      * Creates or retreives a DID/Document for an asset
      * 
@@ -47,7 +47,7 @@ export class DID {
         private operatorKeys: Keys,
         private db: IDIDCache,
         private skipRegistry?: boolean
-    ) {}
+    ) { }
 
     /**
      * Checks if identity has already been created,
@@ -56,8 +56,10 @@ export class DID {
     private async init(): Promise<void> {
         const existent = this.db.getAssetIdentity(this.assetID)
         if (existent) {
+            console.log('[ASSET] cached, resolving document')
             await this.getDocument(existent)
         } else {
+            console.log('[ASSET] not cached, creating document')
             await this.createDocument()
         }
     }
@@ -84,14 +86,18 @@ export class DID {
         const operator = new Operator(keys, this.resolverSettings)
         this.document = new DIDDocumentFull(this.did, operator)
         // send tokens to address so they can create/update their document
+        console.log(`[${new Date()}]`, '[DID] minting tokens before did creation', this.did, this.assetID)
         await this.mint(address)
+        console.log(`[${new Date()}]`, '[DID] creating did document', this.did, this.assetID)
         await this.document.create()
         // log asset DID creation
-        console.log(`[DID] Created identity for ${this.assetID}: ${this.did}`)
+        console.log(`[${new Date()}]`, `[DID] Created identity for ${this.assetID}: ${this.did}`)
         // cache identity
         if (!this.skipRegistry) {
+            console.log(`[${new Date()}]`, '[EV REGISTRY] adding entry', address, this.assetID)
             await this.saveInEvRegistry(address, this.assetID)
         }
+        console.log(`[${new Date()}]`, '[ASSET] cached asset', this.assetID)
         this.db.setAssetIdentity({
             uid: this.assetID,
             did: this.did,
@@ -107,17 +113,20 @@ export class DID {
         const provider = new JsonRpcProvider(this.resolverSettings.provider?.uriOrInfo)
         const wallet = new Wallet(this.operatorKeys.privateKey, provider)
         const valueInEther = 0.001
+        console.log(`[${new Date()}]`, 'creating tx, to:', assetAddress, 'value:', valueInEther * 1e18, 'gasPrice:', 1)
         const tx = await wallet.sendTransaction({
             to: assetAddress,
             value: valueInEther * 1e18, // convert to wei
-            gasPrice: 1
+            gasPrice: 100
         })
+        console.log(`[${new Date()}]`, 'sending mint tx', tx.hash)
         await tx.wait()
+        console.log(`[${new Date()}]`, 'tx confirmed', tx.hash)
         // log remaining balance
         const balance = await wallet.getBalance()
         // get approx. balance for log (ethers bignumber hates big numbers)
         const balanceInEther = (parseInt(balance.toString(), 10) / 1e18).toFixed(3)
-        console.log(`[DID] Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balanceInEther}`)
+        console.log(`[${new Date()}]`, `[DID] Minted ${valueInEther} for ${assetAddress}. Remaining balance: ${balanceInEther}`)
     }
 
     /**
