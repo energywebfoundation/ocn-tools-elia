@@ -117,7 +117,6 @@ export class DID {
         const tx = await wallet.sendTransaction({
             to: assetAddress,
             value: valueInEther * 1e18, // convert to wei
-            gasPrice: 100
         })
         console.log(`[${new Date()}]`, 'sending mint tx', tx.hash)
         await tx.wait()
