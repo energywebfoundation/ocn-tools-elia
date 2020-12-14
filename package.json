@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Common tools for aiding development of applications built on top of the OCN",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
@@ -33,7 +34,7 @@
     "better-sqlite3": "^5.4.3",
     "ethers": "^4.0.48",
     "iam-client-lib": "file:iam-client-lib-1.0.4.tgz",
-    "nats": "^1.4.12",
+    "nats.ws": "^1.0.0-114",
     "random-js": "^2.1.0",
     "tslib": "^2.0.3",
     "uuid": "^3.3.3",
