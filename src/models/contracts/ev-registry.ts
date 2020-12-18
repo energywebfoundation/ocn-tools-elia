@@ -15,8 +15,10 @@ export class EvRegistry {
         if (!config.evRegistry) {
             throw Error("EV Registry contract address not set in config.")
         }
+        console.log('[EV REGISTRY] connecting to provider', config.evRegistry?.provider)
         const provider = new JsonRpcProvider(config.evRegistry?.provider)
         const signer = new Wallet(operatorKeys.privateKey, provider)
+        console.log('[EV REGISTRY] connecting to contract', config.evRegistry.address)
         this.contract = new Contract(config.evRegistry.address, abi, signer)
     }
 
@@ -42,8 +44,10 @@ export class EvRegistry {
      */
     public async addUser(): Promise<void> {
         if (await this.userExists()) {
+            console.log('[EV REGISTRY] user already exists')
             return
         }
+        console.log('[EV REGISTRY] user does not exist')
         const user = await this.contract.signer.getAddress()
         const { r, s, v } = await this.getSignature(user)
         await this.contract.addUser(user, v, r, s)
@@ -54,8 +58,10 @@ export class EvRegistry {
      */
     public async addDevice(address: string, uid: string): Promise<void> {
         if (await this.deviceExists(address)) {
+            console.log('[EV REGISTRY] device already exists', address, uid)
             return
         }
+        console.log(`[${new Date()}]`, '[EV REGISTRY] device does not exist', address, uid)
         const user = await this.contract.signer.getAddress()
         // convert uid to buffer so vehicle ID isn't parsed as an integer 
         const { r, v, s } = await this.getSignature(address, Buffer.from(uid), user)

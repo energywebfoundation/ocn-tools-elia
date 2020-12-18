@@ -45,27 +45,35 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
         return
     }
     const key = new Keys({ privateKey: process.env.OCN_IDENTITY })
-    
+
     // add user to ev registry (needs to be done before devices are added)
     const evRegistry = new EvRegistry(key)
+    console.log('[EV REGISTRY] Adding operator')
     await evRegistry.addUser()
-    
+    console.log('[EV REGISTRY] Added operator')
+
     const factory = new DIDFactory(key, db)
     if (operatorType === "msp") {
+        console.log('[ASSET] creating', tokens.length, 'vehicles')
         for (const token of tokens) {
             try {
+                console.log(`[${new Date()}]`, '[ASSET] creating vehicle did', token.uid)
                 await factory.createVehicleDID(token)
+                console.log(`[${new Date()}]`, '[ASSET] created vehicle did', token.uid)
             } catch (err) {
-                console.log(`[DID] Failed to create DID for vehicle(${token.uid}): ${err.message}`)
+                console.log(`[${new Date()}]`, `[ASSET] Failed to create DID for vehicle(${token.uid}): ${err.message}`)
             }
         }
     }
     if (operatorType === "cpo") {
+        console.log(`[${new Date()}]`, '[ASSET] creating', locations.length, 'charge points')
         for (const location of locations) {
             try {
+                console.log(`[${new Date()}]`, '[ASSET] creating charge point dids', location.id)
                 await factory.createChargePointDIDs(location)
+                console.log(`[${new Date()}]`, '[ASSET] created charge point dids', location.id)
             } catch (err) {
-                console.log(`[DID] Failed to create DIDs for location(${location.id}): ${err.message}`)
+                console.log(`[${new Date()}]`, `[ASSET] Failed to create DIDs for location(${location.id}): ${err.message}`)
             }
         }
     }
