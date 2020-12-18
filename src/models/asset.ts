@@ -1,4 +1,4 @@
-import { IamClientLibFactory } from "../services/iam-client-lib-service";
+import { IamClientLibFactory } from "../factories/iam-client-lib-factory";
 import { IAssetIdentity } from "../types";
 import { config } from "../config/config";
 import { IAM } from "iam-client-lib";
