@@ -54,17 +54,17 @@ export const config: IOcnToolsConfig = {
         createAssetDIDs: false,
         assetCount: 200
     },
-    iam: {
-        cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
-        rpcUrl: "https://volta-internal-archive.energyweb.org",
-        chainId: 73799,
-        natsServerUrl: "13.52.78.249",
-        natsProtocolPort: "4222",
-        webSocketsProtocolPort: "9222"
-    },
     prequalification: {
         prequalificationIssuerRole: "tso.roles.evdashboard.apps.elia.iam.ewc",
-        prequalifcationRole: "prequalified.roles.flexmarket.apps.elia.iam.ewc"
+        prequalifcationRole: "prequalified.roles.flexmarket.apps.elia.iam.ewc",
+        provider: "https://volta-internal-archive.energyweb.org",
+        iam: {
+            cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
+            chainId: 73799,
+            natsServerUrl: "13.52.78.249",
+            natsProtocolPort: "4222",
+            webSocketsProtocolPort: "9222"
+        },
     },
     evRegistry: {
         address: "0x8d80504617eB17816b91610Fb2a0274Dc70f193f",

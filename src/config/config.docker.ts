@@ -35,7 +35,7 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"],
-        createAssetDIDs: process.env.CPO_CREATE_DIDS 
+        createAssetDIDs: process.env.CPO_CREATE_DIDS
             ? process.env.CPO_CREATE_DIDS === "true"
             : true,
     },
@@ -53,22 +53,22 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
-        createAssetDIDs: process.env.MSP_CREATE_DIDS 
+        createAssetDIDs: process.env.MSP_CREATE_DIDS
             ? process.env.MSP_CREATE_DIDS === "true"
             : true,
         assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10)
     },
-    iam: {
-        cacheServerUrl: process.env.CACHE_SERVER_URL ?? "https://volta-iam-cacheserver.energyweb.org/",
-        rpcUrl: process.env.EWC_RPC_URL ?? "https://volta-internal-archive.energyweb.org",
-        chainId: 73799,
-        natsServerUrl: process.env.NATS_SERVER_URL ?? "13.52.78.249",
-        natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
-        webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
-    },
     prequalification: {
         prequalificationIssuerRole: process.env.PREQUALIFICATION_ISSUER_ROLE ?? "tso.roles.evdashboard.apps.elia.iam.ewc",
-        prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc"
+        prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc",
+        provider: process.env.EWC_RPC_URL ?? "https://volta-internal-archive.energyweb.org",
+        iam: {
+            cacheServerUrl: process.env.CACHE_SERVER_URL ?? "https://volta-iam-cacheserver.energyweb.org/",
+            chainId: 73799,
+            natsServerUrl: process.env.NATS_SERVER_URL ?? "dsb-nats-dev.energyweb.org",
+            natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
+            webSocketsProtocolPort: process.env.WS_PROTOCOL_PORT ?? "9222"
+        },
     },
     evRegistry: {
         address: process.env.EV_REGISTRY_ADDRESS || "0x9fbda871d559710256a2502a2517b794b482db40",

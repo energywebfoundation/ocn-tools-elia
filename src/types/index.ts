@@ -7,7 +7,7 @@ export interface IMockServerConfig {
         party_id: string
         country_code: string
         role: string
-        business_details: { 
+        business_details: {
             name: string
         }
     }>
@@ -27,17 +27,17 @@ export interface IOcnToolsConfig {
     },
     cpo: IMockServerConfig
     msp: IMockMSPServerConfig
-    iam?: {
-        cacheServerUrl: string
-        rpcUrl: string
-        chainId: number
-        natsServerUrl: string
-        natsProtocolPort: string
-        webSocketsProtocolPort: string
-    },
     prequalification: {
         prequalificationIssuerRole: string
-        prequalifcationRole: string
+        prequalifcationRole: string,
+        provider: string,
+        iam?: {
+            cacheServerUrl: string
+            chainId: number
+            natsServerUrl: string
+            natsProtocolPort: string
+            webSocketsProtocolPort: string
+        },
     },
     evRegistry?: {
         address: string

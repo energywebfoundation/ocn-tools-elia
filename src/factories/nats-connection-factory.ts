@@ -10,11 +10,11 @@ export class NatsConnectionFactory {
 
     static create(): Client | undefined {
         try {
-            if (!config.iam) {
+            if (!config.prequalification.iam) {
                 console.log("[NATS] IAM not configured. Events will not be receieved.");
                 return
             }
-            const url = `${config.iam.natsServerUrl}:${config.iam.natsProtocolPort}`;
+            const url = `${config.prequalification.iam.natsServerUrl}:${config.prequalification.iam.natsProtocolPort}`;
             console.log(`[NATS] Connecting to ${url}`);
             const nc = connect({ url: `nats://${url}` });
 
