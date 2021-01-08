@@ -31,13 +31,15 @@ export interface IOcnToolsConfig {
         prequalificationIssuerRole: string
         prequalifcationRole: string,
         provider: string,
-        iam?: {
+        chainId: number
+        user_claims_iam: {
             cacheServerUrl: string
-            chainId: number
+        },
+        asset_claims_iam: {
+            cacheServerUrl: string
             natsServerUrl: string
             natsProtocolPort: string
-            webSocketsProtocolPort: string
-        },
+        }
     },
     evRegistry?: {
         address: string

@@ -58,13 +58,15 @@ export const config: IOcnToolsConfig = {
         prequalificationIssuerRole: "tso.roles.evdashboard.apps.elia.iam.ewc",
         prequalifcationRole: "prequalified.roles.flexmarket.apps.elia.iam.ewc",
         provider: "https://volta-internal-archive.energyweb.org",
-        iam: {
+        chainId: 73799,
+        user_claims_iam: {
             cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
-            chainId: 73799,
-            natsServerUrl: "13.52.78.249",
-            natsProtocolPort: "4222",
-            webSocketsProtocolPort: "9222"
         },
+        asset_claims_iam: {
+            cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
+            natsServerUrl: "dsb-nats-dev.energyweb.org",
+            natsProtocolPort: "4222",
+        }
     },
     evRegistry: {
         address: "0x9fbda871d559710256a2502a2517b794b482db40",
