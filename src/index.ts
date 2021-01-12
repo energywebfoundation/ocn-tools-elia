@@ -16,7 +16,6 @@
 import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
 import { NATS_EXCHANGE_TOPIC } from "iam-client-lib"
-import { connect } from "nats"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
@@ -27,6 +26,7 @@ import { EvRegistry } from "./models/contracts/ev-registry"
 import { DIDFactory } from "./models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
 import { Asset } from "./models/asset"
+import { NatsConnectionFactory } from "./factories/nats-connection-factory"
 import { IDIDCache } from "./types"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
@@ -81,12 +81,7 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
 }
 
 const initVehiclePrequalificationListener = async () => {
-    if (!config.iam) {
-        console.log("[NATS] IAM not configured. Events will not be receieved.")
-        return
-    }
-    console.log(`[NATS] Connecting to ${config.iam.natsServerUrl}:${config.iam.natsProtocolPort}`)
-    const natsConnection = connect(config.iam.natsServerUrl)
+    const natsConnection = NatsConnectionFactory.create()
     if (!natsConnection) {
         console.error("[NATS] Unabled to create NATS connection")
         return
@@ -100,7 +95,7 @@ const initVehiclePrequalificationListener = async () => {
         const assetDID: string = json.did
         const mspDB = new Database("msp.db")
         const assetID = mspDB.getAssetIdentityByDID(assetDID)
-        console.log(`[NATS] Retrieved assetID for vehicle: ${assetDID}`)
+        console.log(`[NATS] Queried assetID for vehicle: ${assetDID}`)
         if (!assetID) {
             console.log(`[NATS] No stored assetID for vehicle: ${assetDID}`)
             return

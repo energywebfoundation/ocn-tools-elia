@@ -1,22 +1,18 @@
-import { IamClientLibFactory } from "../services/iam-client-lib-service";
+import { IamClientLibFactory } from "../factories/iam-client-lib-factory";
 import { IAssetIdentity } from "../types";
 import { config } from "../config/config";
-import { IAM } from "iam-client-lib";
 
 export class Asset {
-    private readonly iamClient: IAM
     private readonly assetID: IAssetIdentity
     private readonly logPrefix: string
 
     constructor(assetID: IAssetIdentity) {
         this.assetID = assetID
-        this.iamClient = IamClientLibFactory.create(assetID.privateKey);
         this.logPrefix = `[Asset] ${this.assetID.did}`
     }
 
     async requestPrequalification() {
         console.log(`${this.logPrefix} is requestingPrequalification`)
-
 
         //TODO: Retrieve the vehicle model from OEM
         const vehicleInfo = [
@@ -35,13 +31,12 @@ export class Asset {
             claimType: config.prequalification.prequalifcationRole
         };
 
-        // TODO: document why initialization is necessary.
-        if (!this.iamClient.isConnected()) {
-            await this.iamClient.initializeConnection();
-        }
-
+        const userIamClient = await IamClientLibFactory.create({
+            privateKey: this.assetID.privateKey,
+            cacheServerUrl: config.prequalification.user_claims_iam.cacheServerUrl
+        });
         console.log(`${this.logPrefix}, retrieving DIDs with role: ${config.prequalification.prequalificationIssuerRole}`)
-        const tsoDids = await this.iamClient.getRoleDIDs({ namespace: config.prequalification.prequalificationIssuerRole })
+        const tsoDids = await userIamClient.getRoleDIDs({ namespace: config.prequalification.prequalificationIssuerRole })
         if (tsoDids?.length < 1) {
             console.log(`${this.logPrefix}, no DIDs with issuer role found and so no claim request can be created`)
             return
@@ -51,7 +46,11 @@ export class Asset {
             issuer: tsoDids,
             claim: JSON.stringify(claimData)
         });
-        await this.iamClient.createClaimRequest({
+        const assetIamClient = await IamClientLibFactory.create({
+            privateKey: this.assetID.privateKey,
+            cacheServerUrl: config.prequalification.asset_claims_iam.cacheServerUrl
+        });
+        await assetIamClient.createClaimRequest({
             issuer: tsoDids,
             claim: claimData
         });
@@ -60,11 +59,11 @@ export class Asset {
     }
 
     async publishPublicClaim(token: string): Promise<string | null> {
-        // TODO: document why initialization is necessary.
-        if (!this.iamClient.isConnected()) {
-            await this.iamClient.initializeConnection();
-        }
-        const ipfsUrl = await this.iamClient.publishPublicClaim({ token })
+        const assetIamClient = await IamClientLibFactory.create({
+            privateKey: this.assetID.privateKey,
+            cacheServerUrl: config.prequalification.asset_claims_iam.cacheServerUrl
+        });
+        const ipfsUrl = await assetIamClient.publishPublicClaim({ token })
         console.log(`${this.logPrefix} published claim to DID Document`)
         return ipfsUrl
     }
