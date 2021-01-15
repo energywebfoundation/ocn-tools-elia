@@ -1,4 +1,4 @@
-import { config } from "../config/config"
+import { config } from "../../config/config"
 import { IAM, CacheServerClient } from 'iam-client-lib';
 
 export class IamClientLibFactory {

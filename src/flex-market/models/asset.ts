@@ -1,6 +1,6 @@
 import { IamClientLibFactory } from "../factories/iam-client-lib-factory";
-import { IAssetIdentity } from "../types";
-import { config } from "../config/config";
+import { IAssetIdentity } from "../../types";
+import { config } from "../../config/config";
 
 export class Asset {
     private readonly assetID: IAssetIdentity
