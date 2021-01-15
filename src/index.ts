@@ -15,7 +15,6 @@
 */
 import { Keys } from "@ew-did-registry/keys"
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
-import { NATS_EXCHANGE_TOPIC } from "iam-client-lib"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
@@ -25,9 +24,8 @@ import { Database } from "./database"
 import { EvRegistry } from "./models/contracts/ev-registry"
 import { DIDFactory } from "./models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
-import { Asset } from "./models/asset"
-import { NatsConnectionFactory } from "./factories/nats-connection-factory"
-import { IDIDCache } from "./types"
+import { IAssetIdentity, IDIDCache } from "./types"
+import { FlexMarketClient } from "./flex-market/flex-market-client"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
     for (const service of services) {
@@ -78,67 +76,6 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
         }
     }
 
-}
-
-const initVehiclePrequalificationListener = async () => {
-    const natsConnection = NatsConnectionFactory.create()
-    if (!natsConnection) {
-        console.error("[NATS] Unabled to create NATS connection")
-        return
-    }
-
-    // Listen for prequalification requests
-    const PREQUALIFICATION_REQUEST_TOPIC = "prequalification.exchange"
-    natsConnection.subscribe(`*.${PREQUALIFICATION_REQUEST_TOPIC}`, async (data) => {
-        const json = JSON.parse(data)
-        console.log(`[NATS] Received prequalification REQUEST for: ${JSON.stringify(json)}`)
-        const assetDID: string = json.did
-        const mspDB = new Database("msp.db")
-        const assetID = mspDB.getAssetIdentityByDID(assetDID)
-        console.log(`[NATS] Queried assetID for vehicle: ${assetDID}`)
-        if (!assetID) {
-            console.log(`[NATS] No stored assetID for vehicle: ${assetDID}`)
-            return
-        }
-        const asset = new Asset(assetID)
-        console.log(`[NATS] Requesting prequalification for asset: ${assetDID}`)
-        await asset.requestPrequalification()
-    });
-
-    // Listen for issued prequalification claims
-    natsConnection.subscribe(`*.${NATS_EXCHANGE_TOPIC}`, async (data) => {
-        const message = JSON.parse(data) as IMessage
-        console.log(`[NATS] Received message on claims exchange.`)
-        if (!message.issuedToken) {
-            console.log(`[NATS] Received message does not contained an issued token`)
-            return;
-        }
-        console.log(`[NATS] Received ISSUED CLAIM: ${JSON.stringify(message)}`)
-        const assetDID: string = message.requester
-        const mspDB = new Database("msp.db")
-        const assetID = mspDB.getAssetIdentityByDID(assetDID)
-        console.log(`[NATS] Retrieved assetID for asset: ${assetDID}`)
-        if (!assetID) {
-            console.log(`[NATS] No stored assetID for asset: ${assetDID}`)
-            return
-        }
-        const asset = new Asset(assetID)
-        console.log(`[NATS] Publishing claim for asset: ${assetDID}`)
-        await asset.publishPublicClaim(message.issuedToken)
-    });
-
-    console.log("[NATS] Listening for asset claim requests and issued claims")
-
-    // IMessage is taken from iam-client-lib
-    // (it should probably be published as a shared interface)
-    interface IMessage {
-        id: string;
-        token: string;
-        issuedToken?: string;
-        requester: string;
-        claimIssuer: string[];
-        acceptedBy?: string;
-    }
 }
 
 yargs
@@ -246,8 +183,12 @@ yargs
 
             if (config.msp.createAssetDIDs) {
                 createAssetDIDs("msp", database)
-                await initVehiclePrequalificationListener()
             }
+
+            const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
+                return database.getAssetIdentityByDID(assetDID)
+            }
+            FlexMarketClient.init({ getAssetIdentityByDID });
 
             if (args.registerOnly) {
                 console.log("[CORE] Shutting down MSP server...")
