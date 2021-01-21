@@ -4,7 +4,7 @@ import { IAssetIdentity } from "../types"
 import { NatsConnection } from "./factories/nats-connection"
 import { Asset } from "./models/asset"
 
-export class FlexMarketClient {
+export class PrequalificationClient {
 
     static init({ getAssetIdentityByDID }: { getAssetIdentityByDID: (string) => IAssetIdentity | undefined }) {
         const createSubscriptions = (natsConnection: Client) => {
