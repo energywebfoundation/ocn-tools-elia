@@ -1,6 +1,6 @@
 import { Keys } from "@ew-did-registry/keys"
 import { ILocation, IToken } from "@shareandcharge/ocn-bridge"
-import { IDIDCache } from "../../types"
+import { IDIDCache } from "../../../types"
 import { DID } from "./did"
 
 /**

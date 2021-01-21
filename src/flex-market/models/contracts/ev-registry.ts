@@ -4,7 +4,7 @@ import { JsonRpcProvider } from "@ethersproject/providers"
 import { Wallet } from "@ethersproject/wallet"
 import { Keys } from "@ew-did-registry/keys"
 import { soliditySha3 } from "web3-utils"
-import { config } from "../../config/config"
+import { config } from "../../../config/config"
 import abi from "./ev-registry.abi"
 
 export class EvRegistry {

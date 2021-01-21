@@ -21,11 +21,11 @@ import { config } from "./config/config"
 import { locations } from "./data/locations"
 import { tokens } from "./data/tokens"
 import { Database } from "./database"
-import { EvRegistry } from "./models/contracts/ev-registry"
-import { DIDFactory } from "./models/dids/did-factory"
+import { FlexMarketClient } from "./flex-market/flex-market-client"
+import { EvRegistry } from "./flex-market/models/contracts/ev-registry"
+import { DIDFactory } from "./flex-market/models/dids/did-factory"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
 import { IAssetIdentity, IDIDCache } from "./types"
-import { FlexMarketClient } from "./flex-market/flex-market-client"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
     for (const service of services) {

@@ -5,8 +5,8 @@ import { DIDDocumentFull, IDIDDocumentFull } from "@ew-did-registry/did-document
 import { abi1056, address1056, Operator } from "@ew-did-registry/did-ethr-resolver"
 import { IResolverSettings, ProviderTypes } from "@ew-did-registry/did-resolver-interface"
 import { Keys } from "@ew-did-registry/keys"
-import { config } from "../../config/config"
-import { IAssetIdentity, IDIDCache } from "../../types"
+import { config } from "../../../config/config"
+import { IAssetIdentity, IDIDCache } from "../../../types"
 import { EvRegistry } from "../contracts/ev-registry"
 
 export class DID {
