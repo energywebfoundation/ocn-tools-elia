@@ -1,5 +1,5 @@
+import { CacheServerClient, IAM } from "iam-client-lib"
 import { config } from "../../config/config"
-import { IAM, CacheServerClient } from 'iam-client-lib';
 
 export class IamClientLibFactory {
 
@@ -11,23 +11,23 @@ export class IamClientLibFactory {
     public static async create({ privateKey, cacheServerUrl }: IamClientParams) {
         const cacheClient = new CacheServerClient({
             url: cacheServerUrl 
-        });
+        })
 
         // Because iam-client-lib is running on the server, the private key is passed in directly
         const iamClient = new IAM({
-            privateKey: privateKey,
+            privateKey,
             rpcUrl: config.prequalification.provider,
             chainId: config.prequalification.chainId,
             cacheClient
-        });
+        })
 
         // TODO: document why initialization is necessary.
-        await iamClient.initializeConnection();
-        return iamClient;
+        await iamClient.initializeConnection()
+        return iamClient
     }
 }
 
-type IamClientParams = {
+interface IamClientParams {
     cacheServerUrl: string,
     privateKey: string
 }
