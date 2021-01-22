@@ -1,5 +1,5 @@
 {
-  "name": "@energywebfoundation/ocn-tools",
+  "name": "@energyweb/ocn-tools",
   "version": "0.2.0",
   "description": "Common tools for aiding development of applications built on top of the OCN",
   "main": "index.js",
@@ -29,7 +29,7 @@
     "@ew-did-registry/did-ipfs-store": "0.0.1-alpha.694.1",
     "@ew-did-registry/did-resolver-interface": "0.0.1-alpha.694.1",
     "@ew-did-registry/keys": "0.0.1-alpha.694.1",
-    "@energyweb/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2",
+    "@energyweb/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2-update-package-name",
     "better-sqlite3": "^5.4.3",
     "ethers": "^4.0.48",
     "iam-client-lib": "^1.0.4",
