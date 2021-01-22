@@ -1,5 +1,5 @@
 import { Keys } from "@ew-did-registry/keys"
-import { ILocation, IToken } from "@shareandcharge/ocn-bridge"
+import { ILocation, IToken } from "@energyweb/ocn-bridge"
 import { IDIDCache } from "../../types"
 import { DID } from "./did"
 
@@ -9,15 +9,15 @@ import { DID } from "./did"
 export class DIDFactory {
 
     /**
-     * 
+     *
      * @param operatorKey key used to 'control' the DID (asset operator)
      * @param db local DID cache for tracking which assets have DIDs
      */
-    constructor(private operatorKey: Keys, private db: IDIDCache, private skipRegistry?: boolean) {}
+    constructor(private operatorKey: Keys, private db: IDIDCache, private skipRegistry?: boolean) { }
 
     /**
      * Create (or resolve) a vehicle's DID
-     * 
+     *
      * @param token an MSP token representing a vehicle
      */
     public async createVehicleDID(token: IToken): Promise<DID> {
@@ -26,7 +26,7 @@ export class DIDFactory {
 
     /**
      * Create (or resolve) a charge point's DID
-     * 
+     *
      * @param location a CPO location representing n evses
      */
     public async createChargePointDIDs(location: ILocation): Promise<DID[]> {

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IChargeDetailRecord } from "@shareandcharge/ocn-bridge";
+import { IChargeDetailRecord } from "@energyweb/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 
@@ -52,7 +52,7 @@ export const cdrs: IChargeDetailRecord[] = [
         },
         currency: "EUR",
         charging_periods: [{
-            start_date_time:  new Date(1571216038071).toISOString(),
+            start_date_time: new Date(1571216038071).toISOString(),
             dimensions: [{
                 "type": "TIME",
                 "volume": 1.973

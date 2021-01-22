@@ -1,4 +1,4 @@
-import { IEndpoint, IPluggableDB, IVersionDetail } from "@shareandcharge/ocn-bridge";
+import { IEndpoint, IPluggableDB, IVersionDetail } from "@energyweb/ocn-bridge";
 
 export class DatabaseMock implements IPluggableDB {
 

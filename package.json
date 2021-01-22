@@ -1,5 +1,5 @@
 {
-  "name": "@shareandcharge/ocn-tools",
+  "name": "@energyweb/ocn-tools",
   "version": "0.2.0",
   "description": "Common tools for aiding development of applications built on top of the OCN",
   "main": "index.js",
@@ -13,11 +13,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/shareandcharge/ocn-tools.git"
+    "url": "git+ssh://git@github.com/energywebfoundation/ocn-tools.git"
   },
-  "author": "eMobilify GmbH",
-  "license": "Apache-2.0",
-  "homepage": "https://bitbucket.org/shareandcharge/ocn-tools#readme",
+  "author": "Energy Web",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/energywebfoundation/ocn-tools#readme",
   "dependencies": {
     "@ethersproject/bytes": "^5.0.8",
     "@ethersproject/contracts": "^5.0.8",
@@ -29,7 +29,7 @@
     "@ew-did-registry/did-ipfs-store": "0.0.1-alpha.694.1",
     "@ew-did-registry/did-resolver-interface": "0.0.1-alpha.694.1",
     "@ew-did-registry/keys": "0.0.1-alpha.694.1",
-    "@shareandcharge/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2",
+    "@energyweb/ocn-bridge": "git+https://github.com/energywebfoundation/ocn-bridge.git#v2-update-package-name",
     "better-sqlite3": "^5.4.3",
     "ethers": "^4.0.48",
     "iam-client-lib": "^1.0.4",

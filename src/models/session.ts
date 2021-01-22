@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { authMethod, ICdrToken, IConnector, ISession, IStartSession, sessionStatus } from "@shareandcharge/ocn-bridge";
+import { authMethod, ICdrToken, IConnector, ISession, IStartSession, sessionStatus } from "@energyweb/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 

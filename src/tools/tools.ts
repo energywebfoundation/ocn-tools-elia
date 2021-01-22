@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IRole } from "@shareandcharge/ocn-bridge";
+import { IRole } from "@energyweb/ocn-bridge";
 
 export const extractCPO = (roles: IRole[]): IRole => {
     const cpo = roles.find((role) => role.role === "CPO")
