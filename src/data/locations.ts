@@ -14,21 +14,92 @@
     limitations under the License.
 */
 
-import { IEnergyMix, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations";
+import { evseStatus, IEnergyMix, ILocation } from "@energyweb/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 
 export const locations: ILocation[] = []
 
-let i: number
+const statusOptions = ["AVAILABLE", "CHARGING"] as evseStatus[]
+const guessAvailability = (): evseStatus => statusOptions[Math.round(Math.random())]
+const cpo = extractCPO(config.cpo.roles)
 
-for (i = 1; i <= 10; i++) {
+// https://openchargemap.org/site/poi/details/38434
+const berlinChargePoint1 = createLocation(
+    1,
+    'Friedrich-List-Ufer',
+    'Friedrich-List-Ufer',
+    'Berlin',
+    'DEU',
+    '10557',
+    52.525956,
+    13.370633,
+    400,
+    16
+)
+locations.push(berlinChargePoint1)
 
-    const cpo = extractCPO(config.cpo.roles)
+// https://openchargemap.org/site/poi/details/38446
+const berlinChargePoint2 = createLocation(
+    2,
+    'Scharnhorststrasse 34-37',
+    'Scharnhorststrasse 34-37',
+    'Berlin',
+    'DEU',
+    '10115',
+    52.529722,
+    13.373889,
+    400,
+    32
+)
+locations.push(berlinChargePoint2)
 
+// https://openchargemap.org/site/poi/details/7655
+const belgiumChargePoint1 = createLocation(
+    3,
+    'Interparking Sablon-Poelaert',
+    'Place Poelaert',
+    'Brussels',
+    'BEL',
+    '1000',
+    50.8373217,
+    4.35258410,
+    400,
+    16
+)
+locations.push(belgiumChargePoint1)
+
+// https://openchargemap.org/site/poi/details/7654
+const belgiumChargePoint2 = createLocation(
+    4,
+    'Interparking Grand Place',
+    'rue Marche aux Herbes 104',
+    'Brussels',
+    'BEL',
+    '1000',
+    50.8466448,
+    4.35543150,
+    400,
+    32
+)
+locations.push(belgiumChargePoint2)
+
+//for (let i = 1; i <= 250; i++) {
+function createLocation(
+    i: number,
+    name: string,
+    address: string,
+    city: string,
+    country: string,
+    postalCode: string,
+    latitude: number,
+    longitude: number,
+    voltage: number,
+    amperage: number
+): ILocation {
     let tariffID: string
-    let eneryMix: IEnergyMix
-   
+    let energyMix: IEnergyMix
+
     switch (true) {
         case (i < 5):
             tariffID = "1"
@@ -40,39 +111,40 @@ for (i = 1; i <= 10; i++) {
             tariffID = "3"
     }
 
-    eneryMix = {
+    energyMix = {
         is_green_energy: true,
         supplier_name: "Utility 2",
         energy_product_name: "Product green"
     }
 
-    if (i < 5) {
-        eneryMix = {
+    if (i % 5 == 0) {
+        energyMix = {
             is_green_energy: false,
-            energy_sources: [ 
-                { 
-                    source: "WATER", 
-                    percentage: 55.4 
+            energy_sources: [
+                {
+                    source: "WATER",
+                    percentage: 55.4
                 },
-                {   source: "NUCLEAR",
-                    percentage: 36.1 
+                {
+                    source: "NUCLEAR",
+                    percentage: 36.1
                 },
-                { 
+                {
                     source: "GENERAL_FOSSIL",
-                    percentage: 2.8 
+                    percentage: 2.8
                 },
-                {  
-                    source: "GENERAL_GREEN", 
-                    "percentage": 5.7 
+                {
+                    source: "GENERAL_GREEN",
+                    "percentage": 5.7
                 },
             ],
             environ_impact: [
-                { 
-                    category: "NUCLEAR_WASTE", 
-                    amount: 0.0006
+                {
+                    category: "NUCLEAR_WASTE",
+                    amount: 0.006
                 },
-                {  
-                    category: "CARBON_DIOXIDE", 
+                {
+                    category: "CARBON_DIOXIDE",
                     amount: 298
                 }
             ],
@@ -80,20 +152,22 @@ for (i = 1; i <= 10; i++) {
             energy_product_name: "Product gray"
         }
     }
-    
-    locations.push({
+
+    return {
         country_code: cpo.country_code,
         party_id: cpo.party_id,
         id: `Loc${i}`,
-        name: `Station ${i}`,
         publish: true,
-        address: `Test-Street ${i}`,
-        city: "Zug",
-        postal_code: "6300",
-        country: "CHE",
+        name: `Station ${name}`,
+        address: `${address}`,
+        city: `${city}`,
+        postal_code: `${postalCode}`,
+        country: `${country}`,
         coordinates: {
-            latitude: `47.1${78 + i}`,
-            longitude: "8.518",
+            // latitude: `${(latitude + (Math.random() / 50)).toFixed(3)}`,
+            // longitude: `${(longitude + (Math.random() / 50)).toFixed(3)}`,
+            latitude: `${latitude}`,
+            longitude: `${longitude}`,
         },
         operator: {
             name: cpo.business_details.name
@@ -112,14 +186,14 @@ for (i = 1; i <= 10; i++) {
             {
                 uid: `CH-CPO-S${i}E100001`,
                 evse_id: `CH-CPO-S${i}E100001`,
-                status: "AVAILABLE",
+                status: guessAvailability(),
                 connectors: [{
                     id: `S${i}E1Con1`,
                     standard: "IEC_62196_T2",
                     format: "SOCKET",
                     power_type: "AC_3_PHASE",
-                    max_voltage: 220,
-                    max_amperage: 16,
+                    max_voltage: voltage,
+                    max_amperage: amperage,
                     tariff_ids: [tariffID],
                     last_updated: "2019-10-14T12:02:45.006Z"
                 }],
@@ -128,21 +202,22 @@ for (i = 1; i <= 10; i++) {
             {
                 uid: `CH-CPO-S${i}E100002`,
                 evse_id: `CH-CPO-S${i}E100002`,
-                status: "AVAILABLE",
+                status: guessAvailability(),
                 connectors: [{
                     id: `S${i}E1Con2`,
                     standard: "IEC_62196_T2",
                     format: "SOCKET",
                     power_type: "AC_3_PHASE",
-                    max_voltage: 220,
-                    max_amperage: 16,
+                    max_voltage: voltage,
+                    max_amperage: amperage,
                     tariff_ids: [tariffID],
                     last_updated: "2019-10-14T12:02:45.006Z"
                 }],
                 last_updated: "2019-10-14T12:02:45.006Z"
             }
         ],
-        energy_mix: eneryMix,
+        time_zone: "Europe/Berlin",
+        energy_mix: energyMix,
         last_updated: "2019-10-14T12:02:45.006Z"
-    })
+    }
 }

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IChargeDetailRecord } from "@shareandcharge/ocn-bridge/dist/models/ocpi/cdrs";
+import { IChargeDetailRecord } from "@energyweb/ocn-bridge";
 
 export class CdrsReceiver {
 
@@ -24,9 +24,9 @@ export class CdrsReceiver {
         return this.cdrs.find((cdr) => cdr.id === id)
     }
 
-    public create(cdr: IChargeDetailRecord): void {
+    public async create(cdr: IChargeDetailRecord): Promise<void> {
         this.cdrs.push(cdr)
-        setTimeout(() => console.log(`CDR ${cdr.id}: ${cdr.total_cost.excl_vat} ${cdr.currency}`), 50)
+        setTimeout(() => console.log(`[OCN] CDR ${cdr.id}: ${cdr.total_cost.excl_vat} ${cdr.currency}`), 50)
         return
     }
 

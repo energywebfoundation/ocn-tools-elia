@@ -14,8 +14,9 @@
     limitations under the License.
 */
 import * as uuid from "uuid"
+import { IOcnToolsConfig } from "../types"
 
-export const config = {
+export const config: IOcnToolsConfig = {
     ocn: {
         node: "http://localhost:8080",
         stage: "local"
@@ -32,7 +33,9 @@ export const config = {
                     name: `Test CPO ${uuid.v4()}`
                 }
             }
-        ]
+        ],
+        services: [],
+        createAssetDIDs: false
     },
     msp: {
         port: 3001,
@@ -46,7 +49,27 @@ export const config = {
                     name: `Test MSP ${uuid.v4()}`
                 }
             }
-        ]
+        ],
+        services: [],
+        createAssetDIDs: false,
+        assetCount: 10
+    },
+    prequalification: {
+        prequalificationIssuerRole: "tso.roles.evdashboard.apps.elia.iam.ewc",
+        prequalifcationRole: "prequalified.roles.flexmarket.apps.elia.iam.ewc",
+        provider: "https://volta-internal-archive.energyweb.org",
+        chainId: 73799,
+        user_claims_iam: {
+            cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
+        },
+        asset_claims_iam: {
+            cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
+            natsServerUrl: "dsb-nats-dev.energyweb.org",
+            natsProtocolPort: "4222",
+        }
+    },
+    evRegistry: {
+        address: "0x9fbda871d559710256a2502a2517b794b482db40",
+        provider: "http://localhost:8544"
     }
-
 }

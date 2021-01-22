@@ -14,13 +14,15 @@
     limitations under the License.
 */
 
-import { IConnector, IEvse, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations";
+import { IConnector, IEvse, ILocation, IPaginationResponse } from "@energyweb/ocn-bridge";
 import { locations } from "../../data/locations";
 
 export class LocationsSender {
 
-    public async getList(): Promise<ILocation[]> {
-        return locations
+    public async getList(): Promise<IPaginationResponse<ILocation[]>> {
+        return {
+            data: locations
+        }
     }
 
     public async getObject(id: string): Promise<ILocation | undefined> {

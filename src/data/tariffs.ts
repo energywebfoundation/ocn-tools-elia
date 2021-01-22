@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs";
+import { ITariff } from "@energyweb/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 
@@ -33,12 +33,12 @@ export const tariffs: ITariff[] = [
                     price: 0.5,
                     vat: 0.077,
                     step_size: 1
-                }, 
+                },
                 {
                     type: "ENERGY",
                     price: 0.25,
                     vat: 0.077,
-                    step_size: 1000        
+                    step_size: 1000
                 }
             ]
         }],
@@ -56,12 +56,12 @@ export const tariffs: ITariff[] = [
                     price: 0.5,
                     vat: 0.077,
                     step_size: 1
-                }, 
+                },
                 {
                     type: "TIME",
                     price: 2,
                     vat: 0.077,
-                    step_size: 900        
+                    step_size: 900
                 }
             ]
         }],

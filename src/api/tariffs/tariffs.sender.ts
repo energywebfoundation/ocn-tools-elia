@@ -14,14 +14,15 @@
     limitations under the License.
 */
 
-import { IConnector } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations"
-import { ITariff } from "@shareandcharge/ocn-bridge/src/models/ocpi/tariffs"
+import { IConnector, IPaginationResponse, ITariff } from "@energyweb/ocn-bridge"
 import { tariffs } from "../../data/tariffs"
 
 export class TariffsSender {
 
-    public async getList(): Promise<ITariff[]> {
-        return tariffs
+    public async getList(): Promise<IPaginationResponse<ITariff[]>> {
+        return {
+            data: tariffs
+        }
     }
 
     public async getObjectById(id: string | IConnector): Promise<ITariff | undefined> {

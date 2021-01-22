@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IRole } from "@shareandcharge/ocn-bridge/dist/models/ocpi/credentials";
+import { IRole } from "@energyweb/ocn-bridge";
 
 export const extractCPO = (roles: IRole[]): IRole => {
     const cpo = roles.find((role) => role.role === "CPO")
@@ -22,4 +22,12 @@ export const extractCPO = (roles: IRole[]): IRole => {
         throw Error("No CPO role provided in \"config.cpo.roles\"")
     }
     return cpo
+}
+
+export const extractMSP = (roles: IRole[]): IRole => {
+    const msp = roles.find((role) => role.role === "EMSP")
+    if (!msp) {
+        throw Error("No MSP role provided in \"config.msp.roles\"")
+    }
+    return msp
 }

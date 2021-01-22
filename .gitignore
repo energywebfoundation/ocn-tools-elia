@@ -3,3 +3,8 @@
 
 src/config/config.ts
 *.db
+
+deploy_rsa*
+!deploy_rsa.enc
+
+.vscode/

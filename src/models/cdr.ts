@@ -14,11 +14,7 @@
     limitations under the License.
 */
 
-import { ICdrLocation, IChargeDetailRecord } from "@shareandcharge/ocn-bridge/dist/models/ocpi/cdrs";
-import { IConnector, ILocation } from "@shareandcharge/ocn-bridge/dist/models/ocpi/locations";
-import { authMethod, ICdrToken, IChargingPeriod, IPrice } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
-import { IPriceComponent, ITariff } from "@shareandcharge/ocn-bridge/dist/models/ocpi/tariffs";
-import { IStartSession } from "@shareandcharge/ocn-bridge/dist/models/pluggableAPI";
+import { authMethod, ICdrLocation, ICdrToken, IChargeDetailRecord, IChargingPeriod, IConnector, ILocation, IPrice, IPriceComponent, IStartSession, ITariff } from "@energyweb/ocn-bridge";
 import * as uuid from "uuid";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
@@ -43,7 +39,7 @@ export class Cdr implements IChargeDetailRecord {
     public total_cost: IPrice
     // public total_fixed_cost?: IPrice
     public total_energy: number
-    public total_energy_cost?: IPrice
+    // public total_energy_cost?: IPrice
     public total_time: number
     // public total_time_cost?: IPrice
     // public total_parking_time?: number
@@ -67,8 +63,8 @@ export class Cdr implements IChargeDetailRecord {
         this.end_date_time = new Date().toISOString()
         this.cdr_token = {
             uid: request.token.uid,
+            type: request.token.type,
             contract_id: request.token.contract_id,
-            type: request.token.type
         }
         this.cdr_location = {
             id: request.location_id,
@@ -101,6 +97,27 @@ export class Cdr implements IChargeDetailRecord {
 
     }
 
+    public serialize(): IChargeDetailRecord {
+        return {
+            country_code: this.country_code,
+            party_id: this.party_id,
+            id: this.id,
+            start_date_time: this.start_date_time,
+            end_date_time: this.end_date_time,
+            session_id: this.session_id,
+            cdr_token: this.cdr_token,
+            auth_method: this.auth_method,
+            cdr_location: this.cdr_location,
+            currency: this.currency,
+            tariffs: this.tariffs,
+            charging_periods: this.charging_periods,
+            total_cost: this.total_cost,
+            total_energy: this.total_energy,
+            total_time: this.total_time,
+            last_updated: this.last_updated
+        }
+    }
+
     private calculateTotalTime(start: Date): number {
         const durationSeconds = (new Date().getTime() - start.getTime()) / 1000
         return durationSeconds / 60 / 60
@@ -114,7 +131,7 @@ export class Cdr implements IChargeDetailRecord {
         }
 
         for (const component of tariff.elements[0].price_components) {
-    
+
             const componentCost = this.calculateCost(component)
             cost.excl_vat += componentCost.excl_vat
 
@@ -125,7 +142,7 @@ export class Cdr implements IChargeDetailRecord {
 
         cost.excl_vat = parseFloat(cost.excl_vat.toFixed(2))
         cost.incl_vat = parseFloat(cost.incl_vat.toFixed(2))
-            
+
         return cost
     }
 

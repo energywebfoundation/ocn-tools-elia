@@ -14,11 +14,11 @@
     limitations under the License.
 */
 
-import { ICommandResult } from "@shareandcharge/ocn-bridge/dist/models/ocpi/commands";
+import { ICommandResult } from "@energyweb/ocn-bridge";
 
 export class CommandsSender {
     public asyncResult(command: string, uid: string, result: ICommandResult): void {
-        setTimeout(() => console.log(`async command result [${command} ${uid}]: ${result.result}`), 50)
+        setTimeout(() => console.log(`[OCN] Async command result [${command} ${uid}]: ${result.result}`), 50)
         return
     }
 }

@@ -10,7 +10,7 @@
         "object-literal-sort-keys": false,
         "variable-name": false,
         "max-line-length": false,
-        "semicolon": false,
+        "semicolon": [true, "never"],
         "no-console": false,
         "object-literal-key-quotes": false,
         "eofline": false,

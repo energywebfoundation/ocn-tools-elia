@@ -14,13 +14,15 @@
     limitations under the License.
 */
 
-import { ISession } from "@shareandcharge/ocn-bridge/dist/models/ocpi/session";
-import { sessions } from "../../data/sessions"
+import { IPaginationResponse, ISession } from "@energyweb/ocn-bridge";
+import { sessions } from "../../data/sessions";
 
 export class SessionsSender {
 
-    public async getList(): Promise<ISession[]> {
-        return sessions
+    public async getList(): Promise<IPaginationResponse<ISession[]>> {
+        return {
+            data: sessions
+        }
     }
 
 }
