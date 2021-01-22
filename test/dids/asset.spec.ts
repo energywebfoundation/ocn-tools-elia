@@ -5,7 +5,7 @@ import { assert } from "chai"
 import { locations } from "../../src/data/locations"
 import { tokens } from "../../src/data/tokens"
 import { Database } from "../../src/database"
-import { DIDFactory } from "../../src/models/dids/did-factory"
+import { DIDFactory } from "../../src/ev-registry/models/dids/did-factory"
 import { IDIDCache } from "../../src/types"
 
 // tests require volta transactions (set high to be on safer side)

@@ -21,11 +21,11 @@ import { config } from "./config/config"
 import { locations } from "./data/locations"
 import { tokens } from "./data/tokens"
 import { Database } from "./database"
-import { EvRegistry } from "./models/contracts/ev-registry"
-import { DIDFactory } from "./models/dids/did-factory"
+import { EvRegistry } from "./ev-registry/models/contracts/ev-registry"
+import { DIDFactory } from "./ev-registry/models/dids/did-factory"
+import { PrequalificationClient } from "./ev-registry/prequalification-client"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
 import { IAssetIdentity, IDIDCache } from "./types"
-import { FlexMarketClient } from "./flex-market/flex-market-client"
 
 const setAgreements = async (services: string[], registry: DefaultRegistry) => {
     for (const service of services) {
@@ -188,7 +188,7 @@ yargs
             const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
                 return database.getAssetIdentityByDID(assetDID)
             }
-            FlexMarketClient.init({ getAssetIdentityByDID });
+            PrequalificationClient.init({ getAssetIdentityByDID });
 
             if (args.registerOnly) {
                 console.log("[CORE] Shutting down MSP server...")
