@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IConnector, IEvse, ILocation, IPaginationResponse } from "@shareandcharge/ocn-bridge";
+import { IConnector, IEvse, ILocation, IPaginationResponse } from "@energyweb/ocn-bridge";
 import { locations } from "../../data/locations";
 
 export class LocationsSender {

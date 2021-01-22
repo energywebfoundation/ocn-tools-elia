@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IConnector, IPaginationResponse, ITariff } from "@shareandcharge/ocn-bridge"
+import { IConnector, IPaginationResponse, ITariff } from "@energyweb/ocn-bridge"
 import { tariffs } from "../../data/tariffs"
 
 export class TariffsSender {

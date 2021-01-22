@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { ISession } from "@shareandcharge/ocn-bridge";
+import { ISession } from "@energyweb/ocn-bridge";
 
 export class SessionsReceiver {
 

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IPaginationResponse, IToken, IUnauthorizedToken } from "@shareandcharge/ocn-bridge"
+import { IPaginationResponse, IToken, IUnauthorizedToken } from "@energyweb/ocn-bridge"
 import { tokens } from "../../data/tokens"
 
 export class TokensSender {

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IPluggableAPI } from "@shareandcharge/ocn-bridge";
+import { IPluggableAPI } from "@energyweb/ocn-bridge";
 import { MockMonitorFactory } from "../models/mock-monitor-factory";
 import { Cdrs } from "./cdrs/cdrs";
 import { Commands } from "./commands/commands";

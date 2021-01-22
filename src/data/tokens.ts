@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IToken } from "@shareandcharge/ocn-bridge"
+import { IToken } from "@energyweb/ocn-bridge"
 import { bool, integer, MersenneTwister19937 } from "random-js"
 import { config } from "../config/config"
 import { extractMSP } from "../tools/tools"
@@ -53,6 +53,6 @@ for (let i = 1; i <= config.msp.assetCount; i++) {
         issuer: msp.business_details.name,
         whitelist: "NEVER",
         valid: true,
-        last_updated: new Date().toISOString() 
+        last_updated: new Date().toISOString()
     })
 }
