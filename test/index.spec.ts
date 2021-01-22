@@ -1,4 +1,4 @@
-import { IBridgeConfigurationOptions, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
+import { IBridgeConfigurationOptions, startBridge, stopBridge } from "@energyweb/ocn-bridge"
 import { assert } from "chai"
 import "mocha"
 import fetch from "node-fetch"
