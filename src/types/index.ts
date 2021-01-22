@@ -1,4 +1,4 @@
-import { IPluggableDB } from "@shareandcharge/ocn-bridge"
+import { IPluggableDB } from "@energyweb/ocn-bridge"
 
 export interface IMockServerConfig {
     port: number
@@ -57,7 +57,7 @@ export interface IDIDCache extends IPluggableDB {
 
     /**
      * Resolves DID from asset ID
-     * 
+     *
      * @param assetId unique id of asset (token UID, evse ID)
      */
     getAssetIdentity(assetId: string): IAssetIdentity | undefined

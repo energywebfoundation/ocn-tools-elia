@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { CommandResponseType, CommandResultType, IAsyncCommand, ICommandResult, IOcpiParty, IReserveNow, IStartSession } from "@shareandcharge/ocn-bridge";
+import { CommandResponseType, CommandResultType, IAsyncCommand, ICommandResult, IOcpiParty, IReserveNow, IStartSession } from "@energyweb/ocn-bridge";
 import { isDeepStrictEqual } from "util";
 import uuid from "uuid";
 import { MockMonitor } from "../../models/mock-monitor";
@@ -29,7 +29,7 @@ const accepted = {
     },
     commandResult: async (): Promise<ICommandResult> => {
         return new Promise((resolve, _) => {
-            setTimeout(() => resolve({ result: CommandResultType.ACCEPTED }), 250)   
+            setTimeout(() => resolve({ result: CommandResultType.ACCEPTED }), 250)
         })
     }
 }
@@ -49,7 +49,7 @@ export class CommandsReceiver {
     private reservations: IReserveNow[] = []
     private sessions: { [key: string]: MockMonitor } = {}
 
-    constructor(private locations: Locations, private tariffs: Tariffs, private monitorFactory: MockMonitorFactory) {}
+    constructor(private locations: Locations, private tariffs: Tariffs, private monitorFactory: MockMonitorFactory) { }
 
     public async cancelReservation(id: string): Promise<IAsyncCommand> {
         const index = this.reservations.findIndex((res) => res.reservation_id === id)
@@ -65,7 +65,7 @@ export class CommandsReceiver {
 
     public async reserveNow(request: IReserveNow): Promise<IAsyncCommand> {
         // 1.1 check already reserved
-        const alreadyReserved = this.reservations.find((res) => res.location_id === request.location_id 
+        const alreadyReserved = this.reservations.find((res) => res.location_id === request.location_id
             && res.evse_uid === request.evse_uid
             && res.connector_id === request.connector_id
             && res.reservation_id !== request.reservation_id)
@@ -95,7 +95,7 @@ export class CommandsReceiver {
             this.reservations[index] = request
         } else {
             this.reservations.push(request)
-        } 
+        }
 
         // 3.1 check expiry date met
         const interval = setInterval(() => {
@@ -109,7 +109,7 @@ export class CommandsReceiver {
                 clearInterval(interval)
             }
         }, 1000 * 10)
-        
+
         return accepted
     }
 
@@ -139,11 +139,11 @@ export class CommandsReceiver {
 
         const sessionID = uuid.v4()
         this.sessions[sessionID] = this.monitorFactory.create(
-            sessionID, 
+            sessionID,
             request,
-            recipient, 
-            location!, 
-            connector, 
+            recipient,
+            location!,
+            connector,
             tariff)
 
         if (reservationIndex >= 0) {

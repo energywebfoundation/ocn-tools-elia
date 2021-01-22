@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { authMethod, ICdrLocation, ICdrToken, IChargeDetailRecord, IChargingPeriod, IConnector, ILocation, IPrice, IPriceComponent, IStartSession, ITariff } from "@shareandcharge/ocn-bridge";
+import { authMethod, ICdrLocation, ICdrToken, IChargeDetailRecord, IChargingPeriod, IConnector, ILocation, IPrice, IPriceComponent, IStartSession, ITariff } from "@energyweb/ocn-bridge";
 import * as uuid from "uuid";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
@@ -131,7 +131,7 @@ export class Cdr implements IChargeDetailRecord {
         }
 
         for (const component of tariff.elements[0].price_components) {
-    
+
             const componentCost = this.calculateCost(component)
             cost.excl_vat += componentCost.excl_vat
 
@@ -142,7 +142,7 @@ export class Cdr implements IChargeDetailRecord {
 
         cost.excl_vat = parseFloat(cost.excl_vat.toFixed(2))
         cost.incl_vat = parseFloat(cost.incl_vat.toFixed(2))
-            
+
         return cost
     }
 

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 import { Keys } from "@ew-did-registry/keys"
-import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@shareandcharge/ocn-bridge"
+import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@energyweb/ocn-bridge"
 import * as yargs from "yargs"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"

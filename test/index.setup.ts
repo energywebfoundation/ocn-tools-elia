@@ -1,4 +1,4 @@
-import { DefaultRegistry, IBridgeConfigurationOptions, IRole, ModuleImplementation } from "@shareandcharge/ocn-bridge"
+import { DefaultRegistry, IBridgeConfigurationOptions, IRole, ModuleImplementation } from "@energyweb/ocn-bridge"
 import { MockAPI } from "../src/api/mock-api"
 import { MockMonitorFactory } from "../src/models/mock-monitor-factory"
 import { DatabaseMock } from "./mock/database.mock"

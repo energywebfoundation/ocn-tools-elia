@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IPaginationResponse, ISession } from "@shareandcharge/ocn-bridge";
+import { IPaginationResponse, ISession } from "@energyweb/ocn-bridge";
 import { sessions } from "../../data/sessions";
 
 export class SessionsSender {

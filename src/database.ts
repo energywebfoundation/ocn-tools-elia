@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-import { IVersionDetail } from "@shareandcharge/ocn-bridge"
+import { IVersionDetail } from "@energyweb/ocn-bridge"
 import * as sqlite3 from "better-sqlite3"
 import { IAssetIdentity, IDIDCache } from "./types"
 

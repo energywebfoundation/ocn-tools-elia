@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { evseStatus, IEnergyMix, ILocation } from "@shareandcharge/ocn-bridge";
+import { evseStatus, IEnergyMix, ILocation } from "@energyweb/ocn-bridge";
 import { config } from "../config/config";
 import { extractCPO } from "../tools/tools";
 
@@ -89,7 +89,7 @@ function createLocation(
     i: number,
     name: string,
     address: string,
-    city: string, 
+    city: string,
     country: string,
     postalCode: string,
     latitude: number,
@@ -99,7 +99,7 @@ function createLocation(
 ): ILocation {
     let tariffID: string
     let energyMix: IEnergyMix
-   
+
     switch (true) {
         case (i < 5):
             tariffID = "1"
@@ -120,30 +120,31 @@ function createLocation(
     if (i % 5 == 0) {
         energyMix = {
             is_green_energy: false,
-            energy_sources: [ 
-                { 
-                    source: "WATER", 
-                    percentage: 55.4 
+            energy_sources: [
+                {
+                    source: "WATER",
+                    percentage: 55.4
                 },
-                {   source: "NUCLEAR",
-                    percentage: 36.1 
+                {
+                    source: "NUCLEAR",
+                    percentage: 36.1
                 },
-                { 
+                {
                     source: "GENERAL_FOSSIL",
-                    percentage: 2.8 
+                    percentage: 2.8
                 },
-                {  
-                    source: "GENERAL_GREEN", 
-                    "percentage": 5.7 
+                {
+                    source: "GENERAL_GREEN",
+                    "percentage": 5.7
                 },
             ],
             environ_impact: [
-                { 
-                    category: "NUCLEAR_WASTE", 
+                {
+                    category: "NUCLEAR_WASTE",
                     amount: 0.006
                 },
-                {  
-                    category: "CARBON_DIOXIDE", 
+                {
+                    category: "CARBON_DIOXIDE",
                     amount: 298
                 }
             ],
@@ -151,7 +152,7 @@ function createLocation(
             energy_product_name: "Product gray"
         }
     }
-    
+
     return {
         country_code: cpo.country_code,
         party_id: cpo.party_id,
@@ -161,7 +162,7 @@ function createLocation(
         address: `${address}`,
         city: `${city}`,
         postal_code: `${postalCode}`,
-        country: `${country}`, 
+        country: `${country}`,
         coordinates: {
             // latitude: `${(latitude + (Math.random() / 50)).toFixed(3)}`,
             // longitude: `${(longitude + (Math.random() / 50)).toFixed(3)}`,

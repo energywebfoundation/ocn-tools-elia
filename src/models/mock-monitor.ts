@@ -1,4 +1,4 @@
-import { IConnector, ILocation, IOcpiParty, IStartSession, ITariff, RequestService, sessionStatus } from "@shareandcharge/ocn-bridge"
+import { IConnector, ILocation, IOcpiParty, IStartSession, ITariff, RequestService, sessionStatus } from "@energyweb/ocn-bridge"
 import { Cdr } from "./cdr"
 import { Session } from "./session"
 
@@ -10,14 +10,14 @@ export class MockMonitor {
     private kwh: number
     private start: Date
 
-    constructor(private id: string, private request: IStartSession, private recipient: IOcpiParty, 
-                private location: ILocation, private connector: IConnector,
-                private requestService: RequestService, private tariff?: ITariff) {
+    constructor(private id: string, private request: IStartSession, private recipient: IOcpiParty,
+        private location: ILocation, private connector: IConnector,
+        private requestService: RequestService, private tariff?: ITariff) {
 
         // init mocked session details
         this.kwh = 0
         this.start = new Date()
-        
+
         // set interval of updates in seconds
         const interval = 15 * 1000
 

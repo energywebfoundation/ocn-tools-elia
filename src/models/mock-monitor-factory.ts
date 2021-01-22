@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IConnector, ILocation, IOcpiParty, IStartSession, ITariff, RequestService } from "@shareandcharge/ocn-bridge"
+import { IConnector, ILocation, IOcpiParty, IStartSession, ITariff, RequestService } from "@energyweb/ocn-bridge"
 import { MockMonitor } from "./mock-monitor"
 
 export class MockMonitorFactory {

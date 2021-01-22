@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import { IChargeDetailRecord } from "@shareandcharge/ocn-bridge";
+import { IChargeDetailRecord } from "@energyweb/ocn-bridge";
 
 export class CdrsReceiver {
 
