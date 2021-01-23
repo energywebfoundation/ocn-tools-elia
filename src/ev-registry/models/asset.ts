@@ -14,20 +14,8 @@ export class Asset {
     public async requestPrequalification() {
         console.log(`${this.logPrefix} is requestingPrequalification`)
 
-        // TODO: Retrieve the vehicle model from OEM
-        const vehicleInfo = [
-            {
-                key: "OEM",
-                value: "Tesla",
-            },
-            {
-                key: "model",
-                value: "model3"
-            }
-        ]
-
         const claimData = {
-            fields: vehicleInfo,
+            fields: [],
             claimType: config.prequalification.prequalifcationRole
         }
 
