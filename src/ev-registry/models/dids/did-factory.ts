@@ -1,5 +1,5 @@
-import { Keys } from "@ew-did-registry/keys"
 import { ILocation, IToken } from "@energyweb/ocn-bridge"
+import { Keys } from "@ew-did-registry/keys"
 import { IDIDCache } from "../../../types"
 import { DID } from "./did"
 
