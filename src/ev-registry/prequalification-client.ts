@@ -23,9 +23,9 @@ export class PrequalificationClient {
             console.log(`[NATS] Received prequalification REQUEST for: ${JSON.stringify(json)}`)
             const assetDID: string = json.did
             const assetID = getAssetIdentityByDID(assetDID)
-            console.log(`[NATS] Queried assetID for vehicle: ${assetDID}`)
+            console.log(`[NATS] Queried assetID for asset: ${assetDID}`)
             if (!assetID) {
-                console.log(`[NATS] No stored assetID for vehicle: ${assetDID}`)
+                console.log(`[NATS] No stored assetID for asset: ${assetDID}`)
                 return
             }
             const asset = new Asset(assetID)

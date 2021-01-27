@@ -143,6 +143,11 @@ yargs
             if (config.cpo.createAssetDIDs) {
                 createAssetDIDs("cpo", database)
             }
+            
+            const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
+                return database.getAssetIdentityByDID(assetDID)
+            }
+            PrequalificationClient.init({ getAssetIdentityByDID })
 
             if (args.registerOnly) {
                 console.log("[CORE] Shutting down CPO server...")
