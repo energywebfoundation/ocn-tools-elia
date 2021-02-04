@@ -60,10 +60,10 @@ export const config: IOcnToolsConfig = {
         provider: "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
         user_claims_iam: {
-            cacheServerUrl: "https://volta-identitycache.energyweb.org/",
+            cacheServerUrl: "https://identitycache-dev.energyweb.org/",
         },
         asset_claims_iam: {
-            cacheServerUrl: "https://volta-identitycache.energyweb.org/",
+            cacheServerUrl: "https://identitycache-dev.energyweb.org/",
             natsServerUrl: "dsb-nats-dev.energyweb.org",
             natsProtocolPort: "4222",
         }
