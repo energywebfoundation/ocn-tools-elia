@@ -63,7 +63,7 @@ export const config: IOcnToolsConfig = {
             cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
         },
         asset_claims_iam: {
-            cacheServerUrl: "https://volta-iam-cacheserver.energyweb.org/",
+            cacheServerUrl: "https://volta-identitycache.energyweb.org/",
             natsServerUrl: "dsb-nats-dev.energyweb.org",
             natsProtocolPort: "4222",
         }
