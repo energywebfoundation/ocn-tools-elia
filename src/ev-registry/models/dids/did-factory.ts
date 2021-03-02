@@ -38,11 +38,16 @@ export class DIDFactory {
         for (const evse of evses) {
             if (evse.evse_id) {
                 const did = await DID.init(evse.evse_id, this.operatorKey, this.db, this.skipRegistry)
+                await this.sleep(10000)
                 dids.push(did)
             }
         }
 
         return dids
+    }
+
+    private sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
     }
 
 }
