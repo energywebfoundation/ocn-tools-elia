@@ -13,6 +13,7 @@ export interface IMockServerConfig {
     }>
     services: string[]
     createAssetDIDs?: boolean
+    assetCreationDelayMS: number
 }
 
 export interface IMockMSPServerConfig extends IMockServerConfig {
