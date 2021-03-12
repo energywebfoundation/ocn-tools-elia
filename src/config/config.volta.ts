@@ -35,6 +35,7 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
+        assetCreationDelayMS: 10000,
         createAssetDIDs: false
     },
     msp: {
@@ -52,6 +53,7 @@ export const config: IOcnToolsConfig = {
         ],
         services: [],
         createAssetDIDs: false,
+        assetCreationDelayMS: 10000,
         assetCount: 200
     },
     prequalification: {

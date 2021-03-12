@@ -22,7 +22,7 @@ import { locations } from "./data/locations"
 import { tokens } from "./data/tokens"
 import { Database } from "./database"
 import { EvRegistry } from "./ev-registry/models/contracts/ev-registry"
-import { DIDFactory } from "./ev-registry/models/dids/did-factory"
+import { DIDFactory, sleep } from "./ev-registry/models/dids/did-factory"
 import { PrequalificationClient } from "./ev-registry/prequalification-client"
 import { MockMonitorFactory } from "./models/mock-monitor-factory"
 import { IAssetIdentity, IDIDCache } from "./types"
@@ -57,6 +57,8 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
             try {
                 console.log(`[${new Date()}]`, "[ASSET] creating vehicle did", token.uid)
                 await factory.createVehicleDID(token)
+                // Add sleep to prevent "transaction already in queue" error
+                await sleep(config.cpo.assetCreationDelayMS)
                 console.log(`[${new Date()}]`, "[ASSET] created vehicle did", token.uid)
             } catch (err) {
                 console.log(`[${new Date()}]`, `[ASSET] Failed to create DID for vehicle(${token.uid}): ${err.message}`)
@@ -143,7 +145,7 @@ yargs
             if (config.cpo.createAssetDIDs) {
                 createAssetDIDs("cpo", database)
             }
-            
+
             const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
                 return database.getAssetIdentityByDID(assetDID)
             }

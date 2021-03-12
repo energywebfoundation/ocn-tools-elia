@@ -26,7 +26,7 @@ const cpo = extractCPO(config.cpo.roles)
 
 // https://openchargemap.org/site/poi/details/38434
 const berlinChargePoint1 = createLocation(
-    1,
+    9,
     'Friedrich-List-Ufer',
     'Friedrich-List-Ufer',
     'Berlin',
@@ -41,7 +41,7 @@ locations.push(berlinChargePoint1)
 
 // https://openchargemap.org/site/poi/details/38446
 const berlinChargePoint2 = createLocation(
-    2,
+    10,
     'Scharnhorststrasse 34-37',
     'Scharnhorststrasse 34-37',
     'Berlin',
@@ -56,7 +56,7 @@ locations.push(berlinChargePoint2)
 
 // https://openchargemap.org/site/poi/details/7655
 const belgiumChargePoint1 = createLocation(
-    3,
+    11,
     'Interparking Sablon-Poelaert',
     'Place Poelaert',
     'Brussels',
@@ -71,7 +71,7 @@ locations.push(belgiumChargePoint1)
 
 // https://openchargemap.org/site/poi/details/7654
 const belgiumChargePoint2 = createLocation(
-    4,
+    12,
     'Interparking Grand Place',
     'rue Marche aux Herbes 104',
     'Brussels',

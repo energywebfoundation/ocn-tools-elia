@@ -1,5 +1,6 @@
 import { ILocation, IToken } from "@energyweb/ocn-bridge"
 import { Keys } from "@ew-did-registry/keys"
+import { config } from "../../../config/config"
 import { IDIDCache } from "../../../types"
 import { DID } from "./did"
 
@@ -38,6 +39,8 @@ export class DIDFactory {
         for (const evse of evses) {
             if (evse.evse_id) {
                 const did = await DID.init(evse.evse_id, this.operatorKey, this.db, this.skipRegistry)
+                // Add sleep to prevent "transaction already in queue" error
+                await sleep(config.cpo.assetCreationDelayMS)
                 dids.push(did)
             }
         }
@@ -45,4 +48,8 @@ export class DIDFactory {
         return dids
     }
 
+}
+
+export function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
 }
