@@ -62,8 +62,7 @@
     "skipLibCheck": true // build fails due to did lib otherwise
   },
   "include": [
-    "src/**/*"
-  ],
+    "packages/**/*", "config" ],
   "exclude": [
     "test/**/*"
   ]
