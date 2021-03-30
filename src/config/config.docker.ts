@@ -66,7 +66,7 @@ export const config: IOcnToolsConfig = {
         provider: process.env.EWC_RPC_URL ?? "https://volta-internal-archive.energyweb.org",
         chainId: 73799,
         user_claims_iam: {
-            cacheServerUrl: process.env.USER_CACHE_SERVER_URL ?? "https://identitycache-dev.energyweb.org/",
+            cacheServerUrl: process.env.USER_CACHE_SERVER_URL ?? "https://volta-identitycache.energyweb.org/",
         },
         asset_claims_iam: {
             cacheServerUrl: process.env.ASSET_CACHE_SERVER_URL ?? "http://host.docker.internal:80",
