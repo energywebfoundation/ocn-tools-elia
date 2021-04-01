@@ -1,3 +1,4 @@
+import { ENSNamespaceTypes, IRoleDefinition } from "iam-client-lib"
 import { config } from "../../config/config"
 import { IAssetIdentity } from "../../types"
 import { IamClientLibFactory } from "../factories/iam-client-lib-factory"
@@ -14,10 +15,6 @@ export class Asset {
     public async requestPrequalification() {
         console.log(`${this.logPrefix} is requestingPrequalification`)
 
-        const claimData = {
-            fields: [],
-            claimType: config.prequalification.prequalifcationRole
-        }
 
         const userIamClient = await IamClientLibFactory.create({
             privateKey: this.assetID.privateKey,
@@ -30,13 +27,22 @@ export class Asset {
             return
         }
 
-        console.log(`${this.logPrefix} is creating claim request`, {
-            issuer: tsoDids,
-            claim: JSON.stringify(claimData)
-        })
         const assetIamClient = await IamClientLibFactory.create({
             privateKey: this.assetID.privateKey,
             cacheServerUrl: config.prequalification.asset_claims_iam.cacheServerUrl
+        })
+        const role = await assetIamClient.getDefinition({ type: ENSNamespaceTypes.Roles, namespace: config.prequalification.prequalifcationRole })
+        if (!role) {
+            throw Error(`role ${config.prequalification.prequalifcationRole} not known to cache server`)
+        }
+        const claimData = {
+            fields: [],
+            claimType: config.prequalification.prequalifcationRole,
+            claimTypeVersion: (role as IRoleDefinition).version
+        }
+        console.log(`${this.logPrefix} is creating claim request`, {
+            issuer: tsoDids,
+            claim: JSON.stringify(claimData)
         })
         await assetIamClient.createClaimRequest({
             issuer: tsoDids,
