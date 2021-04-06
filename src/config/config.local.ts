@@ -66,7 +66,7 @@ export const config: IOcnToolsConfig = {
         },
         asset_claims_iam: {
             cacheServerUrl: "https://identitycache-dev.energyweb.org/",
-            natsServerUrl: "dsb-nats-dev.energyweb.org",
+            natsServerUrl: "identityevents-dev-nats.energyweb.org",
             natsProtocolPort: "4222",
         }
     },
