@@ -15,7 +15,6 @@ export class Asset {
     public async requestPrequalification() {
         console.log(`${this.logPrefix} is requestingPrequalification`)
 
-
         const userIamClient = await IamClientLibFactory.create({
             privateKey: this.assetID.privateKey,
             cacheServerUrl: config.prequalification.user_claims_iam.cacheServerUrl
