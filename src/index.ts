@@ -81,6 +81,32 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
 }
 
 yargs
+    // tslint:disable-next-line: no-empty
+    .command("get-private-key", "query private key of a DID", () => {}, async (args) => {
+        if (!args.cpo && !args.msp) {
+            console.log("Need one of options \"cpo\", \"msp\"")
+            process.exit(1)
+        }
+        if (!args.did) {
+            console.log("Need device DID")
+            process.exit(1)
+        }
+        let database: Database
+        if (args.cpo) {
+            database = new Database("cpo.db")
+        } else if (args.msp) {
+            database = new Database("msp.db")
+        } else {
+            console.log("Unable to create database at cpo vs msp not known")
+            process.exit(1)
+        }
+        const assetID = database.getAssetIdentityByDID(args.did as string)
+        if (!assetID?.privateKey) {
+            console.log("unable to retrieve private key")
+            process.exit(1)
+        }
+        console.log(assetID.privateKey)
+    })
     .command("mock", "Start a mock OCPI party server", (context) => {
         context
             .option("cpo", {
