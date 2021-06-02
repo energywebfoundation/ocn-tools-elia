@@ -77,7 +77,7 @@ export class Database implements IDIDCache {
     }
 
     public getAssetIdentity(id: string): IAssetIdentity | undefined {
-        const asset = this.db.prepare("SELECT * FROM dids WHERE uid = ?").get(id)
+        const asset = this.db.prepare("SELECT * FROM dids WHERE uid = ?").get(id.toString())
         if (!asset) {
             return
         }

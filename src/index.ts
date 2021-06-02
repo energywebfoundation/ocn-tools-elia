@@ -82,26 +82,33 @@ const createAssetDIDs = async (operatorType: "msp" | "cpo", db: IDIDCache) => {
 
 yargs
     // tslint:disable-next-line: no-empty
-    .command("get-private-key", "query private key of a DID", () => {}, async (args) => {
+    .command("get-private-key", "query private key of a uid", () => { }, async (args) => {
         if (!args.cpo && !args.msp) {
             console.log("Need one of options \"cpo\", \"msp\"")
             process.exit(1)
         }
-        if (!args.did) {
-            console.log("Need device DID")
+        if (!args.uid) {
+            console.log("Need device UID")
             process.exit(1)
         }
         let database: Database
         if (args.cpo) {
+            console.log("Using cpo db")
             database = new Database("cpo.db")
         } else if (args.msp) {
+            console.log("Using msp db")
             database = new Database("msp.db")
         } else {
             console.log("Unable to create database at cpo vs msp not known")
             process.exit(1)
         }
-        const assetID = database.getAssetIdentityByDID(args.did as string)
-        if (!assetID?.privateKey) {
+        console.log(`rerieving privateKey for "${args.uid}"`)
+        const assetID = database.getAssetIdentity(args.uid as string)
+        if (!assetID) {
+            console.log("unable to retrieve assetID")
+            process.exit(1)
+        }
+        if (!assetID.privateKey) {
             console.log("unable to retrieve private key")
             process.exit(1)
         }
