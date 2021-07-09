@@ -35,8 +35,6 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
-        createAssetDIDs: false,
-        assetCreationDelayMS: 10000
     },
     msp: {
         port: 3001,
@@ -52,26 +50,6 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
-        createAssetDIDs: false,
-        assetCreationDelayMS: 10000,
-        assetCount: 10
+        assetCount: 20
     },
-    prequalification: {
-        prequalificationIssuerRole: "tso.roles.evdashboard.apps.elia.iam.ewc",
-        prequalifcationRole: "prequalified.roles.flexmarket.apps.elia.iam.ewc",
-        provider: "https://volta-internal-archive.energyweb.org",
-        chainId: 73799,
-        user_claims_iam: {
-            cacheServerUrl: "https://identitycache-dev.energyweb.org/",
-        },
-        asset_claims_iam: {
-            cacheServerUrl: "https://identitycache-dev.energyweb.org/",
-            natsServerUrl: "identityevents-dev-nats.energyweb.org",
-            natsProtocolPort: "4222",
-        }
-    },
-    evRegistry: {
-        address: "0x9fbda871d559710256a2502a2517b794b482db40",
-        provider: "http://localhost:8544"
-    }
 }

@@ -35,10 +35,6 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"],
-        createAssetDIDs: process.env.CPO_CREATE_DIDS
-            ? process.env.CPO_CREATE_DIDS === "true"
-            : true,
-        assetCreationDelayMS: parseInt(process.env.ASSET_CREATION_DELAY || "10000", 10),
     },
     msp: {
         port: parseInt(process.env.MSP_PORT || "3001", 10),
@@ -54,28 +50,6 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
-        createAssetDIDs: process.env.MSP_CREATE_DIDS
-            ? process.env.MSP_CREATE_DIDS === "true"
-            : true,
-        assetCreationDelayMS: parseInt(process.env.ASSET_CREATION_DELAY || "10000", 10),
-        assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10),
+        assetCount: parseInt(process.env.MSP_ASSET_COUNT || '20', 10),
     },
-    prequalification: {
-        prequalificationIssuerRole: process.env.PREQUALIFICATION_ISSUER_ROLE ?? "tso.roles.evdashboard.apps.elia.iam.ewc",
-        prequalifcationRole: process.env.PREQUALIFICATION_ROLE ?? "prequalified.roles.flexmarket.apps.elia.iam.ewc",
-        provider: process.env.EWC_RPC_URL ?? "https://volta-internal-archive.energyweb.org",
-        chainId: 73799,
-        user_claims_iam: {
-            cacheServerUrl: process.env.USER_CACHE_SERVER_URL ?? "https://identitycache-dev.energyweb.org/",
-        },
-        asset_claims_iam: {
-            cacheServerUrl: process.env.ASSET_CACHE_SERVER_URL ?? "http://host.docker.internal:80",
-            natsServerUrl: process.env.NATS_SERVER_URL ?? "host.docker.internal",
-            natsProtocolPort: process.env.NATS_PROTOCOL_PORT ?? "4222",
-        }
-    },
-    evRegistry: {
-        address: process.env.EV_REGISTRY_ADDRESS || "0x9fbda871d559710256a2502a2517b794b482db40",
-        provider: process.env.EV_REGISTRY_PROVIDER || "http://172.16.238.10:8544"
-    }
 }

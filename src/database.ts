@@ -13,11 +13,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-import { IVersionDetail } from "@energyweb/ocn-bridge"
+import { IPluggableDB, IVersionDetail } from "@energyweb/ocn-bridge"
 import * as sqlite3 from "better-sqlite3"
-import { IAssetIdentity, IDIDCache } from "./types"
 
-export class Database implements IDIDCache {
+export class Database implements IPluggableDB {
 
     private db: sqlite3.Database
 
@@ -74,36 +73,6 @@ export class Database implements IDIDCache {
     public async getEndpoint(identifier: string, role: string): Promise<string> {
         const url = this.db.prepare("SELECT url FROM endpoints WHERE identifier = ? AND role = ?").pluck().get(identifier, role)
         return url || ""
-    }
-
-    public getAssetIdentity(id: string): IAssetIdentity | undefined {
-        const asset = this.db.prepare("SELECT * FROM dids WHERE uid = ?").get(id)
-        if (!asset) {
-            return
-        }
-        return {
-            uid: asset.uid,
-            did: asset.did,
-            privateKey: asset.private_key
-        }
-    }
-
-    public getAssetIdentityByDID(did: string): IAssetIdentity | undefined {
-        const asset = this.db.prepare("SELECT * FROM dids WHERE did = ?").get(did)
-        if (!asset) {
-            return
-        }
-        return {
-            uid: asset.uid,
-            did: asset.did,
-            privateKey: asset.private_key
-        }
-    }
-
-    public setAssetIdentity(asset: IAssetIdentity): void {
-        this.db
-            .prepare("INSERT INTO dids (uid, did, private_key) VALUES (?,?,?)")
-            .run(asset.uid, asset.did, asset.privateKey)
     }
 
 }
