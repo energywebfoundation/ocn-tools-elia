@@ -15,17 +15,6 @@ export class Asset {
     public async requestPrequalification() {
         console.log(`${this.logPrefix} is requestingPrequalification`)
 
-        const userIamClient = await IamClientLibFactory.create({
-            privateKey: this.assetID.privateKey,
-            cacheServerUrl: config.prequalification.user_claims_iam.cacheServerUrl
-        })
-        console.log(`${this.logPrefix}, retrieving DIDs with role: ${config.prequalification.prequalificationIssuerRole}`)
-        const tsoDids = await userIamClient.getRoleDIDs({ namespace: config.prequalification.prequalificationIssuerRole })
-        if (tsoDids?.length < 1) {
-            console.log(`${this.logPrefix}, no DIDs with issuer role found and so no claim request can be created`)
-            return
-        }
-
         const assetIamClient = await IamClientLibFactory.create({
             privateKey: this.assetID.privateKey,
             cacheServerUrl: config.prequalification.asset_claims_iam.cacheServerUrl
@@ -40,11 +29,9 @@ export class Asset {
             claimTypeVersion: (role as IRoleDefinition).version
         }
         console.log(`${this.logPrefix} is creating claim request`, {
-            issuer: tsoDids,
             claim: JSON.stringify(claimData)
         })
         await assetIamClient.createClaimRequest({
-            issuer: tsoDids,
             claim: claimData
         })
 
