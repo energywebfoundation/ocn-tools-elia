@@ -5,12 +5,14 @@ WORKDIR /ocn-tools
 COPY . .
 
 # needed to allow ocn-bridge dependency installation
-RUN npm config set unsafe-perm true 
+RUN npm config set unsafe-perm true
 
 RUN npm install
 RUN npm run build
 
 RUN npm prune --production
+
+# for EV Dashboard PoC
 RUN sed -i 's/localhost/172\.16\.238\.10/g' node_modules/@shareandcharge/ocn-registry/dist/networks.js
 
 # production image

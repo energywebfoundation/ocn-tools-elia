@@ -16,6 +16,7 @@
 import { DefaultRegistry, ModuleImplementation, startBridge, stopBridge } from "@energyweb/ocn-bridge"
 import { Keys } from "@ew-did-registry/keys"
 import * as yargs from "yargs"
+import { startAdminServer } from "./admin"
 import { MockAPI } from "./api/mock-api"
 import { config } from "./config/config"
 import { locations } from "./data/locations"
@@ -132,6 +133,7 @@ yargs
                 tokenA: process.env.OCN_TOKEN_A,
             })
 
+            startAdminServer(cpoBridge.registry)
             monitorFactory.setRequestService(cpoBridge.requests)
 
             // set agreements from config
@@ -175,9 +177,10 @@ yargs
                 logger: true,
                 signatures: true,
                 signer: process.env.OCN_IDENTITY,
-                tokenA: process.env.OCN_TOKEN_A
+                tokenA: process.env.OCN_TOKEN_A,
             })
 
+            startAdminServer(mspServer.registry)
             monitorFactory.setRequestService(mspServer.requests)
 
             // set agreements from config

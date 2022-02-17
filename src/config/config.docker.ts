@@ -34,7 +34,7 @@ export const config: IOcnToolsConfig = {
                 }
             }
         ],
-        services: ["0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e"],
+        services: [], // 0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e
         createAssetDIDs: process.env.CPO_CREATE_DIDS
             ? process.env.CPO_CREATE_DIDS === "true"
             : true,
