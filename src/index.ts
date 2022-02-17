@@ -133,7 +133,7 @@ yargs
                 tokenA: process.env.OCN_TOKEN_A,
             })
 
-            startAdminServer(cpoBridge.registry)
+            startAdminServer(config.cpo.adminPort, cpoBridge.registry)
             monitorFactory.setRequestService(cpoBridge.requests)
 
             // set agreements from config
@@ -180,7 +180,7 @@ yargs
                 tokenA: process.env.OCN_TOKEN_A,
             })
 
-            startAdminServer(mspServer.registry)
+            startAdminServer(config.msp.adminPort, mspServer.registry)
             monitorFactory.setRequestService(mspServer.requests)
 
             // set agreements from config

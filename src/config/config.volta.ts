@@ -22,6 +22,7 @@ export const config: IOcnToolsConfig = {
         stage: "volta"
     },
     cpo: {
+        adminPort: 3030,
         port: 3000,
         publicIP: "http://mock.cpo.com",
         roles: [
@@ -39,6 +40,7 @@ export const config: IOcnToolsConfig = {
         createAssetDIDs: false,
     },
     msp: {
+        adminPort: 3031,
         port: 3001,
         publicIP: "http://mock-msp.com",
         roles: [

@@ -7,7 +7,7 @@ import express from 'express'
  * @param db ocn-bridge DB API
  */
 
-export const startAdminServer = async (registry: RegistrationService) => {
+export const startAdminServer = async (port: number, registry: RegistrationService) => {
     const app = express()
     app.use(express.json())
 
@@ -28,7 +28,7 @@ export const startAdminServer = async (registry: RegistrationService) => {
     )
 
     return new Promise(async (resolve, reject) => {
-        const server = app.listen(3030, async (err?: Error) => {
+        const server = app.listen(port, async (err?: Error) => {
             err ? reject(err) : resolve(server)
         })
     })

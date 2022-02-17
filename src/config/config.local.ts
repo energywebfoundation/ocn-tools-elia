@@ -22,6 +22,7 @@ export const config: IOcnToolsConfig = {
         stage: "local"
     },
     cpo: {
+        adminPort:3030,
         port: 3000,
         publicIP: "http://localhost:3000",
         roles: [
@@ -39,6 +40,7 @@ export const config: IOcnToolsConfig = {
         assetCreationDelayMS: 10000,
     },
     msp: {
+        adminPort: 3031,
         port: 3001,
         publicIP: "http://localhost:3001",
         roles: [
