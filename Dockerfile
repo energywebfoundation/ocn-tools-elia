@@ -1,4 +1,4 @@
-FROM node:lts AS builder
+FROM node:lts-alpine AS builder
 
 WORKDIR /ocn-tools
 
@@ -11,9 +11,6 @@ RUN npm install
 RUN npm run build
 
 RUN npm prune --production
-
-# for EV Dashboard PoC
-RUN sed -i 's/localhost/172\.16\.238\.10/g' node_modules/@shareandcharge/ocn-registry/dist/networks.js
 
 # production image
 FROM node:lts-alpine
@@ -28,10 +25,5 @@ ENV NODE_ENV=production
 
 COPY --from=builder /ocn-tools/node_modules ./node_modules
 COPY --from=builder /ocn-tools/dist ./dist
-COPY --from=builder --chown=node /ocn-tools/wait-for-node.sh ./
-COPY --from=builder --chown=node /ocn-tools/wait-for-node.dev.sh ./
-
-RUN chmod +x ./wait-for-node.sh
-RUN chmod +x ./wait-for-node.dev.sh
 
 CMD [ "node", "dist/index.js" ]

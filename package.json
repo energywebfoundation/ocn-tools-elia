@@ -30,7 +30,7 @@
     "@ew-did-registry/did-ipfs-store": "0.0.1-alpha.694.1",
     "@ew-did-registry/did-resolver-interface": "0.0.1-alpha.694.1",
     "@ew-did-registry/keys": "0.0.1-alpha.694.1",
-    "better-sqlite3": "^5.4.3",
+    "better-sqlite3": "^7.5.0",
     "ethers": "^4.0.48",
     "express": "^4.17.3",
     "iam-client-lib": "3.0.0-alpha.40",
