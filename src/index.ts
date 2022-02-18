@@ -133,7 +133,9 @@ yargs
                 tokenA: process.env.OCN_TOKEN_A,
             })
 
-            startAdminServer(config.cpo.adminPort, cpoBridge.registry)
+            await startAdminServer(config.cpo.adminPort, cpoBridge.registry)
+            console.log('[ADMIN] CPO Admin server listening on port', config.cpo.adminPort)
+
             monitorFactory.setRequestService(cpoBridge.requests)
 
             // set agreements from config
@@ -182,7 +184,9 @@ yargs
                 tokenA: process.env.OCN_TOKEN_A,
             })
 
-            startAdminServer(config.msp.adminPort, mspServer.registry)
+            await startAdminServer(config.msp.adminPort, mspServer.registry)
+            console.log('[ADMIN] MSP Admin server listening on port', config.msp.adminPort)
+
             monitorFactory.setRequestService(mspServer.requests)
 
             // set agreements from config

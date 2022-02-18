@@ -13,17 +13,18 @@ export const startAdminServer = async (port: number, registry: RegistrationServi
 
     app.get(
         '/admin/status',
-        async () => {
+        async (_, res) => {
             const connected = await registry.isConnectedToNode()
-            return { connected }
+            res.json({ connected })
         }
     )
 
     app.post(
         '/admin/register',
-        async (req) => {
+        async (req, res) => {
             const { nodeURL, tokenA } = req.body;
             await registry.register(nodeURL, tokenA)
+            res.send('OK')
         }
     )
 
