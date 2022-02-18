@@ -148,10 +148,12 @@ yargs
                 createAssetDIDs("cpo", database)
             }
 
-            const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
-                return database.getAssetIdentityByDID(assetDID)
+            if (config.cpo.listenForPrequalificationRequests) {
+                const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
+                    return database.getAssetIdentityByDID(assetDID)
+                }
+                PrequalificationClient.init({ getAssetIdentityByDID })
             }
-            PrequalificationClient.init({ getAssetIdentityByDID })
 
             if (args.registerOnly) {
                 console.log("[CORE] Shutting down CPO server...")
@@ -195,10 +197,12 @@ yargs
                 createAssetDIDs("msp", database)
             }
 
-            const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
-                return database.getAssetIdentityByDID(assetDID)
+            if (config.msp.listenForPrequalificationRequests) {
+                const getAssetIdentityByDID = (assetDID: string): IAssetIdentity | undefined => {
+                    return database.getAssetIdentityByDID(assetDID)
+                }
+                PrequalificationClient.init({ getAssetIdentityByDID })
             }
-            PrequalificationClient.init({ getAssetIdentityByDID })
 
             if (args.registerOnly) {
                 console.log("[CORE] Shutting down MSP server...")

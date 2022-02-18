@@ -36,9 +36,12 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [], // 0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e
+        listenForPrequalificationRequests: process.env.CPO_PREQUALIFY_ASSETS
+            ? process.env.CPO_PREQUALIFY_ASSETS === "true"
+            : false,
         createAssetDIDs: process.env.CPO_CREATE_DIDS
             ? process.env.CPO_CREATE_DIDS === "true"
-            : true,
+            : false,
         assetCreationDelayMS: parseInt(process.env.ASSET_CREATION_DELAY || "10000", 10),
     },
     msp: {
@@ -56,9 +59,12 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
+        listenForPrequalificationRequests: process.env.MSP_PREQUALIFY_ASSETS
+            ? process.env.MSP_PREQUALIFY_ASSETS === "true"
+            : false,
         createAssetDIDs: process.env.MSP_CREATE_DIDS
             ? process.env.MSP_CREATE_DIDS === "true"
-            : true,
+            : false,
         assetCreationDelayMS: parseInt(process.env.ASSET_CREATION_DELAY || "10000", 10),
         assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10),
     },

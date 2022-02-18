@@ -12,6 +12,7 @@ export interface IMockServerConfig {
         }
     }>
     services: string[]
+    listenForPrequalificationRequests: boolean
     createAssetDIDs?: boolean
     assetCreationDelayMS: number
     adminPort: number

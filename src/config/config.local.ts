@@ -36,6 +36,7 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
+        listenForPrequalificationRequests: false,
         createAssetDIDs: false,
         assetCreationDelayMS: 10000,
     },
@@ -54,6 +55,7 @@ export const config: IOcnToolsConfig = {
             }
         ],
         services: [],
+        listenForPrequalificationRequests: false,
         createAssetDIDs: false,
         assetCreationDelayMS: 10000,
         assetCount: 10,
