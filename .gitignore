@@ -1,6 +1,7 @@
 /dist/
 /node_modules/
 
+/data/
 *.db
 
 deploy_rsa*

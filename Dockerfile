@@ -27,6 +27,7 @@ COPY --from=builder /ocn-tools/node_modules ./node_modules
 COPY --from=builder /ocn-tools/dist ./dist
 COPY --from=builder /ocn-tools/networks.json ./networks.json
 
-RUN touch msp.db cpo.db
+RUN mkdir data
+RUN touch data/msp.db data/cpo.db
 
 CMD [ "node", "dist/index.js" ]
