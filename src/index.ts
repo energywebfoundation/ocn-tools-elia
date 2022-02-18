@@ -116,6 +116,8 @@ yargs
 
             const database = new Database("cpo.db")
 
+            console.log('[CORE] Using CPO config', JSON.stringify(config.cpo, null, 2))
+
             const cpoBridge = await startBridge({
                 port: config.cpo.port,
                 publicBridgeURL: config.cpo.publicIP,
@@ -144,7 +146,9 @@ yargs
             console.log("[CORE] CPO server listening for OCPI requests")
 
             const token = await database.getTokenC()
-            console.log(`[CORE] To send requests as the CPO, use Authorization Token ${token}`)
+            if (token) {
+                console.log(`[CORE] To send requests as the CPO, use Authorization Token ${token}`)
+            }
 
             if (config.cpo.createAssetDIDs) {
                 createAssetDIDs("cpo", database)
@@ -166,6 +170,8 @@ yargs
             console.log("[CORE] Starting MSP server...")
 
             const database = new Database("msp.db")
+
+            console.log('[CORE] Using MSP config', JSON.stringify(config.msp, null, 2))
 
             const mspServer = await startBridge({
                 port: config.msp.port,
@@ -195,7 +201,9 @@ yargs
             console.log("[CORE] MSP server listening for OCPI requests")
 
             const token = await database.getTokenC()
-            console.log(`[CORE] To send requests as the MSP, use Authorization Token ${token}`)
+            if (token) {
+                console.log(`[CORE] To send requests as the MSP, use Authorization Token ${token}`)
+            }
 
             if (config.msp.createAssetDIDs) {
                 createAssetDIDs("msp", database)
