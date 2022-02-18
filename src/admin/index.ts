@@ -23,7 +23,7 @@ export const startAdminServer = async (port: number, registry: RegistrationServi
         '/admin/register',
         async (req, res) => {
             const { nodeURL, tokenA } = req.body;
-            await registry.register(nodeURL, tokenA)
+            await registry.register(nodeURL, Buffer.from(tokenA).toString('base64'))
             res.send('OK')
         }
     )

@@ -38,7 +38,8 @@ export class Database implements IDIDCache {
         return token_b || ""
     }
 
-    public async setTokenB(tokenB: string) {
+    public async setTokenB(token: string) {
+        const tokenB = Buffer.from(token).toString('base64')
         this.db.prepare("UPDATE auth SET token_b = ? WHERE id = 1").run(tokenB)
     }
 
@@ -47,7 +48,8 @@ export class Database implements IDIDCache {
         return token_c || ""
     }
 
-    public async setTokenC(tokenC: string) {
+    public async setTokenC(token: string) {
+        const tokenC = Buffer.from(token).toString('base64')
         this.db.prepare("UPDATE auth SET token_c = ? WHERE id = 1").run(tokenC)
     }
 
