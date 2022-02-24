@@ -16,6 +16,7 @@ export interface IMockServerConfig {
     createAssetDIDs?: boolean
     assetCreationDelayMS: number
     adminPort: number
+    signatures: boolean
 }
 
 export interface IMockMSPServerConfig extends IMockServerConfig {

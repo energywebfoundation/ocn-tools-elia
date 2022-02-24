@@ -43,6 +43,9 @@ export const config: IOcnToolsConfig = {
             ? process.env.CPO_CREATE_DIDS === "true"
             : false,
         assetCreationDelayMS: parseInt(process.env.ASSET_CREATION_DELAY || "10000", 10),
+        signatures: process.env.CPO_SIGNATURES
+            ? process.env.CPO_SIGNATURES === "true"
+            : true,
     },
     msp: {
         adminPort: parseInt(process.env.MSP_ADMIN_PORT || "3031", 10),
@@ -67,6 +70,9 @@ export const config: IOcnToolsConfig = {
             : false,
         assetCreationDelayMS: parseInt(process.env.ASSET_CREATION_DELAY || "10000", 10),
         assetCount: parseInt(process.env.MSP_ASSET_COUNT || "10", 10),
+        signatures: process.env.MSP_SIGNATURES
+            ? process.env.MSP_SIGNATURES === "true"
+            : true,
     },
     prequalification: {
         prequalificationIssuerRole: process.env.PREQUALIFICATION_ISSUER_ROLE ?? "tso.roles.evdashboard.apps.elia.iam.ewc",

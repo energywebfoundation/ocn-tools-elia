@@ -39,6 +39,7 @@ export const config: IOcnToolsConfig = {
         listenForPrequalificationRequests: false,
         assetCreationDelayMS: 10000,
         createAssetDIDs: false,
+        signatures: true
     },
     msp: {
         adminPort: 3031,
@@ -59,6 +60,7 @@ export const config: IOcnToolsConfig = {
         listenForPrequalificationRequests: false,
         assetCreationDelayMS: 10000,
         assetCount: 200,
+        signatures: true
     },
     prequalification: {
         prequalificationIssuerRole: "tso.roles.evdashboard.apps.elia.iam.ewc",

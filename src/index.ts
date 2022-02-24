@@ -130,7 +130,7 @@ yargs
                 pluggableDB: database,
                 pluggableRegistry: registry,
                 logger: true,
-                signatures: true,
+                signatures: config.cpo.signatures,
                 signer: process.env.OCN_IDENTITY,
                 tokenA: process.env.OCN_TOKEN_A,
             })
@@ -185,7 +185,7 @@ yargs
                 pluggableDB: database,
                 pluggableRegistry: registry,
                 logger: true,
-                signatures: true,
+                signatures: config.msp.signatures,
                 signer: process.env.OCN_IDENTITY,
                 tokenA: process.env.OCN_TOKEN_A,
             })
